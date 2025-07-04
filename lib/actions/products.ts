@@ -414,7 +414,7 @@ const mockBrands: Brand[] = [
 
 const mockedBanners: Banner[] = [
   {
-    id: 4,
+    id: 1,
     title: "Summer Collection",
     subtitle: "New Arrivals",
     description:
@@ -425,7 +425,7 @@ const mockedBanners: Banner[] = [
       "https://images.unsplash.com/photo-1469334031218-e382a71b716b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
   },
   {
-    id: 1,
+    id: 4,
     title: "Hard Anime Shirts",
     subtitle: "Anime Shirts that go hard",
     description: "Anime shirts from Naruto, Demon Slayer, One Piece, Bleach",
