@@ -1,64 +1,130 @@
-'use server'
+"use server";
 
-import { db } from '@/lib/db'
-import type { ApiResponse, User, LoginCredentials, RegisterData } from '@/lib/types'
+import { cookies } from "next/headers";
+import {
+    loginSchema,
+    registerSchema,
+    LoginInput,
+    RegisterInput,
+} from "../validations/auth";
+import { Api, ApiResponse } from "@/utils/api";
+import { User } from "@/types/user";
 
-export async function loginUser(credentials: LoginCredentials): Promise<ApiResponse<User | null>> {
-  try {
-    // Simulate authentication
-    const user = await db.getUserByEmail(credentials.email)
-    
-    if (!user) {
-      return {
-        success: false,
-        data: null,
-        error: 'Invalid email or password',
-      }
-    }
-
-    // In a real app, you'd verify the password hash here
-    return {
-      success: true,
-      data: user,
-    }
-  } catch (error) {
-    return {
-      success: false,
-      data: null,
-      error: 'Login failed',
-    }
-  }
+interface AuthData {
+    accessToken: string;
+    expiresIn: number;
+    user?: User;
 }
 
-export async function registerUser(userData: RegisterData): Promise<ApiResponse<User | null>> {
-  try {
-    // Check if user already exists
-    const existingUser = await db.getUserByEmail(userData.email)
-    
-    if (existingUser) {
-      return {
-        success: false,
-        data: null,
-        error: 'User already exists',
-      }
-    }
+export async function getLoggedInUser() {
+    const result = await Api.get<User>("/users/me");
+    return result;
+}
+export async function getAuthToken(): Promise<string | null> {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("accessToken");
+    return token?.value || null;
+}
+export async function loginAction(
+    formData: LoginInput,
+): Promise<ApiResponse<AuthData>> {
+    const parsed = loginSchema.safeParse(formData);
 
-    // Create new user
-    const user = await db.createUser({
-      name: userData.name,
-      email: userData.email,
-      role: 'customer',
-    })
+    if (!parsed.success) {
+        return {
+            data: null,
+            success: false,
+            status: 400,
+            message: parsed.error.issues[0].message,
+        };
+    }
+    const { email, password } = parsed.data;
+    const result = await Api.post<AuthData>("/users/login", {
+        email,
+        password,
+    });
 
-    return {
-      success: true,
-      data: user,
+    if (result.success && result.data?.accessToken) {
+        const cookieStore = await cookies();
+
+        cookieStore.set("accessToken", result.data.accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            maxAge: result.data.expiresIn,
+            path: "/",
+        });
+
+        return {
+            data: result.data,
+            success: true,
+            status: 200,
+            message: "Login successful!",
+        };
+    } else {
+        return {
+            data: null,
+            success: false,
+            status: result.status,
+            message: result.message || "Login failed. Please try again.",
+        };
     }
-  } catch (error) {
-    return {
-      success: false,
-      data: null,
-      error: 'Registration failed',
+}
+
+export async function registerAction(
+    formData: RegisterInput,
+): Promise<ApiResponse<AuthData>> {
+    const parsed = registerSchema.safeParse(formData);
+
+    if (!parsed.success) {
+        return {
+            data: null,
+            success: false,
+            status: 400,
+            message: parsed.error.issues[0].message,
+        };
     }
-  }
+    const {
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+        agreeToTerms,
+    } = parsed.data;
+    const result = await Api.post<AuthData>("/users/register", {
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+        agreeToTerms,
+    });
+    if (result.success && result.data?.accessToken) {
+        const cookieStore = await cookies();
+        cookieStore.set("accessToken", result.data.accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            maxAge: result.data.expiresIn,
+            path: "/",
+        });
+
+        return {
+            data: result.data,
+            success: true,
+            status: 201,
+            message: "Registration successful!",
+        };
+    } else {
+        return {
+            data: null,
+            success: false,
+            status: result.status,
+            message: result.message || "Registration failed. Please try again.",
+        };
+    }
+}
+
+export async function logout() {
+    const cookieStore = await cookies();
+    cookieStore.delete("accessToken");
 }
