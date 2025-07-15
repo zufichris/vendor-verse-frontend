@@ -1,4 +1,3 @@
-// components/layout/header/mobile-nav.tsx
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,10 +12,10 @@ export function MobileNav({ onSearchOpen }: MobileNavProps) {
         <div className="md:hidden bg-white border-t animate-fade-in">
             <nav className="flex flex-col space-y-4 p-4">
                 <Link
-                    href="/products"
+                    href="/shop"
                     className="text-gray-700 hover:text-black transition-colors font-medium"
                 >
-                    All Products
+                    Browse Products
                 </Link>
                 <Link
                     href="/categories"
