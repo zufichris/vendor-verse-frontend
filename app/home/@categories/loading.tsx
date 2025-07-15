@@ -9,7 +9,7 @@ export default function() {
                     <div className="h-4 bg-gray-200 rounded w-96 mx-auto animate-pulse" />
                 </div>
                 <div className="grid md:grid-cols-4 gap-8">
-                    {[1, 2, 3].map((i) => (
+                    {[1, 2, 3,4].map((i) => (
                         <Skeleton key={i} className="aspect-[4/3]" />
                     ))}
                 </div>
