@@ -1,4 +1,4 @@
-import ProductCard from "@/components/product/product-card";
+import {ProductCard} from "@/components/product/product-card";
 import { Button } from "@/components/ui/button";
 import {
     Select,
