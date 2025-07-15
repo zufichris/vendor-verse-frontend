@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/styles/globals.css";
-import {Header} from "@/components/layout/header";
+import { Header } from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import { CartProvider } from "../context/cart-context";
-import { AuthProvider } from "../context/auth-context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,13 +27,9 @@ export default async function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
-                <AuthProvider>
-                    <CartProvider>
-                        <Header />
-                        {children}
-                        <Footer />
-                    </CartProvider>
-                </AuthProvider>
+                <Header />
+                {children}
+                <Footer />
             </body>
         </html>
     );
