@@ -7,6 +7,7 @@ import type { Product } from "@/types/product";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Minus, Plus } from "lucide-react";
+import { useCartStore } from "@/lib/stores/cart";
 
 interface AddToCartButtonProps {
     product: Product;
@@ -21,18 +22,12 @@ export function AddToCartButton({
 }: AddToCartButtonProps) {
     const [isAdding, setIsAdding] = useState(false);
     const [isAdded, setIsAdded] = useState(false);
+    const { addToCart } = useCartStore();
 
     const handleAddToCart = async () => {
         setIsAdding(true);
-
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
+        addToCart({ count: 1, product });
         setIsAdding(false);
-        setIsAdded(true);
-
-        // Reset after 2 seconds
-        setTimeout(() => setIsAdded(false), 2000);
     };
 
     return (
