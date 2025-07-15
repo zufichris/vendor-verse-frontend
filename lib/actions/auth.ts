@@ -124,7 +124,7 @@ export async function registerAction(
     }
 }
 
-export async function logout() {
-    const cookieStore = await cookies();
-    cookieStore.delete("accessToken");
+export async function logout(){
+    const cookieStore=await cookies()
+    cookieStore.delete("accessToken")
 }
