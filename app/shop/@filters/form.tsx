@@ -44,7 +44,6 @@ export function FilterForm({
         startTransition(() => {
             const params = new URLSearchParams(searchParams.toString());
 
-            // Update or remove filter parameters
             Object.entries(newFilters).forEach(([k, v]) => {
                 if (v) {
                     params.set(k, v);
@@ -53,7 +52,6 @@ export function FilterForm({
                 }
             });
 
-            // Reset to page 1 when filters change
             params.delete("page");
 
             router.push(`/shop?${params.toString()}`);
@@ -103,7 +101,7 @@ export function FilterForm({
                                 id={`category-${category.id}`}
                                 checked={filters.category === category.id}
                                 onCheckedChange={(checked) =>
-                                    updateFilters("category", checked ? category.id : "")
+                                    updateFilters("category", checked ? category.slug : "")
                                 }
                             />
                             <Label
