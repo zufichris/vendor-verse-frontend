@@ -1,15 +1,23 @@
 import { getAuthToken } from "@/lib/actions/auth";
 
-export interface ApiResponse<T> {
-    data: T | null;
-    success: boolean;
+export interface QueryResponse<T> {
+    data: T[];
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+}
+interface BaseRes {
     message: string;
     status: number;
 }
+export type ApiResponse<T> =
+    | (BaseRes & { success: true; data: T })
+    | (BaseRes & { success: false; data: T | null });
 
-export interface ApiErrorResponse {
-    message: string;
-    status: number;
+export interface ApiErrorResponse extends BaseRes {
     errors?: Record<string, string[]>;
 }
 
