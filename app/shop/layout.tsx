@@ -1,5 +1,4 @@
 import type React from "react";
-import { Suspense } from "react";
 
 export default function ShopLayout({
   children,
@@ -16,29 +15,6 @@ export default function ShopLayout({
 
         {/* Main Content */}
         <main className="flex-1">{children}</main>
-      </div>
-    </div>
-  );
-}
-
-function FiltersSkeleton() {
-  return (
-    <div className="space-y-6">
-      <div className="space-y-3">
-        <div className="h-4 bg-gray-200 rounded animate-pulse" />
-        <div className="space-y-2">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-3 bg-gray-100 rounded animate-pulse" />
-          ))}
-        </div>
-      </div>
-      <div className="space-y-3">
-        <div className="h-4 bg-gray-200 rounded animate-pulse" />
-        <div className="space-y-2">
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className="h-3 bg-gray-100 rounded animate-pulse" />
-          ))}
-        </div>
       </div>
     </div>
   );
