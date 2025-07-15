@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils";
 import type { ProductVariant } from "@/types/product";
 
 interface ProductVariantSelectorProps {
@@ -15,7 +15,6 @@ export function ProductVariantSelector({
 }: ProductVariantSelectorProps) {
     const [selectedVariant, setSelectedVariant] = useState(variants[0]?.id);
 
-    // Group variants by attribute type
     const attributeGroups = variants.reduce(
         (groups, variant) => {
             if (!variant.attributes) return groups;
