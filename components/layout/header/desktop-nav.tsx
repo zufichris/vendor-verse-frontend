@@ -1,23 +1,14 @@
-// components/layout/header/desktop-nav.tsx
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import React from "react";
 
-// You can define your menu structure here or pass it as a prop
-// type MenuItem = {
-//     href: string;
-//     title: string;
-//     subMenu?: MenuItem[];
-// };
-
 export function DesktopNav() {
-    // This could also be passed as a prop if your menu is dynamic
     const productCategories = [
-        { href: "/products?category=electronics", title: "Electronics" },
-        { href: "/products?category=fashion", title: "Fashion & Clothing" },
-        { href: "/products?category=home", title: "Home & Living" },
-        { href: "/products?category=sports", title: "Sports & Fitness" },
-        { href: "/products?category=accessories", title: "Accessories" },
+        { href: "/shop?category=electronics", title: "Electronics" },
+        { href: "/shop?category=fashion", title: "Fashion & Clothing" },
+        { href: "/shop?category=home", title: "Home & Living" },
+        { href: "/shop?category=sports", title: "Sports & Fitness" },
+        { href: "/shop?category=accessories", title: "Accessories" },
     ];
 
     const companyLinks = [
@@ -29,10 +20,10 @@ export function DesktopNav() {
         <nav className="hidden md:flex items-center space-x-8">
             <div className="relative group">
                 <Link
-                    href="/products"
+                    href="/shop"
                     className="text-gray-700 hover:text-black transition-colors flex items-center"
                 >
-                    Products
+                    Shop
                     <ChevronDown className="h-4 w-4 ml-1" />
                 </Link>
                 <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -48,10 +39,10 @@ export function DesktopNav() {
                         ))}
                         <div className="border-t pt-2 mt-2">
                             <Link
-                                href="/products"
+                                href="/shop"
                                 className="block px-3 py-2 text-sm font-medium text-black hover:bg-gray-50 rounded"
                             >
-                                View All Products →
+                                Browse Products→
                             </Link>
                         </div>
                     </div>
