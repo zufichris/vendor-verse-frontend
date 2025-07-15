@@ -32,7 +32,7 @@ export default function ProductDetailError({
               Try Again
             </Button>
 
-            <Link href="/products">
+            <Link href="/shop">
               <Button variant="outline" className="w-full bg-transparent" size="lg">
                 <ArrowLeft className="h-5 w-5 mr-2" />
                 Browse All Products

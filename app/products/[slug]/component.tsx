@@ -1,6 +1,5 @@
 import type React from "react"
 import type { Product } from "@/types/product"
-
 import { Badge } from "@/components/ui/badge"
 
 interface ProductDetailsProps {
@@ -8,7 +7,6 @@ interface ProductDetailsProps {
 }
 
 export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
-  // Calculate discounted price
   const discountedPrice = product.discountPercentage
     ? product.price * (1 - product.discountPercentage / 100)
     : product.discountFixedAmount
