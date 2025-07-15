@@ -3,8 +3,9 @@ import Link from "next/link";
 import { Search, ShoppingBag, User, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useCart } from "@/context/cart-context";
-import { authStore } from "@/lib/stores/auth";
+import { useCartStore } from "@/lib/stores/cart";
+import { useAuthStore } from "@/lib/stores/auth";
+import { useEffect } from "react";
 
 interface HeaderActionsProps {
     onSearchOpen: () => void;
@@ -17,11 +18,11 @@ export function HeaderActions({
     isMobileMenuOpen,
     onMobileMenuToggle,
 }: HeaderActionsProps) {
-    const { items } = useCart();
-    const { user, isAuthenticated } = authStore();
-
-    const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-
+    const { totalItems, initCart } = useCartStore();
+    const { user, isAuthenticated } = useAuthStore();
+    useEffect(() => {
+        initCart();
+    }, [initCart]);
     return (
         <div className="flex items-center space-x-4">
             <Button
