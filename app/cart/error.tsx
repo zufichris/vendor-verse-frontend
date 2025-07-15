@@ -37,7 +37,7 @@ export default function CartError({
               Try Again
             </Button>
 
-            <Link href="/products">
+            <Link href="/shop">
               <Button
                 variant="outline"
                 className="w-full bg-transparent"
