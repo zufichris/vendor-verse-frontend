@@ -6,8 +6,7 @@ import Image from "next/image";
 import { User, Package, Heart, Settings, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAuth } from "@/context/auth-context";
-import { authStore } from "@/lib/stores/auth";
+import { useAuthStore } from "@/lib/stores/auth";
 
 const recentOrders = [
     {
@@ -52,7 +51,7 @@ const wishlistItems = [
 ];
 
 export default function AccountPage() {
-    const { user, logout } = authStore();
+    const { user, logout } =useAuthStore();
     const [activeTab, setActiveTab] = useState("overview");
 
     if (!user) {
