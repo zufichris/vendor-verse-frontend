@@ -1,4 +1,4 @@
-import ProductCard from "@/components/product/product-card";
+import { ProductCard } from "@/components/product/product-card";
 import type { Product } from "@/types/product";
 import { Api } from "@/utils/api";
 import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
