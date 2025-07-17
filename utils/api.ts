@@ -2,9 +2,10 @@ import { getAuthToken } from "@/lib/actions/auth";
 
 export interface QueryResponse<T> {
     data: T[];
+    totalCount: number;
+    filterCount: number;
     page: number;
     limit: number;
-    total: number;
     totalPages: number;
     hasNextPage: boolean;
     hasPreviousPage: boolean;
