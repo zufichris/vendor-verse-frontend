@@ -99,7 +99,7 @@ export function FilterForm({
                         <div key={category.id} className="flex items-center space-x-2">
                             <Checkbox
                                 id={`category-${category.id}`}
-                                checked={filters.category === category.id}
+                                checked={filters.category === category.slug}
                                 onCheckedChange={(checked) =>
                                     updateFilters("category", checked ? category.slug : "")
                                 }

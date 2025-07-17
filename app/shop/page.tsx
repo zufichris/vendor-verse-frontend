@@ -1,4 +1,4 @@
-import {ProductCard} from "@/components/product/product-card";
+import { ProductCard } from "@/components/product/product-card";
 import { Button } from "@/components/ui/button";
 import {
     Select,
@@ -8,18 +8,9 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import type { Product } from "@/types/product";
-import { Api } from "@/utils/api";
+import { Api, QueryResponse } from "@/utils/api";
 import Link from "next/link";
 import { ViewModeToggle, ShopPagination } from "./components";
-
-interface ProductsResponse {
-    products: Product[];
-    total: number;
-    page: number;
-    totalPages: number;
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
-}
 
 interface ShopPageProps {
     searchParams: Promise<{
@@ -44,7 +35,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     const limit = Number(params.limit) || 100;
     const viewMode = view_mode === "list" ? "list" : "grid";
 
-    const res = await Api.get<ProductsResponse>(
+    const res = await Api.get<QueryResponse<Product>>(
         `/products/shop?${new URLSearchParams({ ...params, limit: limit.toString(), page: currentPage.toString() } as Record<string, string>).toString()}`,
     );
 
@@ -59,10 +50,10 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         );
     }
 
-    const { products, total, totalPages, hasNextPage, hasPreviousPage } =
+    const { data, totalCount, totalPages, hasNextPage, hasPreviousPage } =
         res.data!;
 
-    if (!products?.length) {
+    if (!data?.length) {
         return (
             <div className="text-center py-12">
                 <div className="mb-4">No products found</div>
@@ -79,7 +70,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div className="text-sm text-gray-600">
                     Showing {(currentPage - 1) * limit + 1}-
-                    {Math.min(currentPage * 12, total)} of {total} products
+                    {Math.min(currentPage * 12, totalCount)} of {totalCount} products
                 </div>
                 <div className="flex items-center gap-4">
                     <SortSelect currentSort={sort} />
@@ -95,12 +86,8 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
                         : "space-y-4"
                 }
             >
-                {products.map((product) => (
-                    <ProductCard
-                        key={product.id}
-                        product={product}
-                        showQuickView
-                    />
+                {data.map((product) => (
+                    <ProductCard key={product.id} product={product} showQuickView />
                 ))}
             </div>
 
