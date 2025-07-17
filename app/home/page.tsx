@@ -1,13 +1,11 @@
 import { ProductCard } from "@/components/product/product-card";
 import type { Product } from "@/types/product";
-import { Api } from "@/utils/api";
+import { Api, QueryResponse } from "@/utils/api";
 import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 
-export const revalidate = 60;
 
 export default async function HomePage() {
-  const res = await Api.get<Product[]>("/products/active");
-
+  const res = await Api.get<QueryResponse<Product>>("/products/active");
   if (!res.success) {
     return <div>Error Getting Products</div>;
   }
@@ -34,7 +32,7 @@ export default async function HomePage() {
         </Tabs>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
-          {res.data?.map((product, index) => (
+          {res.data.data.map((product, index) => (
             <div
               key={product.id}
               className="animate-fade-in"

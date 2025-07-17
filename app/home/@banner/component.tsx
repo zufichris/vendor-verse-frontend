@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Banner } from "./page";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 export function Banners({ banners }: { banners: Banner[] }) {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -31,7 +32,7 @@ export function Banners({ banners }: { banners: Banner[] }) {
         <section className="relative h-screen overflow-hidden">
             {banners.map((banner, index) => (
                 <div
-                    key={banner.id}
+                    key={banner.title}
                     className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${index === currentSlide ? "opacity-100" : "opacity-0"
                         }`}
                 >
@@ -56,14 +57,14 @@ export function Banners({ banners }: { banners: Banner[] }) {
                                     {banner.description}
                                 </p>
                                 <div className="mt-8 md:mt-10">
-                                    <a href={banner.link}>
+                                    <Link href={banner.link}>
                                         <Button
                                             size="lg"
-                                            className="bg-white/95 text-black hover:bg-white hover:scale-105 text-base md:text-lg px-8 md:px-10 py-3 md:py-4 font-semibold rounded-full shadow-2xl border-2 border-white/20 backdrop-blur-sm transition-all duration-300 hover:shadow-white/25"
+                                            className="bg-white/95 cursor-pointer text-black hover:bg-white hover:scale-105 text-base md:text-lg px-8 md:px-10 py-3 md:py-4 font-semibold rounded-full shadow-2xl border-2 border-white/20 backdrop-blur-sm transition-all duration-300 hover:shadow-white/25"
                                         >
                                             {banner.cta}
                                         </Button>
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
