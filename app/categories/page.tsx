@@ -24,10 +24,9 @@ const categoryBenefits = [
 
 function CategoryCard({ category }: { category: ProductCategory }) {
     return (
-        <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 border-0 shadow-md">
+        <Card className="group bg-primary-foreground overflow-hidden hover:shadow-xl transition-all duration-300 border-0 shadow-md">
             <CardContent className="p-0">
                 <div className="grid lg:grid-cols-5 gap-0">
-                    {/* Category Image */}
                     <div className="relative lg:col-span-2 aspect-[4/3] lg:aspect-auto overflow-hidden">
                         <Image
                             src={
@@ -56,7 +55,6 @@ function CategoryCard({ category }: { category: ProductCategory }) {
                                 </p>
                             </div>
 
-                            {/* Benefits Grid */}
                             <div className="grid sm:grid-cols-2 gap-4">
                                 {categoryBenefits.map((benefit, index) => {
                                     const IconComponent = benefit.icon;
@@ -74,12 +72,8 @@ function CategoryCard({ category }: { category: ProductCategory }) {
                             </div>
                         </div>
 
-                        {/* CTA Button */}
                         <div className="pt-6">
-                            <Link
-                                href={`/products?category=${category.slug}`}
-                                className="block"
-                            >
+                            <Link href={`/shop?category=${category.slug}`} className="block">
                                 <Button
                                     size="lg"
                                     className="w-full bg-gray-900 hover:bg-primary text-primary-foreground group-hover:bg-secondary transition-all duration-300"
@@ -106,7 +100,7 @@ export default async function() {
     }
     const {
         data: allCategories,
-        total,
+        totalCount,
         totalPages,
         page,
         hasNextPage,
@@ -114,7 +108,7 @@ export default async function() {
     } = res.data!;
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-primary pt-20">
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-primary-foreground pt-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="text-center mb-16">
                     <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
@@ -135,7 +129,7 @@ export default async function() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
                     <div className="text-center">
                         <div className="text-3xl font-bold text-gray-900 mb-2">
-                            {total}+
+                            {totalCount}+
                         </div>
                         <div className="text-gray-600">Categories</div>
                     </div>
@@ -158,7 +152,7 @@ export default async function() {
                     <div className="flex items-center justify-between">
                         <h2 className="text-3xl font-bold text-gray-900">All Categories</h2>
                         <Badge variant="outline" className="text-gray-600">
-                            {total} categories available
+                            {totalCount} categories available
                         </Badge>
                     </div>
 
