@@ -5,7 +5,7 @@ import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 
 
 export default async function HomePage() {
-  const res = await Api.get<QueryResponse<Product>>("/products/active");
+  const res = await Api.get<QueryResponse<Product>>("/products/shop?limit=12");
   if (!res.success) {
     return <div>Error Getting Products</div>;
   }
