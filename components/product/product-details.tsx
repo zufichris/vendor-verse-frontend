@@ -25,7 +25,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
     const hasDiscount = product.discountPercentage || product.discountFixedAmount;
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="px-4 py-8">
             <div className="grid lg:grid-cols-2 gap-8">
                 {/* Product Images */}
                 <ProductImageGallery images={[product.thumbnail, ...product.images]} />

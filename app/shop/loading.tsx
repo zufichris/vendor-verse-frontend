@@ -1,6 +1,6 @@
 export default function ShopLoading() {
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="mx-auto px-4 py-8">
             <div className="flex flex-col lg:flex-row gap-8">
                 {/* Main Content Skeleton */}
                 <main className="flex-1">

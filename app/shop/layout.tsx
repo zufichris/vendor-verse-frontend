@@ -8,7 +8,7 @@ export default function ShopLayout({
   filters: React.ReactNode;
 }) {
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="px-4 pb-8  pt-24">
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Filters Sidebar */}
         <aside className="w-full lg:w-64 flex-shrink-0">{filters}</aside>
