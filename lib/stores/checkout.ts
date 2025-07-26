@@ -38,7 +38,7 @@ interface CheckoutStore {
     setOrderComplete: (complete: boolean) => void
     setNewsletter: (newsletter: boolean) => void
     setSaveInfo: (saveInfo: boolean) => void
-    handleInputChange: (field: string, value: string) => void
+    handleInputChange: (field: keyof FormData, value: string) => void
     validateStep: (step: number) => boolean
 }
 

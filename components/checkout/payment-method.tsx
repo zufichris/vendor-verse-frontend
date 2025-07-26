@@ -10,28 +10,10 @@ import { useCheckoutStore } from "@/lib/stores/checkout"
 
 const paymentOptions = [
     {
-        id: "card",
-        name: "Credit/Debit Card",
-        description: "Visa, Mastercard, American Express",
-        icon: CreditCard,
-    },
-    {
         id: "paypal",
         name: "PayPal",
         description: "Pay with your PayPal account",
         icon: () => <div className="w-5 h-5 rounded bg-blue-900" />,
-    },
-    {
-        id: "apple",
-        name: "Apple Pay",
-        description: "Touch ID or Face ID",
-        icon: () => <div className="w-5 h-5 rounded bg-black" />,
-    },
-    {
-        id: "google",
-        name: "Google Pay",
-        description: "Pay with Google",
-        icon: () => <div className="w-5 h-5 rounded bg-blue-500" />,
     },
 ]
 
@@ -57,7 +39,7 @@ export function PaymentMethod() {
                                     className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-gray-50 transition-colors"
                                 >
                                     <RadioGroupItem value={option.id} id={option.id} />
-                                    <IconComponent className="h-5 w-5" />
+                                    <IconComponent/>
                                     <div className="flex-1">
                                         <Label htmlFor={option.id} className="font-medium cursor-pointer">
                                             {option.name}

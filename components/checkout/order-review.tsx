@@ -6,10 +6,7 @@ import { useCheckoutStore } from "@/lib/stores/checkout";
 import { useCartStore } from "@/lib/stores/cart";
 
 const paymentOptions = [
-    { id: "card", name: "Credit/Debit Card" },
     { id: "paypal", name: "PayPal" },
-    { id: "apple", name: "Apple Pay" },
-    { id: "google", name: "Google Pay" },
 ];
 
 export function OrderReview() {

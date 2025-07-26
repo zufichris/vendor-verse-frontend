@@ -24,9 +24,9 @@ import { useAuthStore } from "@/lib/stores/auth";
 export const LoginForm: React.FC = () => {
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
-  if (isAuthenticated) {
-    router.push("/");
-  }
+  // if (isAuthenticated) {
+  //   return <div>Already Logged in</div>
+  // }
   const [showPassword, setShowPassword] = useState(false);
   const [formMessage, setFormMessage] = useState("");
   const [isPending, startTransition] = useTransition();

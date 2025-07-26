@@ -14,20 +14,6 @@ const shippingOptions = [
         price: 10,
         icon: Package,
     },
-    {
-        id: "express",
-        name: "Express Shipping",
-        description: "2-3 business days",
-        price: 15,
-        icon: Truck,
-    },
-    {
-        id: "overnight",
-        name: "Overnight Shipping",
-        description: "Next business day",
-        price: 25,
-        icon: Clock,
-    },
 ]
 
 export function ShippingMethod() {
