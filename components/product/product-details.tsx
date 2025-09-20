@@ -69,11 +69,11 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                     <div className="space-y-1">
                         <div className="flex items-center gap-3">
                             <span className="text-3xl font-bold">
-                                ${discountedPrice.toFixed(2)}
+                                {product.currency} {discountedPrice.toFixed(2)}
                             </span>
                             {hasDiscount && (
                                 <span className="text-xl text-muted-foreground line-through">
-                                    ${product.price.toFixed(2)}
+                                    {product.currency} {product.price.toFixed(2)}
                                 </span>
                             )}
                             {product.discountPercentage && (
@@ -82,9 +82,6 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                                 </Badge>
                             )}
                         </div>
-                        <p className="text-sm text-muted-foreground">
-                            Price in {product.currency}
-                        </p>
                     </div>
 
                     {/* Variants */}
@@ -187,7 +184,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                                     <div>
                                         <p className="font-medium">Free Shipping</p>
                                         <p className="text-sm text-muted-foreground">
-                                            On orders over $50
+                                            On orders over {product.currency} 100
                                         </p>
                                     </div>
                                 </div>

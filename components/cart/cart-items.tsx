@@ -15,7 +15,6 @@ export function CartItems() {
         totalItems,
         subtotal,
         shipping,
-        tax,
         isLoading,
         finalTotal,
         updateQuantity,
@@ -35,7 +34,7 @@ export function CartItems() {
         return <CartPageLoading />;
     }
 
-    if (totalItems===0) {
+    if (totalItems === 0) {
         return (
             <div className="min-h-screen bg-gray-50 pt-20">
                 <div className="mx-auto px-4 py-16">
@@ -59,7 +58,7 @@ export function CartItems() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 pt-20">
+        <div className="pt-20">
             <div className="mx-auto px-4 py-8">
                 <div className="flex items-center mb-8">
                     <Link href="/shop">
@@ -76,10 +75,10 @@ export function CartItems() {
                             <CardContent className="p-6">
                                 <div className="flex items-center justify-between mb-6">
                                     <h2 className="text-xl font-semibold">
-                                        Cart Items ({items.length})
+                                        Cart Items ({totalItems})
                                     </h2>
                                     <Button
-                                        variant="outline"
+                                        variant="destructive"
                                         size="sm"
                                         onClick={handleClearCart}
                                         disabled={isLoading}
@@ -90,24 +89,25 @@ export function CartItems() {
                                 <div className="space-y-6">
                                     {items.map((item) => (
                                         <div
-                                            key={item.product.id}
-                                            className="flex items-center space-x-4 p-4 border rounded-lg"
-                                        >
-                                            <Image
-                                                src={item.product.thumbnail.url || "/placeholder.svg"}
-                                                alt={item.product.name}
-                                                width={80}
-                                                height={80}
-                                                className="rounded-md object-cover"
-                                            />
-                                            <div className="flex-1">
-                                                <h3 className="font-medium text-gray-900">
-                                                    {item.product.name}
-                                                </h3>
-                                                <p className="text-lg font-bold text-black">
-                                                    ${item.product.price}
-                                                </p>
+                                            key={item.product.id} className="flex flex-col gap-4 p-4 border rounded-lg">
+                                            <div className="flex items-center space-x-4">
+                                                <Image
+                                                    src={item.product.thumbnail.url || "/placeholder.svg"}
+                                                    alt={item.product.name}
+                                                    width={70}
+                                                    height={70}
+                                                    className="rounded-md object-cover"
+                                                />
+                                                <div className="flex-1">
+                                                    <h3 className="font-medium text-gray-900">
+                                                        {item.product.name}
+                                                    </h3>
+                                                    <p className="text-lg font-bold text-black">
+                                                        ${item.product.price}
+                                                    </p>
+                                                </div>
                                             </div>
+
                                             <div className="flex items-center space-x-2">
                                                 <Button
                                                     variant="outline"
@@ -139,7 +139,7 @@ export function CartItems() {
                                             </div>
                                             <div className="text-right">
                                                 <p className="font-bold text-lg">
-                                                    ${(item.product.price * item.count).toFixed(2)}
+                                                    Subtotal:   ${(item.product.price * item.count).toFixed(2)}
                                                 </p>
                                                 <Button
                                                     variant="ghost"
@@ -169,35 +169,18 @@ export function CartItems() {
 
                                     <div className="flex justify-between">
                                         <span>Subtotal</span>
-                                        <span>${subtotal.toFixed(2)}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span>Shipping</span>
-                                        <span>
-                                            {shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}
-                                        </span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span>Tax</span>
-                                        <span>${tax}</span>
+                                        <span>${subtotal}</span>
                                     </div>
                                     <Separator />
                                     <div className="flex justify-between text-lg font-bold">
                                         <span>Total</span>
-                                        <span>${finalTotal.toFixed(2)}</span>
+                                        <span>${finalTotal}</span>
                                     </div>
                                 </div>
-                                {subtotal < 100 && (
-                                    <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-                                        <p className="text-sm text-blue-800">
-                                            Add ${(100 - subtotal).toFixed(2)} more for free shipping!
-                                        </p>
-                                    </div>
-                                )}
-                                <div className="mt-6 space-y-3">
+                                <div className="mt-6 flex sm:flex-row sm:justify-between flex-col gap-2">
                                     <Link href="/checkout">
                                         <Button
-                                            className="w-full bg-black hover:bg-gray-800"
+                                            className="w-full mb-4 bg-black hover:bg-gray-800"
                                             size="lg"
                                         >
                                             Proceed to Checkout

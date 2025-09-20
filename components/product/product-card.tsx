@@ -233,8 +233,8 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                                         <button
                                             key={index}
                                             className={`w-2 h-2 rounded-full transition-all duration-200 ${index === currentImageIndex
-                                                    ? "bg-primary-foreground scale-125"
-                                                    : "bg-primary-foreground/60 hover:bg-primary-foreground/80"
+                                                ? "bg-primary-foreground scale-125"
+                                                : "bg-primary-foreground/60 hover:bg-primary-foreground/80"
                                                 }`}
                                             onClick={(e) => {
                                                 e.preventDefault()
@@ -457,8 +457,8 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                                             <button
                                                 key={color}
                                                 className={`w-4 h-4 rounded-full border-2 transition-all ${selectedAttributes.color === color
-                                                        ? "border-gray-800 scale-110 shadow-md"
-                                                        : "border-gray-300 hover:border-gray-500 hover:scale-105"
+                                                    ? "border-gray-800 scale-110 shadow-md"
+                                                    : "border-gray-300 hover:border-gray-500 hover:scale-105"
                                                     }`}
                                                 style={{ backgroundColor: color.toLowerCase() }}
                                                 onClick={(e) => {
@@ -476,14 +476,14 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                             {/* Price */}
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
-                                    <span className="text-lg font-bold text-primary">${effectivePrice.toFixed(2)}</span>
+                                    <span className="text-lg font-bold text-primary">{product.currency} {effectivePrice.toFixed(2)}</span>
                                     {hasActiveDiscount && (
                                         <span className="text-sm text-gray-500 line-through">${originalPrice.toFixed(2)}</span>
                                     )}
                                 </div>
                                 {hasActiveDiscount && (
                                     <Badge variant="destructive" className="text-[10px]">
-                                        Save ${(originalPrice - effectivePrice).toFixed(2)}
+                                        Save {product.currency} {(originalPrice - effectivePrice).toFixed(2)}
                                     </Badge>
                                 )}
                             </div>
@@ -580,9 +580,9 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <span className="text-3xl font-bold text-primary">${effectivePrice.toFixed(2)}</span>
+                                <span className="text-3xl font-bold text-primary">{product.currency} {effectivePrice.toFixed(2)}</span>
                                 {hasActiveDiscount && (
-                                    <span className="text-xl text-gray-500 line-through">${originalPrice.toFixed(2)}</span>
+                                    <span className="text-xl text-gray-500 line-through">{product.currency} {originalPrice.toFixed(2)}</span>
                                 )}
                             </div>
 
@@ -599,8 +599,8 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                                                     <button
                                                         key={color}
                                                         className={`w-8 h-8 rounded-full border-2 transition-all ${selectedAttributes.color === color
-                                                                ? "border-gray-800 scale-110"
-                                                                : "border-gray-300 hover:border-gray-500"
+                                                            ? "border-gray-800 scale-110"
+                                                            : "border-gray-300 hover:border-gray-500"
                                                             }`}
                                                         style={{ backgroundColor: color.toLowerCase() }}
                                                         onClick={() => setSelectedAttributes((prev) => ({ ...prev, color }))}
@@ -618,8 +618,8 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                                                     <button
                                                         key={size}
                                                         className={`px-3 py-2 border rounded-md transition-colors ${selectedAttributes.size === size
-                                                                ? "border-primary bg-primary text-primary-foreground"
-                                                                : "border-gray-300 hover:border-gray-500"
+                                                            ? "border-primary bg-primary text-primary-foreground"
+                                                            : "border-gray-300 hover:border-gray-500"
                                                             }`}
                                                         onClick={() => setSelectedAttributes((prev) => ({ ...prev, size }))}
                                                     >

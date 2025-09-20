@@ -24,7 +24,7 @@ export default function CheckoutPage() {
 
                 <div className="grid lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-2">
-                        <div className="flex flex-col gap-10 items-center justify-center">
+                        <div className="flex flex-col gap-10 items-center justify-center px-6">
                             <StepIndicator />
                             <CheckoutForm />
                         </div>

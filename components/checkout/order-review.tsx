@@ -5,13 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCheckoutStore } from "@/lib/stores/checkout";
 import { useCartStore } from "@/lib/stores/cart";
 
-const paymentOptions = [
-    { id: "paypal", name: "PayPal" },
-];
-
 export function OrderReview() {
-    const { formData, paymentMethod } = useCheckoutStore();
-    const { items, shipping, tax, finalTotal } = useCartStore();
+    const { formData } = useCheckoutStore();
+    const { items, shipping, finalTotal } = useCartStore();
 
     return (
         <Card>
@@ -38,7 +34,7 @@ export function OrderReview() {
                                 <p className="text-sm text-gray-600">Quantity: {item.count}</p>
                             </div>
                             <span className="font-medium">
-                                ${(item.product.price * item.count).toFixed(2)}
+                                AED {(item.product.price * item.count).toFixed(2)}
                             </span>
                         </div>
                     ))}
@@ -49,15 +45,11 @@ export function OrderReview() {
                     <h4 className="font-medium mb-2">Shipping Summary</h4>
                     <div className="flex justify-between">
                         <span>Shipping:</span>
-                        <span>${shipping.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span>Tax:</span>
-                        <span>${tax.toFixed(2)}</span>
+                        <span>AED {shipping}</span>
                     </div>
                     <div className="flex justify-between font-semibold">
                         <span>Total:</span>
-                        <span>${Number(finalTotal).toFixed(2)}</span>
+                        <span>AED {finalTotal}</span>
                     </div>
                 </div>
 
@@ -78,15 +70,6 @@ export function OrderReview() {
                             <p>{formData.billingCountry}</p>
                         </div>
                     </div>
-                    {/* <div>
-                        <h4 className="font-medium mb-2">Payment Method</h4>
-                        <div className="text-sm text-gray-600">
-                            <p>{paymentOptions.find((p) => p.id === paymentMethod)?.name}</p>
-                            {paymentMethod === "card" && formData.cardNumber && (
-                                <p>**** **** **** {formData.cardNumber.slice(-4)}</p>
-                            )}
-                        </div>
-                    </div> */}
                 </div>
             </CardContent>
         </Card>
