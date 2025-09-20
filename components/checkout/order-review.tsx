@@ -11,7 +11,7 @@ const paymentOptions = [
 
 export function OrderReview() {
     const { formData, paymentMethod } = useCheckoutStore();
-    const { items } = useCartStore();
+    const { items, shipping, tax, finalTotal } = useCartStore();
 
     return (
         <Card>
@@ -44,6 +44,23 @@ export function OrderReview() {
                     ))}
                 </div>
 
+                {/*Shipping Summary */}
+                <div className="border-t pt-4">
+                    <h4 className="font-medium mb-2">Shipping Summary</h4>
+                    <div className="flex justify-between">
+                        <span>Shipping:</span>
+                        <span>${shipping.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>Tax:</span>
+                        <span>${tax.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between font-semibold">
+                        <span>Total:</span>
+                        <span>${Number(finalTotal).toFixed(2)}</span>
+                    </div>
+                </div>
+
                 {/* Shipping & Billing Summary */}
                 <div className="grid md:grid-cols-2 gap-6">
                     <div>
@@ -61,7 +78,7 @@ export function OrderReview() {
                             <p>{formData.billingCountry}</p>
                         </div>
                     </div>
-                    <div>
+                    {/* <div>
                         <h4 className="font-medium mb-2">Payment Method</h4>
                         <div className="text-sm text-gray-600">
                             <p>{paymentOptions.find((p) => p.id === paymentMethod)?.name}</p>
@@ -69,7 +86,7 @@ export function OrderReview() {
                                 <p>**** **** **** {formData.cardNumber.slice(-4)}</p>
                             )}
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </CardContent>
         </Card>

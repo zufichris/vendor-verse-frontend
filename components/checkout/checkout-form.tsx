@@ -22,23 +22,23 @@ export function CheckoutForm() {
     setIsProcessing,
     orderComplete,
     setOrderComplete,
-    finalTotal,
+    // finalTotal,
     formData,
   } = useCheckoutStore();
 
   const router = useRouter();
 
-  const { items, shipping, subtotal, tax, clearCart } = useCartStore();
-  const {handleInputChange}=useCheckoutStore()
+  const { items, shipping, subtotal, finalTotal, tax, clearCart } = useCartStore();
+  const {handleInputChange, shippingMethod}=useCheckoutStore()
   const {user}=useAuthStore()
 
   useEffect(()=>{
-      console.log(user,"USer")
-      handleInputChange("email",user?.email||"")
-      handleInputChange("billingFirstName",user?.firstName||"")
-      handleInputChange("billingLastName",user?.lastName||"")
-},[user,handleInputChange])
+    handleInputChange("email",user?.email||"")
+    handleInputChange("billingFirstName",user?.firstName||"")
+    handleInputChange("billingLastName",user?.lastName||"")
+  },[user,handleInputChange])
 
+  // console.log(user,"User")
   const handleNextStep = () => {
     if (validateStep(currentStep)) {
       setCurrentStep(Math.min(currentStep + 1, 4));
@@ -91,10 +91,10 @@ export function CheckoutForm() {
 
   return (
     <div className="space-y-6">
-      {currentStep === 1 && <ContactInformation />}
+      {currentStep === 1 && <ContactInformation user={user} />}
       {currentStep === 2 && <ShippingMethod />}
-      {currentStep === 3 && <PaymentMethod />}
-      {currentStep === 4 && <OrderReview />}
+      {/* {currentStep === 3 && <PaymentMethod />} */}
+      {currentStep === 3 && <OrderReview />}
 
       <div className="flex justify-between">
         {currentStep > 1 && (
@@ -104,7 +104,7 @@ export function CheckoutForm() {
           </Button>
         )}
         <div className="ml-auto">
-          {currentStep < 4 ? (
+          {currentStep < 3 ? (
             <Button
               onClick={handleNextStep}
               className="bg-gray-900 hover:bg-gray-800"

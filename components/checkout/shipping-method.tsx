@@ -1,23 +1,18 @@
 "use client"
 
-import { Truck, Package, Clock, Shield } from "lucide-react"
+import { Truck, Shield } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { useCheckoutStore } from "@/lib/stores/checkout"
+import { shippingOptions } from "@/constants/shipping"
+import { useCartStore } from "@/lib/stores/cart"
 
-const shippingOptions = [
-    {
-        id: "standard",
-        name: "Standard Shipping",
-        description: "5-7 business days",
-        price: 10,
-        icon: Package,
-    },
-]
+
 
 export function ShippingMethod() {
     const { shippingMethod, setShippingMethod } = useCheckoutStore()
+    const {updateShipping} = useCartStore()
 
     return (
         <Card>
@@ -28,7 +23,10 @@ export function ShippingMethod() {
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <RadioGroup value={shippingMethod} onValueChange={setShippingMethod}>
+                <RadioGroup value={shippingMethod} onValueChange={(val)=>{
+                    setShippingMethod(val)
+                    updateShipping(val)
+                }}>
                     {shippingOptions.map((option) => {
                         const IconComponent = option.icon
                         return (
