@@ -6,34 +6,35 @@ import { OrderSummary } from "@/components/checkout/order-summary";
 import { StepIndicator } from "@/components/checkout/step-indicator";
 
 export default function CheckoutPage() {
-  return (
-    <div className="min-h-screen pt-20 bg-gray-50">
-      
-      <div className="mx-auto px-4 py-8">
-        <div className="flex items-center mb-8">
-          <Link href="/cart">
-            <Button variant="ghost" size="icon" className="mr-4">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          </Link>
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Checkout</h1>
-            <p className="text-gray-600">Complete your purchase securely</p>
-          </div>
+    return (
+        <div className="min-h-screen pt-20 bg-gray-50">
+            <div className="mx-auto px-4 py-8">
+                <div className="flex items-center mb-8">
+                    <Link href="/cart">
+                        <Button variant="ghost" size="icon" className="mr-4">
+                            <ArrowLeft className="h-5 w-5" />
+                        </Button>
+                    </Link>
+                    <div>
+                        <h1 className="text-3xl font-bold text-gray-900">Checkout</h1>
+                        <p className="text-gray-600">Complete your purchase securely</p>
+                    </div>
+                </div>
+
+
+                <div className="grid lg:grid-cols-3 gap-8">
+                    <div className="lg:col-span-2">
+                        <div className="flex flex-col gap-10 items-center justify-center">
+                            <StepIndicator />
+                            <CheckoutForm />
+                        </div>
+                    </div>
+
+                    <div className="lg:col-span-1">
+                        <OrderSummary />
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <StepIndicator />
-
-        <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <CheckoutForm />
-          </div>
-
-          <div className="lg:col-span-1">
-            <OrderSummary />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+    );
 }
