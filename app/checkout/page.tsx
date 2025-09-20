@@ -8,6 +8,7 @@ import { StepIndicator } from "@/components/checkout/step-indicator";
 export default function CheckoutPage() {
   return (
     <div className="min-h-screen pt-20 bg-gray-50">
+      
       <div className="mx-auto px-4 py-8">
         <div className="flex items-center mb-8">
           <Link href="/cart">

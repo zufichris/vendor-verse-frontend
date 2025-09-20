@@ -169,7 +169,7 @@ export function CartItems() {
 
                                     <div className="flex justify-between">
                                         <span>Subtotal</span>
-                                        <span>${subtotal}</span>
+                                        <span>${subtotal.toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span>Shipping</span>
@@ -184,7 +184,7 @@ export function CartItems() {
                                     <Separator />
                                     <div className="flex justify-between text-lg font-bold">
                                         <span>Total</span>
-                                        <span>${finalTotal}</span>
+                                        <span>${finalTotal.toFixed(2)}</span>
                                     </div>
                                 </div>
                                 {subtotal < 100 && (

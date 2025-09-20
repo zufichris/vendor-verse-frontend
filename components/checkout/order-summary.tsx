@@ -109,7 +109,7 @@ export function OrderSummary() {
                     <Separator />
                     <div className="flex justify-between text-lg font-bold">
                         <span>Total</span>
-                        <span>${(finalTotal as number).toFixed(2)}</span>
+                        <span>${finalTotal.toFixed(2)}</span>
                     </div>
                 </div>
 

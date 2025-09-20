@@ -13,12 +13,18 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { useCheckoutStore } from "@/lib/stores/checkout";
+import { User as UserT } from "@/types/user";
+import { PhoneInput } from "../ui/phone-input";
 
 const countries = ["United Arab Emirates"];
 
-const states = ["Abu Dhabi", "Dubai", "Sharjah"];
+const states = ["Abu Dhabi", "Dubai", "Sharjah", "Ajman", "Umm Al-Quwain", "Ras Al Khaimah", "Fujairah"];
 
-export function ContactInformation() {
+interface Props {
+    user: UserT | null;
+}
+
+export function ContactInformation({ user }: Props) {
     const {
         formData,
         handleInputChange,
@@ -28,6 +34,7 @@ export function ContactInformation() {
         saveInfo,
         setSaveInfo,
     } = useCheckoutStore();
+    
 
     return (
         <div className="space-y-6">
@@ -42,27 +49,43 @@ export function ContactInformation() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <Label htmlFor="email">Email Address *</Label>
-                            <Input
+                            {
+                                !! user?.email ? <p className="mb-1 font-medium">{user.email}</p> : <Input
                                 id="email"
                                 type="email"
                                 value={formData.email}
                                 onChange={(e) => handleInputChange("email", e.target.value)}
                                 placeholder="Enter your email"
                                 className={errors.email ? "border-red-500" : ""}
+                                
                             />
+                            }
+                            
                             {errors.email && (
                                 <p className="text-sm mt-1 text-red-500">{errors.email}</p>
                             )}
                         </div>
                         <div>
                             <Label htmlFor="phone">Phone Number</Label>
-                            <Input
-                                id="phone"
-                                type="tel"
-                                value={formData.phone}
-                                onChange={(e) => handleInputChange("phone", e.target.value)}
-                                placeholder="Enter your phone number"
-                            />
+                            {
+                                !! user?.phone ? <p className="mb-1 font-medium">{user.phone}</p> : (
+                                    <PhoneInput
+                                        name={"phone"}
+                                      international
+                                    //   ref={ref}
+                                      countryCallingCodeEditable={false}
+                                      defaultCountry="AE"
+                                    //   className="[&>*]:p-2 [&>*]:bg-inherit [&>*]:border"
+
+                                        id="phone"
+                                        // type="tel"
+                                        value={formData.phone }
+                                        onChange={(e) => handleInputChange("phone", e ?? "")}
+                                        placeholder="Enter your phone number"
+                                    />
+                                )
+                            }
+                            
                         </div>
                     </div>
                     <div className="flex items-center space-x-2">
