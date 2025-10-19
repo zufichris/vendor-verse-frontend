@@ -55,6 +55,8 @@ const CreateOrderDtoSchema = z.object({
 
 export async function createOrder(items: z.infer<typeof CreateOrderDtoSchema>) {
     const res = await Api.post<{ paymentLink: string }>("/orders", items);
+    console.log('================================OrderItemSchema================================');
+    console.log(res);
     revalidatePath("/account/orders");
     return res;
 }
