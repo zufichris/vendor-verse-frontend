@@ -42,7 +42,7 @@ export function ShippingMethod() {
                                     </Label>
                                     <p className="text-sm text-gray-600">{option.description}</p>
                                 </div>
-                                <span className="font-semibold">${option.price.toFixed(2)}</span>
+                                <span className="font-semibold">{option.currency}{option.price.toFixed(2)}</span>
                             </div>
                         )
                     })}

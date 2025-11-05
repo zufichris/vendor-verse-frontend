@@ -18,6 +18,7 @@ import {
   X,
   LogOut,
   Bell,
+  NotebookPen,
 } from "lucide-react"
 
 const navigation = [
@@ -27,6 +28,7 @@ const navigation = [
   { name: "Users", href: "/admin/users", icon: Users },
   { name: "Categories", href: "/admin/categories", icon: FolderOpen },
   { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
+  { name: "Blogs", href: "/admin/blogs", icon: NotebookPen },
   { name: "Settings", href: "/admin/settings", icon: Settings },
 ]
 

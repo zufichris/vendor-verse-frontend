@@ -11,6 +11,7 @@ import type { Product } from "@/types/product";
 import { Api, QueryResponse } from "@/utils/api";
 import Link from "next/link";
 import { ViewModeToggle, ShopPagination } from "./components";
+import { shuffleVariants } from "@/lib/utils";
 
 interface ShopPageProps {
     searchParams: Promise<{
@@ -26,6 +27,7 @@ interface ShopPageProps {
     }>;
 }
 
+
 export default async function ShopPage({ searchParams }: ShopPageProps) {
     const params = await searchParams;
 
@@ -38,6 +40,31 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     const res = await Api.get<QueryResponse<Product>>(
         `/products/shop?${new URLSearchParams({ ...params, limit: limit.toString(), page: currentPage.toString() } as Record<string, string>).toString()}`,
     );
+
+    const variants = res.data!.data.map(itm => {
+        const vars = (itm.variants || []).map(vr => ({
+            ...vr,
+            discountStartDate: itm.discountStartDate,
+            status: itm.status,
+            condition: itm.condition,
+            featured: itm.featured,
+            brand: itm.brand,
+            discountEndDate: itm.discountEndDate,
+            productName: itm.name,
+            productSlug: itm.slug,
+            description: itm.description,
+            category: itm.category,
+            colorsMap: (itm.variants || []).map(col =>({
+                name: col.name || '',
+                slug: col.slug || '',
+                colorCode: col?.colorCode || '',
+            }))
+        }))
+
+        return vars
+    }).flat()
+
+    const shuffledGroups = shuffleVariants(variants)
 
     if (!res.success) {
         return (
@@ -67,7 +94,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     return (
         <div className="space-y-6">
             {/* Header with results count and controls */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            {/* <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div className="text-sm text-gray-600">
                     Showing {(currentPage - 1) * limit + 1}-
                     {Math.min(currentPage * 12, totalCount)} of {totalCount} products
@@ -76,7 +103,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
                     <SortSelect currentSort={sort} />
                     <ViewModeToggle currentMode={viewMode} />
                 </div>
-            </div>
+            </div> */}
 
             {/* Products */}
             <div
@@ -86,7 +113,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
                         : "space-y-4"
                 }
             >
-                {data.map((product) => (
+                {shuffledGroups.map((product) => (
                     <ProductCard key={product.id} product={product} showQuickView />
                 ))}
             </div>

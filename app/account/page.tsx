@@ -1,12 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { User, Package, Heart, Settings, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuthStore } from "@/lib/stores/auth";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { cancelMyOrder, getMyOrders, getMyOrdersCount } from "@/lib/actions/order";
+import { QueryResponse } from "@/utils";
+import { Order } from "@/types/order.types";
+import { SimplePagination } from "@/components/ui/simple-pagination";
+import { toast } from "sonner";
+import CancelOrderDialog from "@/components/orders/cancel-order-dialog";
+import { AuthGate } from "@/components/auth/auth-gate";
 
 const recentOrders = [
     {
@@ -52,20 +60,61 @@ const wishlistItems = [
 
 export default function AccountPage() {
     const { user, logout } =useAuthStore();
-    const [activeTab, setActiveTab] = useState("overview");
+    const searchParams = useSearchParams()
+    const router = useRouter()
+    const pathname = usePathname()
+    const tab = searchParams.get('tab') || 'overview'
+    const [activeTab, setActiveTab] = useState(tab);
+    const [ordersCount, setOrdersCount] = useState(0)
+
+    const [orders, setOrders] = useState<QueryResponse<Order>>({
+        data: [],
+        filterCount: 0,
+        hasNextPage: false,
+        hasPreviousPage: false,
+        limit: 5,
+        page: 1,
+        totalCount: 0,
+        totalPages: 1
+    })
+
+    // Initialize data with a first time useEffect
+
+    useEffect(()=>{
+        (async()=>{
+            try {
+                const [ordersCountRes, ordersRes] = await Promise.all([getMyOrdersCount(), getMyOrders()])
+
+                console.log(ordersCountRes)
+                console.log(ordersRes)
+                ordersCountRes.success && setOrdersCount(ordersCountRes.data || 0)
+                ordersRes.success && setOrders(ordersRes.data!)
+            } catch (err) {
+                
+            }
+        })()
+    }, [])
+
+    const handleSwitchTab = (tab: string)=>{
+        if (tab === activeTab) {
+            return
+        }
+
+        setActiveTab(tab)
+
+        router.push(`${pathname}?tab=${tab}`)
+    }
+
+    const handlePagination = async (page:number)=>{
+        const res = await getMyOrders(page)
+
+        res.success && setOrders(res.data!)
+    }
 
     if (!user) {
+        const search = searchParams.toString()
         return (
-            <div className="min-h-screen bg-gray-50 pt-20">
-                <div className="  mx-auto px-4 py-16 text-center">
-                    <h1 className="text-2xl font-bold mb-4">
-                        Please sign in to view your account
-                    </h1>
-                    <Link href="/auth">
-                        <Button className="bg-black hover:bg-gray-800">Sign In</Button>
-                    </Link>
-                </div>
-            </div>
+            <AuthGate onContinueAnonymous={()=>{router.push('/')}} onLogin={()=>router.push(`/auth?callbackUrl=${pathname}${search.length ? `?${search}` : ''}`)}  />
         );
     }
 
@@ -93,7 +142,7 @@ export default function AccountPage() {
                                     <Button
                                         variant={activeTab === "overview" ? "default" : "ghost"}
                                         className="w-full justify-start"
-                                        onClick={() => setActiveTab("overview")}
+                                        onClick={() => handleSwitchTab('overview')}
                                     >
                                         <User className="h-4 w-4 mr-2" />
                                         Overview
@@ -102,7 +151,7 @@ export default function AccountPage() {
                                     <Button
                                         variant={activeTab === "orders" ? "default" : "ghost"}
                                         className="w-full justify-start"
-                                        onClick={() => setActiveTab("orders")}
+                                        onClick={() => handleSwitchTab("orders")}
                                     >
                                         <Package className="h-4 w-4 mr-2" />
                                         Orders
@@ -111,7 +160,7 @@ export default function AccountPage() {
                                     <Button
                                         variant={activeTab === "wishlist" ? "default" : "ghost"}
                                         className="w-full justify-start"
-                                        onClick={() => setActiveTab("wishlist")}
+                                        onClick={() => handleSwitchTab("wishlist")}
                                     >
                                         <Heart className="h-4 w-4 mr-2" />
                                         Wishlist
@@ -120,7 +169,7 @@ export default function AccountPage() {
                                     <Button
                                         variant={activeTab === "settings" ? "default" : "ghost"}
                                         className="w-full justify-start"
-                                        onClick={() => setActiveTab("settings")}
+                                        onClick={() => handleSwitchTab("settings")}
                                     >
                                         <Settings className="h-4 w-4 mr-2" />
                                         Settings
@@ -151,7 +200,7 @@ export default function AccountPage() {
                                         <div className="grid md:grid-cols-3 gap-6">
                                             <div className="text-center p-4 bg-gray-50 rounded-lg">
                                                 <Package className="h-8 w-8 mx-auto mb-2 text-gray-600" />
-                                                <div className="text-2xl font-bold">12</div>
+                                                <div className="text-2xl font-bold">{ordersCount}</div>
                                                 <div className="text-sm text-gray-600">
                                                     Total Orders
                                                 </div>
@@ -167,7 +216,7 @@ export default function AccountPage() {
 
                                             <div className="text-center p-4 bg-gray-50 rounded-lg">
                                                 <User className="h-8 w-8 mx-auto mb-2 text-gray-600" />
-                                                <div className="text-2xl font-bold">Gold</div>
+                                                <div className="text-2xl font-bold uppercase">{user?.status}</div>
                                                 <div className="text-sm text-gray-600">
                                                     Member Status
                                                 </div>
@@ -182,32 +231,32 @@ export default function AccountPage() {
                                     </CardHeader>
                                     <CardContent>
                                         <div className="space-y-4">
-                                            {recentOrders.map((order) => (
+                                            {(orders.data ||[]).slice(0, 3).map((order) => (
                                                 <div
                                                     key={order.id}
                                                     className="flex items-center justify-between p-4 border rounded-lg"
                                                 >
                                                     <div className="flex items-center space-x-4">
                                                         <Image
-                                                            src={order.items[0].image || "/placeholder.svg"}
+                                                            src={order.items[0].imageUrl || "/placeholder.svg"}
                                                             alt={order.items[0].name}
                                                             width={50}
                                                             height={50}
                                                             className="rounded-md"
                                                         />
                                                         <div>
-                                                            <p className="font-medium">Order #{order.id}</p>
+                                                            <Link href={`/account/orders/${order.orderNumber}`} className="font-medium">Order #{order.orderNumber}</Link>
                                                             <p className="text-sm text-gray-600">
-                                                                {order.date}
+                                                                {new Date(order.createdAt).toISOString()}
                                                             </p>
                                                         </div>
                                                     </div>
                                                     <div className="text-right">
-                                                        <p className="font-medium">${order.total}</p>
+                                                        <p className="font-medium">${order.grandTotal}</p>
                                                         <p
-                                                            className={`text-sm ${order.status === "Delivered" ? "text-green-600" : "text-blue-600"}`}
+                                                            className={`text-sm uppercase ${order.fulfillmentStatus === "delivered" ? "text-green-600" : "text-blue-600"}`}
                                                         >
-                                                            {order.status}
+                                                            {order.fulfillmentStatus}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -225,28 +274,28 @@ export default function AccountPage() {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="space-y-4">
-                                        {recentOrders.map((order) => (
+                                        {(orders.data||[]).map((order) => (
                                             <div key={order.id} className="border rounded-lg p-6">
                                                 <div className="flex justify-between items-start mb-4">
                                                     <div>
-                                                        <h3 className="font-medium">Order #{order.id}</h3>
+                                                        <h3 className="font-medium">Order #{order.orderNumber}</h3>
                                                         <p className="text-sm text-gray-600">
-                                                            Placed on {order.date}
+                                                            Placed on {new Date(order.createdAt).toISOString()}
                                                         </p>
                                                     </div>
                                                     <span
-                                                        className={`px-3 py-1 rounded-full text-sm ${order.status === "Delivered"
+                                                        className={`px-3 py-1 rounded-full text-sm uppercase ${order.fulfillmentStatus === "delivered"
                                                                 ? "bg-green-100 text-green-800"
                                                                 : "bg-blue-100 text-blue-800"
                                                             }`}
                                                     >
-                                                        {order.status}
+                                                        {order.fulfillmentStatus}
                                                     </span>
                                                 </div>
 
                                                 <div className="flex items-center space-x-4 mb-4">
                                                     <Image
-                                                        src={order.items[0].image || "/placeholder.svg"}
+                                                        src={order.items[0].imageUrl || "/placeholder.svg"}
                                                         alt={order.items[0].name}
                                                         width={60}
                                                         height={60}
@@ -255,21 +304,39 @@ export default function AccountPage() {
                                                     <div className="flex-1">
                                                         <p className="font-medium">{order.items[0].name}</p>
                                                         <p className="text-gray-600">
-                                                            Total: ${order.total}
+                                                            Total: ${order.grandTotal}
                                                         </p>
                                                     </div>
                                                 </div>
 
                                                 <div className="flex gap-2">
-                                                    <Button variant="outline" size="sm">
-                                                        View Details
-                                                    </Button>
-                                                    <Button variant="outline" size="sm">
-                                                        Track Order
-                                                    </Button>
+                                                    <Link href={`/account/orders/${order.orderNumber}`}>
+                                                        <Button variant="outline" size="sm">
+                                                            View Details
+                                                        </Button>
+                                                    </Link>
+                                                    <Link href={`/account/orders/${order.orderNumber}`}>
+                                                        <Button variant="outline" size="sm">
+                                                            Track Order
+                                                        </Button>
+                                                    </Link>
+                                                    {
+                                                        order.fulfillmentStatus === 'pending' && (
+                                                            <CancelOrderDialog orderId={order.id} orderNumber={order.orderNumber} status={order.fulfillmentStatus} trigger={<Button variant={'destructive'}>
+                                                                Cancel Order
+                                                            </Button>} />
+                                                        )
+                                                    }
+
                                                 </div>
                                             </div>
                                         ))}
+
+                                        {
+                                            (orders.hasNextPage || orders.hasPreviousPage) && (
+                                                <SimplePagination {...orders} currentPage={orders.page} onPageChange={handlePagination} hasNextPage={orders.hasNextPage} hasPreviousPage={orders.hasPreviousPage} totalPages={orders.totalPages} />
+                                            )
+                                        }
                                     </div>
                                 </CardContent>
                             </Card>

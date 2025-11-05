@@ -1,4 +1,5 @@
 "use client"
+import { PaymentMethod } from "@/types/order.types"
 import { create } from "zustand"
 
 interface FormData {
@@ -12,6 +13,14 @@ interface FormData {
     billingState: string
     billingZipCode: string
     billingCountry: string
+    shippingFirstName: string
+    shippingLastName: string
+    shippingAddress: string
+    shippingApartment: string
+    shippingCity: string
+    shippingState: string
+    shippingZipCode: string
+    shippingCountry: string
     cardNumber: string
     expiryDate: string
     cvv: string
@@ -21,7 +30,7 @@ interface FormData {
 
 interface CheckoutStore {
     currentStep: number
-    paymentMethod: string
+    paymentMethod: PaymentMethod
     shippingMethod: string
     isProcessing: boolean
     orderComplete: boolean
@@ -44,7 +53,7 @@ interface CheckoutStore {
 
 export const useCheckoutStore = create<CheckoutStore>((set, get) => ({
     currentStep: 1,
-    paymentMethod: "card",
+    paymentMethod: "stripe",
     shippingMethod: "standard",
     isProcessing: false,
     orderComplete: false,
@@ -61,7 +70,15 @@ export const useCheckoutStore = create<CheckoutStore>((set, get) => ({
         billingCity: "",
         billingState: "",
         billingZipCode: "",
-        billingCountry: "United States",
+        billingCountry: "United Arab Emirates",
+        shippingFirstName: "",
+        shippingLastName: "",
+        shippingAddress: "",
+        shippingApartment: "",
+        shippingCity: "",
+        shippingState: "",
+        shippingZipCode: "",
+        shippingCountry: "United Arab Emirates",
         cardNumber: "",
         expiryDate: "",
         cvv: "",
@@ -71,7 +88,7 @@ export const useCheckoutStore = create<CheckoutStore>((set, get) => ({
     errors: {},
 
     setCurrentStep: (step) => set({ currentStep: step }),
-    setPaymentMethod: (method) => set({ paymentMethod: method }),
+    setPaymentMethod: (method) => set({ paymentMethod: method as PaymentMethod }),
     setShippingMethod: (method) => set({ shippingMethod: method }),
     setIsProcessing: (processing) => set({ isProcessing: processing }),
     setOrderComplete: (complete) => set({ orderComplete: complete }),
@@ -97,12 +114,12 @@ export const useCheckoutStore = create<CheckoutStore>((set, get) => ({
             if (!formData.billingState) newErrors.billingState = "State is required"
             if (!formData.billingZipCode) newErrors.billingZipCode = "ZIP code is required"
         }
-        if (step === 3 && paymentMethod === "card") {
-            if (!formData.cardNumber) newErrors.cardNumber = "Card number is required"
-            if (!formData.expiryDate) newErrors.expiryDate = "Expiry date is required"
-            if (!formData.cvv) newErrors.cvv = "CVV is required"
-            if (!formData.nameOnCard) newErrors.nameOnCard = "Name on card is required"
-        }
+        // if (step === 3 && paymentMethod === "stripe") {
+        //     if (!formData.cardNumber) newErrors.cardNumber = "Card number is required"
+        //     if (!formData.expiryDate) newErrors.expiryDate = "Expiry date is required"
+        //     if (!formData.cvv) newErrors.cvv = "CVV is required"
+        //     if (!formData.nameOnCard) newErrors.nameOnCard = "Name on card is required"
+        // }
         set({ errors: newErrors })
         return Object.keys(newErrors).length === 0
     },

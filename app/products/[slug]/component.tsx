@@ -28,15 +28,15 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
         {discountedPrice ? (
           <>
             <span className="text-3xl font-bold" style={{ color: "rgb(17, 24, 39)" }}>
-              ${discountedPrice.toFixed(2)}
+              {product.currency}{discountedPrice.toFixed(2)}
             </span>
             <span className="text-xl line-through" style={{ color: "rgb(107, 114, 128)" }}>
-              ${product.price.toFixed(2)}
+              {product.currency}{product.price.toFixed(2)}
             </span>
           </>
         ) : (
           <span className="text-3xl font-bold" style={{ color: "rgb(17, 24, 39)" }}>
-            ${product.price.toFixed(2)}
+            {product.currency}{product.price.toFixed(2)}
           </span>
         )}
       </div>

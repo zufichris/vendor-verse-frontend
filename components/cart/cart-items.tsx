@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import CartPageLoading from "@/app/cart/loading";
-import { useCartStore } from "@/lib/stores/cart";
+import { CartItem, useCartStore } from "@/lib/stores/cart";
 
 export function CartItems() {
     const {
@@ -18,14 +18,16 @@ export function CartItems() {
         tax,
         isLoading,
         finalTotal,
-        updateQuantity,
+        update,
         removeFromCart,
         clearCart,
     } = useCartStore();
 
-    const handleQuantityChange = (id: string, newQuantity: number) => {
-        if (newQuantity < 1) removeFromCart(id);
-        else updateQuantity(id, newQuantity);
+    const currency = items[0]?.selectedVariant.currency || "AED";
+
+    const handleQuantityChange = (item: CartItem, newQuantity: number) => {
+        if (newQuantity < 1) removeFromCart(item.selectedVariant.id);
+        else update(item.selectedVariant.id, newQuantity, item.selectedSize);
     };
 
     const handleClearCart = () => {
@@ -90,22 +92,22 @@ export function CartItems() {
                                 <div className="space-y-6">
                                     {items.map((item) => (
                                         <div
-                                            key={item.product.id}
+                                            key={item.selectedVariant.id}
                                             className="flex items-center space-x-4 p-4 border rounded-lg"
                                         >
                                             <Image
-                                                src={item.product.thumbnail.url || "/placeholder.svg"}
-                                                alt={item.product.name}
+                                                src={item.selectedVariant.thumbnail.url || "/placeholder.svg"}
+                                                alt={item.selectedVariant.name || ''}
                                                 width={80}
                                                 height={80}
                                                 className="rounded-md object-cover"
                                             />
                                             <div className="flex-1">
                                                 <h3 className="font-medium text-gray-900">
-                                                    {item.product.name}
+                                                    {item.productName}
                                                 </h3>
                                                 <p className="text-lg font-bold text-black">
-                                                    ${item.product.price}
+                                                    {item.selectedVariant.currency}{item.selectedVariant.price}
                                                 </p>
                                             </div>
                                             <div className="flex items-center space-x-2">
@@ -114,7 +116,7 @@ export function CartItems() {
                                                     size="icon"
                                                     onClick={() =>
                                                         handleQuantityChange(
-                                                            item.product.id,
+                                                            item,
                                                             item.count - 1,
                                                         )
                                                     }
@@ -129,7 +131,7 @@ export function CartItems() {
                                                     size="icon"
                                                     onClick={() =>
                                                         handleQuantityChange(
-                                                            item.product.id,
+                                                            item,
                                                             item.count + 1,
                                                         )
                                                     }
@@ -139,12 +141,12 @@ export function CartItems() {
                                             </div>
                                             <div className="text-right">
                                                 <p className="font-bold text-lg">
-                                                    ${(item.product.price * item.count).toFixed(2)}
+                                                    {item.selectedVariant.currency}{(item.selectedVariant.price * item.count).toFixed(2)}
                                                 </p>
                                                 <Button
                                                     variant="ghost"
                                                     size="sm"
-                                                    onClick={() => removeFromCart(item.product.id)}
+                                                    onClick={() => removeFromCart(item.selectedVariant.id)}
                                                     className="text-red-600 hover:text-red-700 hover:bg-red-50"
                                                 >
                                                     <Trash2 className="h-4 w-4 mr-1" /> Remove
@@ -169,31 +171,31 @@ export function CartItems() {
 
                                     <div className="flex justify-between">
                                         <span>Subtotal</span>
-                                        <span>${subtotal.toFixed(2)}</span>
+                                        <span>{currency}{subtotal.toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span>Shipping</span>
                                         <span>
-                                            {shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}
+                                            {shipping === 0 ? "Free" : `${currency}${shipping.toFixed(2)}`}
                                         </span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span>Tax</span>
-                                        <span>${tax}</span>
+                                        <span>{currency}{tax}</span>
                                     </div>
                                     <Separator />
                                     <div className="flex justify-between text-lg font-bold">
                                         <span>Total</span>
-                                        <span>${finalTotal.toFixed(2)}</span>
+                                        <span>{currency}{finalTotal.toFixed(2)}</span>
                                     </div>
                                 </div>
-                                {subtotal < 100 && (
+                                {/* {subtotal < 100 && (
                                     <div className="mt-4 p-3 bg-blue-50 rounded-lg">
                                         <p className="text-sm text-blue-800">
-                                            Add ${(100 - subtotal).toFixed(2)} more for free shipping!
+                                            Add {currency}{(100 - subtotal).toFixed(2)} more for free shipping!
                                         </p>
                                     </div>
-                                )}
+                                )} */}
                                 <div className="mt-6 space-y-3">
                                     <Link href="/checkout">
                                         <Button

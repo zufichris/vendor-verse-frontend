@@ -18,18 +18,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuthStore } from "@/lib/stores/auth";
+import Link from "next/link";
 
 export const LoginForm: React.FC = () => {
   const router = useRouter();
-  const { isAuthenticated } = useAuthStore();
-  // if (isAuthenticated) {
-  //   return <div>Already Logged in</div>
-  // }
+  const searchParams = useSearchParams()
+  const {init:initAuthUser} = useAuthStore()
+
   const [showPassword, setShowPassword] = useState(false);
   const [formMessage, setFormMessage] = useState("");
   const [isPending, startTransition] = useTransition();
+
+  const callbackUrl = searchParams.get('callbackUrl') || '/'
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -42,13 +44,18 @@ export const LoginForm: React.FC = () => {
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     setFormMessage("");
     startTransition(async () => {
-      const result = await loginAction(values);
+      const result = await loginAction({...values, callbackUrl});
       if (result.success) {
+        await initAuthUser()
         setFormMessage(result.message);
         form.reset();
-        router.push("/");
+        router.replace(callbackUrl);
       } else {
         setFormMessage(result.message);
+        if (result.status.toString() === '403') {
+          const params = searchParams.toString()+ `&email=${values.email}`
+          router.replace(`/auth/verify-otp?${params.startsWith('&') ? params.replace('&', ''): params}`);
+        }
       }
     });
   }
@@ -80,12 +87,12 @@ export const LoginForm: React.FC = () => {
               <FormItem>
                 <div className="flex justify-between items-center">
                   <FormLabel className="text-surface-700">Password</FormLabel>
-                  <a
-                    href="#"
+                  <Link
+                    href="/auth/forgot-password"
                     className="text-sm text-primary-600 hover:text-primary-700"
                   >
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
                 <FormControl>
                   <div className="relative">

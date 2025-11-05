@@ -13,6 +13,8 @@ export function OrderReview() {
     const { formData, paymentMethod } = useCheckoutStore();
     const { items, shipping, tax, finalTotal } = useCartStore();
 
+    const currency = items[0]?.selectedVariant?.currency
+
     return (
         <Card>
             <CardHeader>
@@ -23,22 +25,22 @@ export function OrderReview() {
                     <h4 className="font-medium">Items in your order</h4>
                     {items.map((item) => (
                         <div
-                            key={item.product.name}
+                            key={item.productName}
                             className="flex items-center space-x-4 p-4 border rounded-lg"
                         >
                             <Image
-                                src={item.product.thumbnail.url || "/placeholder.svg"}
-                                alt={item.product.name}
+                                src={item.selectedVariant.thumbnail.url || "/placeholder.svg"}
+                                alt={item.productName}
                                 width={80}
                                 height={80}
                                 className="rounded-md object-cover"
                             />
                             <div className="flex-1">
-                                <h5 className="font-medium">{item.product.name}</h5>
+                                <h5 className="font-medium">{item.productName}</h5>
                                 <p className="text-sm text-gray-600">Quantity: {item.count}</p>
                             </div>
                             <span className="font-medium">
-                                ${(item.product.price * item.count).toFixed(2)}
+                                {item.selectedVariant.currency}{(item.selectedVariant.price * item.count).toFixed(2)}
                             </span>
                         </div>
                     ))}
@@ -49,15 +51,15 @@ export function OrderReview() {
                     <h4 className="font-medium mb-2">Shipping Summary</h4>
                     <div className="flex justify-between">
                         <span>Shipping:</span>
-                        <span>${shipping.toFixed(2)}</span>
+                        <span>{currency}{shipping.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between">
                         <span>Tax:</span>
-                        <span>${tax.toFixed(2)}</span>
+                        <span>{currency}{tax.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between font-semibold">
                         <span>Total:</span>
-                        <span>${Number(finalTotal).toFixed(2)}</span>
+                        <span>{currency}{Number(finalTotal).toFixed(2)}</span>
                     </div>
                 </div>
 
@@ -67,15 +69,15 @@ export function OrderReview() {
                         <h4 className="font-medium mb-2">Shipping Address</h4>
                         <div className="text-sm space-y-1 text-gray-600">
                             <p>
-                                {formData.billingFirstName} {formData.billingLastName}
+                                {formData?.shippingFirstName || formData.billingFirstName} {formData?.shippingLastName || formData.billingLastName}
                             </p>
-                            <p>{formData.billingAddress}</p>
-                            {formData.billingApartment && <p>{formData.billingApartment}</p>}
+                            <p>{formData?.shippingAddress || formData.billingAddress}</p>
+                            {formData?.shippingApartment || formData.billingApartment && <p>{formData?.shippingApartment || formData.billingApartment}</p>}
                             <p>
-                                {formData.billingCity}, {formData.billingState}{" "}
-                                {formData.billingZipCode}
+                                {formData?.shippingCity || formData.billingCity}, {formData?.shippingState || formData.billingState}{" "}
+                                {formData?.shippingZipCode || formData.billingZipCode}
                             </p>
-                            <p>{formData.billingCountry}</p>
+                            <p>{formData?.shippingCountry || formData.billingCountry}</p>
                         </div>
                     </div>
                     {/* <div>

@@ -1,24 +1,30 @@
 "use client"
 
-import { CreditCard } from "lucide-react"
+import { CircleDollarSign, CreditCard } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useCheckoutStore } from "@/lib/stores/checkout"
 
-const paymentOptions = [
-    {
-        id: "paypal",
-        name: "PayPal",
-        description: "Pay with your PayPal account",
-        icon: () => <div className="w-5 h-5 rounded bg-blue-900" />,
-    },
-]
-
 export function PaymentMethod() {
     const { paymentMethod, setPaymentMethod, formData, handleInputChange, errors } = useCheckoutStore()
+
+    const options = [
+        {
+            key: "stripe",
+            value: "Card",
+            icon: CreditCard,
+            description: 'Pay by card'
+        },
+        {
+            key: "cod",
+            value: "Cash on Delivery (COD)",
+            icon: CircleDollarSign,
+            description: "Pay with cash on delivery"
+
+        }
+    ]
 
     return (
         <div className="space-y-6">
@@ -31,18 +37,21 @@ export function PaymentMethod() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
-                        {paymentOptions.map((option) => {
+                        {options.map((option) => {
                             const IconComponent = option.icon
                             return (
                                 <div
-                                    key={option.id}
+                                    key={option.key}
                                     className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-gray-50 transition-colors"
+                                    onClick={()=>{
+                                        setPaymentMethod(option.key)
+                                    }}
                                 >
-                                    <RadioGroupItem value={option.id} id={option.id} />
+                                    <RadioGroupItem value={option.key} id={option.key} />
                                     <IconComponent/>
                                     <div className="flex-1">
-                                        <Label htmlFor={option.id} className="font-medium cursor-pointer">
-                                            {option.name}
+                                        <Label htmlFor={option.key} className="font-medium cursor-pointer">
+                                            {option.value}
                                         </Label>
                                         <p className="text-sm text-gray-600">{option.description}</p>
                                     </div>
@@ -50,57 +59,6 @@ export function PaymentMethod() {
                             )
                         })}
                     </RadioGroup>
-
-                    {paymentMethod === "card" && (
-                        <div className="space-y-4 mt-6 p-4 border rounded-lg bg-gray-50">
-                            <div>
-                                <Label htmlFor="cardNumber">Card Number *</Label>
-                                <Input
-                                    id="cardNumber"
-                                    value={formData.cardNumber}
-                                    onChange={(e) => handleInputChange("cardNumber", e.target.value)}
-                                    placeholder="1234 5678 9012 3456"
-                                    className={errors.cardNumber ? "border-red-500" : ""}
-                                />
-                                {errors.cardNumber && <p className="text-sm mt-1 text-red-500">{errors.cardNumber}</p>}
-                            </div>
-                            <div className="grid grid-cols-3 gap-4">
-                                <div className="col-span-2">
-                                    <Label htmlFor="expiryDate">Expiry Date *</Label>
-                                    <Input
-                                        id="expiryDate"
-                                        value={formData.expiryDate}
-                                        onChange={(e) => handleInputChange("expiryDate", e.target.value)}
-                                        placeholder="MM/YY"
-                                        className={errors.expiryDate ? "border-red-500" : ""}
-                                    />
-                                    {errors.expiryDate && <p className="text-sm mt-1 text-red-500">{errors.expiryDate}</p>}
-                                </div>
-                                <div>
-                                    <Label htmlFor="cvv">CVV *</Label>
-                                    <Input
-                                        id="cvv"
-                                        value={formData.cvv}
-                                        onChange={(e) => handleInputChange("cvv", e.target.value)}
-                                        placeholder="123"
-                                        className={errors.cvv ? "border-red-500" : ""}
-                                    />
-                                    {errors.cvv && <p className="text-sm mt-1 text-red-500">{errors.cvv}</p>}
-                                </div>
-                            </div>
-                            <div>
-                                <Label htmlFor="nameOnCard">Name on Card *</Label>
-                                <Input
-                                    id="nameOnCard"
-                                    value={formData.nameOnCard}
-                                    onChange={(e) => handleInputChange("nameOnCard", e.target.value)}
-                                    placeholder="Full name as shown on card"
-                                    className={errors.nameOnCard ? "border-red-500" : ""}
-                                />
-                                {errors.nameOnCard && <p className="text-sm mt-1 text-red-500">{errors.nameOnCard}</p>}
-                            </div>
-                        </div>
-                    )}
                 </CardContent>
             </Card>
 

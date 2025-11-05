@@ -15,6 +15,7 @@ import {
 import { useCheckoutStore } from "@/lib/stores/checkout";
 import { User as UserT } from "@/types/user";
 import { PhoneInput } from "../ui/phone-input";
+import { useState } from "react";
 
 const countries = ["United Arab Emirates"];
 
@@ -34,6 +35,8 @@ export function ContactInformation({ user }: Props) {
         saveInfo,
         setSaveInfo,
     } = useCheckoutStore();
+
+    const [sameShipping, setSameShipping] = useState(true)
     
 
     return (
@@ -275,6 +278,183 @@ export function ContactInformation({ user }: Props) {
                     </div>
                 </CardContent>
             </Card>
+
+            <div className="flex items-center space-x-2">
+                <Checkbox
+                    id="sameshipping"
+                    checked={!sameShipping}
+                    onCheckedChange={(state)=> setSameShipping(prv => !prv)}
+                />
+                <Label htmlFor="newsletter" className="text-sm">
+                    Shipping to a different address?
+                </Label>
+            </div>
+
+            {
+                !sameShipping && <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                        <User className="h-5 w-5" />
+                        Shipping Address
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <Label htmlFor="shippingFirstName">First Name *</Label>
+                            <Input
+                                id="shippingFirstName"
+                                value={formData.shippingFirstName}
+                                onChange={(e) =>
+                                    handleInputChange("shippingFirstName", e.target.value)
+                                }
+                                placeholder="First name"
+                                className={errors.shippingFirstName ? "border-red-500" : ""}
+                            />
+                            {errors.shippingFirstName && (
+                                <p className="text-sm mt-1 text-red-500">
+                                    {errors.shippingFirstName}
+                                </p>
+                            )}
+                        </div>
+                        <div>
+                            <Label htmlFor="shippingLastName">Last Name *</Label>
+                            <Input
+                                id="shippingLastName"
+                                value={formData.shippingLastName}
+                                onChange={(e) =>
+                                    handleInputChange("shippingLastName", e.target.value)
+                                }
+                                placeholder="Last name"
+                                className={errors.shippingLastName ? "border-red-500" : ""}
+                            />
+                            {errors.shippingLastName && (
+                                <p className="text-sm mt-1 text-red-500">
+                                    {errors.shippingLastName}
+                                </p>
+                            )}
+                        </div>
+                    </div>
+
+                    <div>
+                        <Label htmlFor="shippingAddress">Address *</Label>
+                        <Input
+                            id="shippingAddress"
+                            value={formData.shippingAddress}
+                            onChange={(e) =>
+                                handleInputChange("shippingAddress", e.target.value)
+                            }
+                            placeholder="Street address"
+                            className={errors.shippingAddress ? "border-red-500" : ""}
+                        />
+                        {errors.shippingAddress && (
+                            <p className="text-sm mt-1 text-red-500">
+                                {errors.shippingAddress}
+                            </p>
+                        )}
+                    </div>
+
+                    <div>
+                        <Label htmlFor="shippingApartment">
+                            Apartment, suite, etc. (optional)
+                        </Label>
+                        <Input
+                            id="shippingApartment"
+                            value={formData.shippingApartment}
+                            onChange={(e) =>
+                                handleInputChange("shippingApartment", e.target.value)
+                            }
+                            placeholder="Apartment, suite, etc."
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <Label htmlFor="shippingCity">City *</Label>
+                            <Input
+                                id="shippingCity"
+                                value={formData.shippingCity}
+                                onChange={(e) =>
+                                    handleInputChange("shippingCity", e.target.value)
+                                }
+                                placeholder="City"
+                                className={errors.shippingCity ? "border-red-500" : ""}
+                            />
+                            {errors.shippingCity && (
+                                <p className="text-sm mt-1 text-red-500">
+                                    {errors.shippingCity}
+                                </p>
+                            )}
+                        </div>
+                        <div>
+                            <Label htmlFor="shippingState">State *</Label>
+                            <Select
+                                value={formData.shippingState}
+                                onValueChange={(value) =>
+                                    handleInputChange("shippingState", value)
+                                }
+                            >
+                                <SelectTrigger
+                                    className={errors.shippingState ? "border-red-500" : ""}
+                                >
+                                    <SelectValue placeholder="Select state" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {states.map((state) => (
+                                        <SelectItem key={state} value={state}>
+                                            {state}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                            {errors.shippingState && (
+                                <p className="text-sm mt-1 text-red-500">
+                                    {errors.shippingState}
+                                </p>
+                            )}
+                        </div>
+                        <div>
+                            <Label htmlFor="shippingZipCode">ZIP Code *</Label>
+                            <Input
+                                id="shippingZipCode"
+                                value={formData.shippingZipCode}
+                                onChange={(e) =>
+                                    handleInputChange("shippingZipCode", e.target.value)
+                                }
+                                placeholder="ZIP"
+                                className={errors.shippingZipCode ? "border-red-500" : ""}
+                            />
+                            {errors.shippingZipCode && (
+                                <p className="text-sm mt-1 text-red-500">
+                                    {errors.shippingZipCode}
+                                </p>
+                            )}
+                        </div>
+                    </div>
+
+                    <div>
+                        <Label htmlFor="shippingCountry">Country</Label>
+                        <Select
+                            value={formData.shippingCountry}
+                            onValueChange={(value) =>
+                                handleInputChange("shippingCountry", value)
+                            }
+                        >
+                            <SelectTrigger>
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {countries.map((country) => (
+                                    <SelectItem key={country} value={country}>
+                                        {country}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </CardContent>
+            </Card>
+            }
         </div>
     );
 }

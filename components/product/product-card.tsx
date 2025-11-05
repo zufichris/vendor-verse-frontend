@@ -26,11 +26,30 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import type { Product } from "@/types/product"
+import type { Product, ProductCategory, ProductStatus, ProductVariant } from "@/types/product"
 import { useCartStore } from "@/lib/stores/cart"
+import ShareButton from "./share-btn"
+import WishlistButton from "./wishlist-btn"
+import { AddToCartButton } from "./add-to-cart-button"
 
 interface ProductCardProps {
-    product: Product
+    product: ProductVariant & {
+        discountStartDate?: string;
+        status: ProductStatus;
+        condition?: string;
+        featured?: boolean;
+        brand?: string;
+        discountEndDate?: string;
+        productName: string;
+        productSlug: string;
+        description: string;
+        category?: ProductCategory;
+        colorsMap: {
+            name: string;
+            slug: string;
+            colorCode: string;
+        }[]
+    }
     showQuickView?: boolean
     showCompare?: boolean
 }
@@ -39,8 +58,6 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
     const [isWishlisted, setIsWishlisted] = useState(false)
     const [isHovered, setIsHovered] = useState(false)
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
-    const [selectedVariant, setSelectedVariant] = useState(product.variants?.[0])
-    const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({})
     const [quantity, setQuantity] = useState(1)
     const [isQuickViewOpen, setIsQuickViewOpen] = useState(false)
     const [isAddingToCart, setIsAddingToCart] = useState(false)
@@ -48,13 +65,15 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
     const [isImageLoading, setIsImageLoading] = useState(true)
     const [imageTransition, setImageTransition] = useState(false)
 
-    const { addToCart } = useCartStore()
+    const { addToCart, items } = useCartStore()
+
+    const addedToCart = items.find(itm => itm.selectedVariant.id === product.id)
 
     const allImages = [product.thumbnail, ...product.images].filter(Boolean)
     const hasMultipleImages = allImages.length > 1
 
     const getEffectivePrice = () => {
-        const basePrice = selectedVariant?.price || product.price
+        const basePrice = product.price
 
         const now = new Date()
         const discountStart = product.discountStartDate ? new Date(product.discountStartDate) : null
@@ -75,11 +94,11 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
     }
 
     const effectivePrice = getEffectivePrice()
-    const originalPrice = selectedVariant?.price || product.price
+    const originalPrice = product.price
     const hasActiveDiscount = effectivePrice < originalPrice
 
-    const availableStock = selectedVariant?.stockQuantity || product.stockQuantity
-    const isInStock = selectedVariant?.isInStock ?? product.isInStock
+    const availableStock = product.stockQuantity
+    const isInStock = product.isInStock || product.stockQuantity > 0
 
     useEffect(() => {
         let interval: NodeJS.Timeout
@@ -89,7 +108,7 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                 setTimeout(() => {
                     setCurrentImageIndex((prev) => (prev + 1) % allImages.length)
                     setImageTransition(false)
-                }, 150)
+                }, 300)
             }, 1500)
         }
         return () => {
@@ -115,12 +134,18 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
     const handleAddToCart = async (e: React.MouseEvent) => {
         e.preventDefault()
         e.stopPropagation()
+
+        // if (!selectedSize) {
+        //     setDisplaySelectSize(true)
+        // }
         setIsAddingToCart(true)
         await new Promise((resolve) => setTimeout(resolve, 800))
 
         addToCart({
             count: quantity,
-            product,
+            selectedVariant: product,
+            selectedSize: addedToCart?.selectedSize || '',
+            productName: product.productName
         })
 
         setIsAddingToCart(false)
@@ -128,34 +153,12 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
         setTimeout(() => setShowSuccess(false), 2000)
     }
 
-    const handleWishlist = (e: React.MouseEvent) => {
-        e.preventDefault()
-        e.stopPropagation()
-        setIsWishlisted(!isWishlisted)
-    }
+    
 
     const handleQuickView = (e: React.MouseEvent) => {
         e.preventDefault()
         e.stopPropagation()
         setIsQuickViewOpen(true)
-    }
-
-    const handleShare = async (e: React.MouseEvent) => {
-        e.preventDefault()
-        e.stopPropagation()
-        if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: product.name,
-                    text: product.description,
-                    url: `/products/${product.slug}`,
-                })
-            } catch (err) {
-                console.log("Error sharing:", err)
-            }
-        } else {
-            navigator.clipboard.writeText(`${window.location.origin}/products/${product.slug}`)
-        }
     }
 
     const variant = product.featured ? "featured" : "compact"
@@ -169,19 +172,9 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
             "group relative bg-primary-foreground rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border border-gray-200",
     }
 
-    const getAttributeOptions = (attributeName: string) => {
-        if (!product.variants) return []
-        const options = new Set<string>()
-        product.variants.forEach((variant) => {
-            if (variant.attributes?.[attributeName]) {
-                options.add(variant.attributes[attributeName])
-            }
-        })
-        return Array.from(options)
-    }
 
-    const colorOptions = getAttributeOptions("color")
-    const sizeOptions = getAttributeOptions("size")
+
+    const colorOptions = product.colorsMap
 
     return (
         <>
@@ -189,15 +182,15 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                 <Card className={cardClasses[variant]} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                     <CardContent className="p-0">
                         <div className="relative aspect-[4/5] overflow-hidden bg-gray-50">
-                            <Link href={`/products/${product.slug}`}>
+                            <Link href={`/products/${product.productSlug}:${product.slug}`}>
                                 <div className="relative w-full h-full">
                                     <Image
                                         src={
                                             allImages[currentImageIndex]?.url || "/placeholder.svg?height=400&width=400" || "/placeholder.svg"
                                         }
-                                        alt={allImages[currentImageIndex]?.altText || product.name}
+                                        alt={allImages[currentImageIndex]?.altText || product.name || 'variant image'}
                                         fill
-                                        className={`object-cover transition-all duration-300 ${imageTransition ? "opacity-0 scale-105" : "opacity-100 scale-100"
+                                        className={`object-cover object-top transition-all duration-300 ${imageTransition ? "opacity-0 scale-105" : "opacity-100 scale-100"
                                             } ${isHovered ? "scale-110" : "scale-100"} ${isImageLoading ? "blur-sm" : "blur-0"}`}
                                         onLoad={() => setIsImageLoading(false)}
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -257,15 +250,15 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                                     <Badge className="bg-red-500 text-primary-foreground font-medium px-2 py-1 text-xs shadow-lg">
                                         {product.discountPercentage
                                             ? `-${product.discountPercentage}%`
-                                            : `-$${product.discountFixedAmount}`}
+                                            : `-${product.currency}${product.discountFixedAmount}`}
                                     </Badge>
                                 )}
-                                {availableStock <= 5 && availableStock > 0 && (
+                                {/* {availableStock <= 5 && availableStock > 0 && (
                                     <Badge className="bg-orange-500 text-primary-foreground font-medium px-2 py-1 text-xs flex items-center gap-1 shadow-lg">
                                         <Clock className="h-3 w-3" />
                                         {availableStock} left
                                     </Badge>
-                                )}
+                                )} */}
                                 {product.featured && (
                                     <Badge className="bg-yellow-500 text-primary-foreground font-medium px-2 py-1 text-xs flex items-center gap-1 shadow-lg">
                                         <Star className="h-3 w-3 fill-current" />
@@ -286,17 +279,7 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                             >
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <Button
-                                            variant="secondary"
-                                            size="icon"
-                                            className="h-9 w-9 bg-primary-foreground/95 hover:bg-primary-foreground shadow-lg backdrop-blur-sm border border-gray-200"
-                                            onClick={handleWishlist}
-                                        >
-                                            <Heart
-                                                className={`h-4 w-4 transition-all duration-200 ${isWishlisted ? "fill-red-500 text-red-500 scale-110" : "text-gray-600 hover:text-red-500"
-                                                    }`}
-                                            />
-                                        </Button>
+                                        <WishlistButton isWishlisted={isWishlisted} onWishlist={setIsWishlisted} />
                                     </TooltipTrigger>
                                     <TooltipContent>
                                         <p>{isWishlisted ? "Remove from wishlist" : "Add to wishlist"}</p>
@@ -323,14 +306,11 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
 
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <Button
-                                            variant="secondary"
-                                            size="icon"
-                                            className="h-9 w-9 bg-primary-foreground/95 hover:bg-primary-foreground shadow-lg backdrop-blur-sm border border-gray-200"
-                                            onClick={handleShare}
-                                        >
-                                            <Share2 className="h-4 w-4 text-gray-600 hover:text-green-600 transition-colors" />
-                                        </Button>
+                                        <ShareButton
+                                            title={product.name || ''}
+                                            text= {product.description || ''}
+                                            urlPath={`/products/${product.productSlug}:${product.slug}`}
+                                        />
                                     </TooltipTrigger>
                                     <TooltipContent>
                                         <p>Share product</p>
@@ -374,7 +354,9 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                                                 <Plus className="h-3 w-3" />
                                             </Button>
                                         </div>
-                                        <Button
+                                        <AddToCartButton quantity={quantity} selectedVariant={product} className={`flex-1 bg-primary hover:bg-gray-800 text-primary-foreground shadow-lg transition-all duration-200 ${showSuccess ? "bg-green-500 hover:bg-green-600" : ""
+                                                }`} added={!!addedToCart} selectedVariantSize={addedToCart?.selectedSize}  />
+                                        {/* <Button
                                             className={`flex-1 bg-primary hover:bg-gray-800 text-primary-foreground shadow-lg transition-all duration-200 ${showSuccess ? "bg-green-500 hover:bg-green-600" : ""
                                                 }`}
                                             onClick={handleAddToCart}
@@ -396,7 +378,7 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                                                     Add to Cart
                                                 </>
                                             )}
-                                        </Button>
+                                        </Button> */}
                                     </div>
                                 ) : (
                                     <Button className="w-full bg-gray-400 text-primary-foreground cursor-not-allowed shadow-lg" disabled>
@@ -406,13 +388,13 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                             </div>
 
                             {/* Out of Stock Overlay */}
-                            {!isInStock && (
+                            {/* {!isInStock && (
                                 <div className="absolute inset-0 bg-primary/50 flex items-center justify-center backdrop-blur-sm">
                                     <div className="bg-primary-foreground px-4 py-2 rounded-lg shadow-lg">
                                         <p className="text-gray-800 font-medium">Out of Stock</p>
                                     </div>
                                 </div>
-                            )}
+                            )} */}
                         </div>
 
                         {/* Product Info */}
@@ -431,17 +413,17 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                                     </div>
                                     <span className="text-xs text-gray-600 ml-1">4.3 (12)</span>
                                 </div>
-                                {product.brand && (
+                                {/* {product.brand?.trim() && (
                                     <Badge variant="outline" className="text-xs font-medium">
                                         {product.brand}
                                     </Badge>
-                                )}
+                                )} */}
                             </div>
 
                             {/* Product Name */}
-                            <Link href={`/products/${product.slug}`}>
+                            <Link href={`/products/${product.productSlug}:${product.slug}`}>
                                 <h3 className="font-medium text-gray-900 line-clamp-2 hover:text-primary transition-colors leading-tight text-xs">
-                                    {product.name}
+                                    {product.productName} | {product.name}
                                 </h3>
                             </Link>
 
@@ -449,50 +431,45 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                             {product.category && <p className="text-xs text-gray-500">{product.category.name}</p>}
 
                             {/* Color Variants */}
-                            {variant !== "compact" && colorOptions.length > 0 && (
+                            {(colorOptions ?? []).length > 0 ? (
                                 <div className="flex items-center gap-2">
                                     <span className="text-xs text-gray-500">Colors:</span>
                                     <div className="flex gap-1">
                                         {colorOptions.slice(0, 4).map((color) => (
-                                            <button
-                                                key={color}
-                                                className={`w-4 h-4 rounded-full border-2 transition-all ${selectedAttributes.color === color
-                                                        ? "border-gray-800 scale-110 shadow-md"
-                                                        : "border-gray-300 hover:border-gray-500 hover:scale-105"
-                                                    }`}
-                                                style={{ backgroundColor: color.toLowerCase() }}
-                                                onClick={(e) => {
-                                                    e.preventDefault()
-                                                    e.stopPropagation()
-                                                    setSelectedAttributes((prev) => ({ ...prev, color }))
-                                                }}
-                                                title={color}
+                                            <Link
+                                             href={`/products/${product.productSlug}:${color.slug}`}
+                                                key={color.slug}
+                                                className={`w-5 h-5 rounded-full border transition-all ${product.slug === color.slug && 'border-2 border-gray-400'}`}
+                                                style={{backgroundColor: color.colorCode}}
                                             />
                                         ))}
+                                        {
+                                            colorOptions.length > 4 && <span className="w-5 h-5 text-xs rounded-full flex items-center justify-center border">+{colorOptions.length - 4}</span>
+                                        }
                                     </div>
                                 </div>
-                            )}
+                            ): null}
 
                             {/* Price */}
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
-                                    <span className="text-lg font-bold text-primary">${effectivePrice.toFixed(2)}</span>
+                                    <span className="text-lg font-bold text-primary">{product.currency}{effectivePrice.toFixed(2)}</span>
                                     {hasActiveDiscount && (
-                                        <span className="text-sm text-gray-500 line-through">${originalPrice.toFixed(2)}</span>
+                                        <span className="text-sm text-gray-500 line-through">{product.currency}{originalPrice.toFixed(2)}</span>
                                     )}
                                 </div>
                                 {hasActiveDiscount && (
                                     <Badge variant="destructive" className="text-[10px]">
-                                        Save ${(originalPrice - effectivePrice).toFixed(2)}
+                                        Save {product.currency}{(originalPrice - effectivePrice).toFixed(2)}
                                     </Badge>
                                 )}
                             </div>
 
                             {/* Stock Info */}
-                            <div className="flex items-center gap-2 text-[10px] text-gray-600">
+                            {/* <div className="flex items-center gap-2 text-[10px] text-gray-600">
                                 <Package className="h-2.5 w-2.5" />
                                 <span>{isInStock ? `${availableStock} in stock` : "Out of stock"}</span>
-                            </div>
+                            </div> */}
 
                             {/* Features */}
                             {variant === "featured" && (
@@ -535,7 +512,7 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                                     src={
                                         allImages[currentImageIndex]?.url || "/placeholder.svg?height=500&width=500" || "/placeholder.svg"
                                     }
-                                    alt={product.name}
+                                    alt={product.name || ''}
                                     fill
                                     className="object-cover"
                                 />
@@ -587,50 +564,6 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                             </div>
 
                             <p className="text-gray-600 leading-relaxed">{product.description}</p>
-
-                            {/* Variant Selection */}
-                            {product.variants && product.variants.length > 0 && (
-                                <div className="space-y-4">
-                                    {colorOptions.length > 0 && (
-                                        <div>
-                                            <h4 className="font-medium mb-2">Color: {selectedAttributes.color || "Select"}</h4>
-                                            <div className="flex gap-2">
-                                                {colorOptions.map((color) => (
-                                                    <button
-                                                        key={color}
-                                                        className={`w-8 h-8 rounded-full border-2 transition-all ${selectedAttributes.color === color
-                                                                ? "border-gray-800 scale-110"
-                                                                : "border-gray-300 hover:border-gray-500"
-                                                            }`}
-                                                        style={{ backgroundColor: color.toLowerCase() }}
-                                                        onClick={() => setSelectedAttributes((prev) => ({ ...prev, color }))}
-                                                    />
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {sizeOptions.length > 0 && (
-                                        <div>
-                                            <h4 className="font-medium mb-2">Size: {selectedAttributes.size || "Select"}</h4>
-                                            <div className="flex gap-2">
-                                                {sizeOptions.map((size) => (
-                                                    <button
-                                                        key={size}
-                                                        className={`px-3 py-2 border rounded-md transition-colors ${selectedAttributes.size === size
-                                                                ? "border-primary bg-primary text-primary-foreground"
-                                                                : "border-gray-300 hover:border-gray-500"
-                                                            }`}
-                                                        onClick={() => setSelectedAttributes((prev) => ({ ...prev, size }))}
-                                                    >
-                                                        {size}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
 
                             {/* Quantity and Add to Cart */}
                             <div className="flex gap-4">
@@ -693,7 +626,7 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                             </div>
 
                             {/* View Full Details */}
-                            <Link href={`/products/${product.slug}`}>
+                            <Link href={`/products/${product.productSlug}:${product.slug}`}>
                                 <Button variant="outline" className="w-full bg-transparent">
                                     View Full Details
                                 </Button>

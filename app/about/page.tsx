@@ -1,265 +1,250 @@
-import Image from "next/image";
-import { Award, Globe, Heart, Shield, Truck } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+"use client"
 
-const teamMembers = [
-  {
-    name: "Sarah Johnson",
-    role: "CEO & Founder",
-    image: "/placeholder.svg?height=300&width=300",
-    bio: "Passionate about creating exceptional shopping experiences with over 10 years in e-commerce.",
-  },
-  {
-    name: "Michael Chen",
-    role: "Head of Product",
-    image: "/placeholder.svg?height=300&width=300",
-    bio: "Expert in product curation and customer experience, ensuring quality in every selection.",
-  },
-  {
-    name: "Emily Rodriguez",
-    role: "Head of Operations",
-    image: "/placeholder.svg?height=300&width=300",
-    bio: "Streamlines operations to deliver fast, reliable service to customers worldwide.",
-  },
-  {
-    name: "David Kim",
-    role: "Head of Technology",
-    image: "/placeholder.svg?height=300&width=300",
-    bio: "Builds innovative solutions to make online shopping seamless and secure.",
-  },
-];
-
-const values = [
-  {
-    icon: Heart,
-    title: "Customer First",
-    description:
-      "Every decision we make is centered around delivering exceptional value and service to our customers.",
-  },
-  {
-    icon: Shield,
-    title: "Trust & Security",
-    description:
-      "We prioritize the security of your data and transactions with industry-leading protection.",
-  },
-  {
-    icon: Award,
-    title: "Quality Assurance",
-    description:
-      "We carefully curate every product to ensure it meets our high standards of quality and value.",
-  },
-  {
-    icon: Globe,
-    title: "Global Reach",
-    description:
-      "Connecting customers worldwide with premium products and reliable international shipping.",
-  },
-];
-
-const stats = [
-  { number: "500K+", label: "Happy Customers" },
-  { number: "50+", label: "Countries Served" },
-  { number: "10K+", label: "Products Available" },
-  { number: "99.9%", label: "Uptime Guarantee" },
-];
+import { useEffect, useState } from "react"
+import Image from "next/image"
+import Link from "next/link"
 
 export default function AboutPage() {
+  const [isVisible, setIsVisible] = useState(false)
+
+  useEffect(() => {
+    setIsVisible(true)
+  }, [])
+
   return (
-    <div className="min-h-screen bg-white pt-20">
+    <main className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="  mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-black mb-6">
-              About VendorVerse
-            </h1>
-            <p className="text-xl text-gray-600 leading-relaxed">
-              We're on a mission to revolutionize online shopping by connecting
-              customers with premium products and exceptional service. Since our
-              founding, we've been committed to creating a marketplace that
-              prioritizes quality, trust, and customer satisfaction.
-            </p>
-          </div>
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        <div className={`absolute inset-0 transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"}`}>
+          <div className="absolute inset-0 bg-gradient-to-b from-accent via-background to-background" />
+          <Image
+            src="/empowered-women-doing-yoga-and-workouts-in-modern-.jpg"
+            alt="Aetli women empowerment"
+            fill
+            className="object-cover opacity-20"
+            priority
+          />
+        </div>
+
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+          <h1
+            className={`text-5xl md:text-7xl font-bold text-foreground mb-6 transition-all duration-1000 transform ${isVisible ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}
+          >
+            <span className="text-pretty">Every Woman, Every Body, Every Size</span>
+          </h1>
+          <p
+            className={`text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto transition-all duration-1000 delay-200 transform ${isVisible ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}
+          >
+            Aetli celebrates you — as you are, in all your beautiful forms
+          </p>
         </div>
       </section>
 
-      {/* Story Section */}
-      <section className="py-16">
-        <div className="  mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl font-bold text-black mb-6">Our Story</h2>
-              <div className="space-y-4 text-gray-600 leading-relaxed">
-                <p>
-                  VendorVerse was born from a simple idea: online shopping
-                  should be effortless, trustworthy, and delightful. Founded in
-                  2020 by a team of e-commerce veterans, we set out to create a
-                  platform that puts customers first.
-                </p>
-                <p>
-                  What started as a small team with big dreams has grown into a
-                  global marketplace serving hundreds of thousands of customers
-                  worldwide. We've built relationships with trusted vendors,
-                  implemented cutting-edge technology, and created a shopping
-                  experience that we're proud of.
-                </p>
-                <p>
-                  Today, we continue to innovate and expand, always keeping our
-                  core values at the heart of everything we do. Our commitment
-                  to quality, security, and customer satisfaction drives us to
-                  constantly improve and evolve.
-                </p>
+      {/* Founded Section */}
+      <section className="py-20 md:py-32 px-4 bg-secondary">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+            <div className="order-2 md:order-1">
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Founded with Purpose</h2>
+              <p className="text-lg text-foreground/80 mb-6 leading-relaxed">
+                Rooted in beautiful Dubai and founded by Tarryn Petersen, Aetli was created for the woman who loves to
+                move — through workouts and coffee dates, school runs and moments of self-care, slow mornings and power
+                moves in the corporate world.
+              </p>
+              <p className="text-lg text-foreground/70 leading-relaxed">
+                Born from a personal journey of building confidence, finding balance, and learning to honour the female
+                body in all its beautiful forms, Aetli is, at its core, a celebration of women — as we are.
+              </p>
+            </div>
+            <div className="order-1 md:order-2">
+              <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+                <Image
+                  src="/portrait-of-confident-woman-founder-tarryn-peterse.jpg"
+                  alt="Tarryn Petersen, Aetli Founder"
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-500"
+                />
               </div>
             </div>
-            <div className="relative">
-              <Image
-                src="/placeholder.svg?height=500&width=600"
-                alt="VendorVerse team working"
-                width={600}
-                height={500}
-                className="rounded-lg shadow-lg"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Values Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="  mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-black mb-4">Our Values</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              These core principles guide every decision we make and every
-              interaction we have with our customers.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
-              <Card
-                key={index}
-                className="text-center hover:shadow-lg transition-shadow"
-              >
-                <CardContent className="p-6">
-                  <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
-                    <value.icon className="h-8 w-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-black mb-3">
-                    {value.title}
-                  </h3>
-                  <p className="text-gray-600">{value.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-16">
-        <div className="  mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-black mb-4">
-              By the Numbers
-            </h2>
-            <p className="text-gray-600">
-              Our growth and impact in the e-commerce space
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-black mb-2">
-                  {stat.number}
-                </div>
-                <div className="text-gray-600">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="  mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-black mb-4">
-              Meet Our Team
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              The passionate individuals behind VendorVerse, working tirelessly
-              to bring you the best shopping experience.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {teamMembers.map((member, index) => (
-              <Card
-                key={index}
-                className="text-center hover:shadow-lg transition-shadow"
-              >
-                <CardContent className="p-6">
-                  <Image
-                    src={member.image || "/placeholder.svg"}
-                    alt={member.name}
-                    width={200}
-                    height={200}
-                    className="rounded-full mx-auto mb-4"
-                  />
-                  <h3 className="text-xl font-semibold text-black mb-1">
-                    {member.name}
-                  </h3>
-                  <p className="text-gray-500 mb-3">{member.role}</p>
-                  <p className="text-sm text-gray-600">{member.bio}</p>
-                </CardContent>
-              </Card>
-            ))}
           </div>
         </div>
       </section>
 
       {/* Mission Section */}
-      <section className="py-16">
-        <div className="  mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-black mb-6">Our Mission</h2>
-            <p className="text-xl text-gray-600 leading-relaxed mb-8">
-              To create the world's most trusted and customer-centric e-commerce
-              platform, where quality products meet exceptional service, and
-              every shopping experience exceeds expectations.
-            </p>
+      <section className="py-20 md:py-32 px-4 bg-background">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-8">Our Mission</h2>
+          <p className="text-xl md:text-2xl text-foreground/80 leading-relaxed mb-12">
+            To create a lifestyle and activewear brand where every woman, every body, every size isn't just accepted —
+            she's celebrated.
+          </p>
 
-            <div className="grid md:grid-cols-3 gap-8 mt-12">
-              <div className="flex flex-col items-center">
-                <Truck className="h-12 w-12 text-black mb-4" />
-                <h3 className="font-semibold text-lg mb-2">Fast & Reliable</h3>
-                <p className="text-gray-600 text-center">
-                  Quick delivery and dependable service you can count on.
-                </p>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: "✨",
+                title: "Thoughtful Design",
+                description: "Buttery soft, supportive and flattering pieces crafted with care and intention",
+              },
+              {
+                icon: "💪",
+                title: "Build Confidence",
+                description: "Every piece empowers you to feel your most confident and beautiful",
+              },
+              {
+                icon: "🤝",
+                title: "Community First",
+                description: "A space where women show up for one another and lift each other up",
+              },
+            ].map((item, index) => (
+              <div key={index} className="group cursor-default">
+                <div className="text-5xl mb-4 transition-transform group-hover:scale-125 duration-300">{item.icon}</div>
+                <h3 className="text-xl font-semibold text-foreground mb-3">{item.title}</h3>
+                <p className="text-foreground/70 leading-relaxed">{item.description}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              <div className="flex flex-col items-center">
-                <Shield className="h-12 w-12 text-black mb-4" />
-                <h3 className="font-semibold text-lg mb-2">Secure & Safe</h3>
-                <p className="text-gray-600 text-center">
-                  Your data and transactions are protected with advanced
-                  security.
-                </p>
-              </div>
+      {/* Values Section */}
+      <section className="py-20 md:py-32 px-4 bg-accent/5">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-16 text-center">Our Values</h2>
 
-              <div className="flex flex-col items-center">
-                <Heart className="h-12 w-12 text-black mb-4" />
-                <h3 className="font-semibold text-lg mb-2">Customer Love</h3>
-                <p className="text-gray-600 text-center">
-                  Dedicated support and service that puts you first.
-                </p>
+          <div className="grid md:grid-cols-2 gap-8">
+            {[
+              {
+                title: "Inclusivity",
+                description:
+                  "We celebrate every body, every size, every journey. Aetli is a space where you belong, exactly as you are.",
+              },
+              {
+                title: "Quality",
+                description:
+                  "Thoughtfully designed and crafted pieces that support your body and lifestyle in every moment.",
+              },
+              {
+                title: "Empowerment",
+                description:
+                  "Beyond fashion, we build confidence. Every piece is designed to help you feel your best self.",
+              },
+              {
+                title: "Community",
+                description:
+                  "We believe in the power of women lifting women. Together, we celebrate, support, and grow.",
+              },
+            ].map((value, index) => (
+              <div
+                key={index}
+                className="p-8 bg-background rounded-xl border border-border hover:border-primary/50 transition-colors duration-300 group"
+              >
+                <h3 className="text-2xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
+                  {value.title}
+                </h3>
+                <p className="text-foreground/70 leading-relaxed">{value.description}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* The Pieces Section */}
+      <section className="py-20 md:py-32 px-4 bg-background">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+            <div>
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">The Pieces</h2>
+              <p className="text-lg text-foreground/80 mb-6 leading-relaxed">
+                Our pieces are thoughtfully designed with care at every step. We focus on what matters most: quality,
+                fit, and how you feel in them.
+              </p>
+              <ul className="space-y-4">
+                {[
+                  "Buttery soft fabrics that feel amazing",
+                  "Supportive fits for every body type",
+                  "Flattering designs that make you feel confident",
+                  "Sustainable choices we believe in",
+                  "Pieces for movement, work, and life",
+                ].map((item, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <span className="text-primary font-bold mt-1">✓</span>
+                    <span className="text-foreground/80">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                "/womens-activewear-collection-detailed-product.jpg",
+                "/womens-lifestyle-apparel-modern-design.jpg",
+                "/womens-fitness-wear-product-photography.jpg",
+                "/womens-comfort-clothing-collection.jpg",
+              ].map((src, index) => (
+                <div key={index} className="relative h-64 rounded-lg overflow-hidden group">
+                  <Image
+                    src={src || "/placeholder.svg"}
+                    alt={`Aetli collection piece ${index + 1}`}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
-    </div>
-  );
+
+      {/* Community Section */}
+      <section className="py-20 md:py-32 px-4 bg-secondary">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-8">Welcome to Our Community</h2>
+          <p className="text-xl text-foreground/80 leading-relaxed mb-4">
+            Aetli is more than a brand — it's a movement. A space where women show up for one another, lift each other
+            up, and feel at home in their own skin.
+          </p>
+          <p className="text-xl text-foreground/80 leading-relaxed mb-12">
+            Whether you're in the gym, on the mat, out for a walk, building businesses, raising families, or doing all
+            of the above — you already belong here.
+          </p>
+
+          <button className="inline-flex items-center justify-center px-8 py-4 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors duration-300 text-lg">
+            Join the Movement
+          </button>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 md:py-32 px-4 bg-background relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5" />
+        <div className="relative z-10 max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Experience Aetli</h2>
+          <p className="text-xl text-foreground/80 mb-12 leading-relaxed">
+            Discover pieces that celebrate you, support you, and make you feel unstoppable. Because confidence looks
+            good on everyone.
+          </p>
+
+          <div className="flex flex-col md:flex-row gap-4 justify-center">
+            <Link href={'/shop'}>
+              <button className="cursor-pointer px-8 py-4 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors duration-300">
+                Shop Collection
+              </button>
+            </Link>
+            <Link href={'/contact'}>
+              <button className="cursor-pointer px-8 py-4 bg-background text-foreground border-2 border-primary font-semibold rounded-lg hover:bg-primary/5 transition-colors duration-300">
+                Learn More
+              </button>
+            </Link>
+            
+          </div>
+        </div>
+      </section>
+
+      {/* Footer CTA */}
+      {/* <section className="py-16 md:py-20 px-4 bg-primary text-primary-foreground text-center">
+        <p className="text-lg md:text-xl mb-2">Welcome to Aetli — you already belong here</p>
+        <p className="text-sm text-primary-foreground/80">With love, from Dubai 🤍</p>
+      </section> */}
+    </main>
+  )
 }

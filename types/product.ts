@@ -42,6 +42,9 @@ export interface ProductVariant {
   productId: string;
   sku: string;
   name?: string;
+  slug: string;
+  colorCode: string;
+  sizes: string[];
   price: number;
   currency: string;
   discountPrice?: number;
@@ -50,8 +53,8 @@ export interface ProductVariant {
   attributes?: Record<string, string>;
   stockQuantity: number;
   isInStock: boolean;
-  images?: ImageMeta[];
-  thumbnail?: ImageMeta;
+  images: ImageMeta[];
+  thumbnail: ImageMeta;
   weight?: number;
   weightUnit?: string;
   dimensions?: Dimensions;
@@ -99,3 +102,10 @@ export interface Product {
 }
 
 export type ProductCategoryResponseDto = ProductCategory;
+
+
+export type ProductAnalytics = {
+  lowStock: number
+  totalStock: number
+  activeStock: number
+}

@@ -75,7 +75,7 @@ export function FilterForm({
     return (
         <div className="space-y-6">
             {/* Search */}
-            <div>
+            {/* <div>
                 <Label htmlFor="search" className="text-sm font-medium">
                     Search Products
                 </Label>
@@ -89,7 +89,7 @@ export function FilterForm({
                 />
             </div>
 
-            <Separator />
+            <Separator /> */}
 
             {/* Categories */}
             <div>
@@ -115,10 +115,10 @@ export function FilterForm({
                 </div>
             </div>
 
-            <Separator />
+            {/* <Separator /> */}
 
             {/* Brands */}
-            <div>
+            {/* <div>
                 <Label className="text-sm font-medium mb-3 block">Brands</Label>
                 <div className="space-y-2 max-h-48 overflow-y-auto">
                     {brands.map((brand) => (
@@ -141,10 +141,10 @@ export function FilterForm({
                 </div>
             </div>
 
-            <Separator />
+            <Separator /> */}
 
             {/* Price Range */}
-            <div>
+            {/* <div>
                 <Label className="text-sm font-medium mb-3 block">Price Range</Label>
                 <div className="space-y-2">
                     <Input
@@ -162,17 +162,17 @@ export function FilterForm({
                 </div>
             </div>
 
-            <Separator />
+            <Separator /> */}
 
             {/* Clear Filters */}
-            <Button
+            {/* <Button
                 variant="outline"
                 onClick={clearFilters}
                 disabled={isPending}
                 className="w-full bg-transparent"
             >
                 Clear All Filters
-            </Button>
+            </Button> */}
         </div>
     );
 }
