@@ -226,8 +226,8 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                                         <button
                                             key={index}
                                             className={`w-2 h-2 rounded-full transition-all duration-200 ${index === currentImageIndex
-                                                    ? "bg-primary-foreground scale-125"
-                                                    : "bg-primary-foreground/60 hover:bg-primary-foreground/80"
+                                                ? "bg-primary-foreground scale-125"
+                                                : "bg-primary-foreground/60 hover:bg-primary-foreground/80"
                                                 }`}
                                             onClick={(e) => {
                                                 e.preventDefault()
@@ -557,9 +557,9 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <span className="text-3xl font-bold text-primary">${effectivePrice.toFixed(2)}</span>
+                                <span className="text-3xl font-bold text-primary">{product.currency} {effectivePrice.toFixed(2)}</span>
                                 {hasActiveDiscount && (
-                                    <span className="text-xl text-gray-500 line-through">${originalPrice.toFixed(2)}</span>
+                                    <span className="text-xl text-gray-500 line-through">{product.currency} {originalPrice.toFixed(2)}</span>
                                 )}
                             </div>
 

@@ -1,9 +1,9 @@
 "use client";
+
 import { ArrowLeft, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ContactInformation } from "./contact-information";
 import { ShippingMethod } from "./shipping-method";
-import { PaymentMethod } from "./payment-method";
 import { OrderReview } from "./order-review";
 import { OrderConfirmation } from "./order-confirmation";
 import { useCheckoutStore } from "@/lib/stores/checkout";
@@ -14,26 +14,28 @@ import { useEffect, useState } from "react";
 import { useAuthStore } from "@/lib/stores/auth";
 import { Order } from "@/types/order.types";
 import { Spinner } from "../ui/spinner";
+import { PaymentMethod } from "./payment-method";
 
 export function CheckoutForm() {
-  const {
-    currentStep,
-    setCurrentStep,
-    validateStep,
-    isProcessing,
-    setIsProcessing,
-    orderComplete,
-    setOrderComplete,
-    // finalTotal,
-    formData,
+    const {
+        currentStep,
+        setCurrentStep,
+        validateStep,
+        isProcessing,
+        setIsProcessing,
+        orderComplete,
+        setOrderComplete,
+        handleInputChange,
+        saveInfo,
+        formData
     newsletter,
-    paymentMethod
-  } = useCheckoutStore();
+    paymentMethod,
+    shippingMethod
+    } = useCheckoutStore();
 
-  const router = useRouter();
+    const router = useRouter();
 
   const { items, shipping, subtotal, finalTotal, tax, clearCart } = useCartStore();
-  const {handleInputChange, shippingMethod}=useCheckoutStore()
   const {user}=useAuthStore()
   // const [order, setOrder] = useState<Order | null>(null)
 
@@ -54,9 +56,9 @@ export function CheckoutForm() {
     }
   };
 
-  const handlePrevStep = () => {
-    setCurrentStep(Math.max(currentStep - 1, 1));
-  };
+    const handlePrevStep = () => {
+        setCurrentStep(Math.max(currentStep - 1, 1));
+    };
 
   const handlePlaceOrder = async () => {
     if (!validateStep(4)) return;
@@ -113,9 +115,9 @@ export function CheckoutForm() {
     setIsProcessing(false);
   };
 
-  if (!items.length) {
-    router.replace('/')
-  }
+    if (!items.length) {
+        router.replace('/')
+    }
 
   return (
     <div className="space-y-6">

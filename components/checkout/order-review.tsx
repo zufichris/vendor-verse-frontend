@@ -5,13 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCheckoutStore } from "@/lib/stores/checkout";
 import { useCartStore } from "@/lib/stores/cart";
 
-const paymentOptions = [
-    { id: "paypal", name: "PayPal" },
-];
-
 export function OrderReview() {
-    const { formData, paymentMethod } = useCheckoutStore();
-    const { items, shipping, tax, finalTotal } = useCartStore();
+    const { formData } = useCheckoutStore();
+    const { items, shipping, finalTotal } = useCartStore();
 
     const currency = items[0]?.selectedVariant?.currency
 
@@ -80,15 +76,6 @@ export function OrderReview() {
                             <p>{formData?.shippingCountry || formData.billingCountry}</p>
                         </div>
                     </div>
-                    {/* <div>
-                        <h4 className="font-medium mb-2">Payment Method</h4>
-                        <div className="text-sm text-gray-600">
-                            <p>{paymentOptions.find((p) => p.id === paymentMethod)?.name}</p>
-                            {paymentMethod === "card" && formData.cardNumber && (
-                                <p>**** **** **** {formData.cardNumber.slice(-4)}</p>
-                            )}
-                        </div>
-                    </div> */}
                 </div>
             </CardContent>
         </Card>

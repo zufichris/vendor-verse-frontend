@@ -34,18 +34,16 @@ interface CheckoutStore {
     shippingMethod: string
     isProcessing: boolean
     orderComplete: boolean
-    newsletter: boolean
     saveInfo: boolean
     formData: FormData
-    errors: Record<string, string>
+    errors: Partial<Record<keyof FormData, string>>
     finalTotal: number
 
     setCurrentStep: (step: number) => void
-    setPaymentMethod: (method: string) => void
     setShippingMethod: (method: string) => void
+    setPaymentMethod:(method:string)=> void
     setIsProcessing: (processing: boolean) => void
     setOrderComplete: (complete: boolean) => void
-    setNewsletter: (newsletter: boolean) => void
     setSaveInfo: (saveInfo: boolean) => void
     handleInputChange: (field: keyof FormData, value: string) => void
     validateStep: (step: number) => boolean
@@ -57,7 +55,6 @@ export const useCheckoutStore = create<CheckoutStore>((set, get) => ({
     shippingMethod: "standard",
     isProcessing: false,
     orderComplete: false,
-    newsletter: false,
     saveInfo: false,
     finalTotal: 0,
     formData: {
@@ -92,7 +89,6 @@ export const useCheckoutStore = create<CheckoutStore>((set, get) => ({
     setShippingMethod: (method) => set({ shippingMethod: method }),
     setIsProcessing: (processing) => set({ isProcessing: processing }),
     setOrderComplete: (complete) => set({ orderComplete: complete }),
-    setNewsletter: (newsletter) => set({ newsletter }),
     setSaveInfo: (saveInfo) => set({ saveInfo }),
 
     handleInputChange: (field, value) => {
@@ -103,10 +99,12 @@ export const useCheckoutStore = create<CheckoutStore>((set, get) => ({
     },
 
     validateStep: (step) => {
-        const { formData, paymentMethod } = get()
+        const { formData } = get()
+
         const newErrors: Record<string, string> = {}
         if (step === 1) {
             if (!formData.email) newErrors.email = "Email is required"
+            if (!formData.phone) newErrors.phone = "Phone number is required"
             if (!formData.billingFirstName) newErrors.billingFirstName = "First name is required"
             if (!formData.billingLastName) newErrors.billingLastName = "Last name is required"
             if (!formData.billingAddress) newErrors.billingAddress = "Address is required"

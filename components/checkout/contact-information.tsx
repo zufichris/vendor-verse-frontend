@@ -30,8 +30,6 @@ export function ContactInformation({ user }: Props) {
         formData,
         handleInputChange,
         errors,
-        newsletter,
-        setNewsletter,
         saveInfo,
         setSaveInfo,
     } = useCheckoutStore();
@@ -53,17 +51,17 @@ export function ContactInformation({ user }: Props) {
                         <div>
                             <Label htmlFor="email">Email Address *</Label>
                             {
-                                !! user?.email ? <p className="mb-1 font-medium">{user.email}</p> : <Input
-                                id="email"
-                                type="email"
-                                value={formData.email}
-                                onChange={(e) => handleInputChange("email", e.target.value)}
-                                placeholder="Enter your email"
-                                className={errors.email ? "border-red-500" : ""}
-                                
-                            />
+                                !!user?.email ? <p className="mb-1 font-medium">{user.email}</p> : <Input
+                                    id="email"
+                                    type="email"
+                                    value={formData.email}
+                                    onChange={(e) => handleInputChange("email", e.target.value)}
+                                    placeholder="Enter your email"
+                                    className={errors.email ? "border-red-500" : ""}
+
+                                />
                             }
-                            
+
                             {errors.email && (
                                 <p className="text-sm mt-1 text-red-500">{errors.email}</p>
                             )}
@@ -71,35 +69,23 @@ export function ContactInformation({ user }: Props) {
                         <div>
                             <Label htmlFor="phone">Phone Number</Label>
                             {
-                                !! user?.phone ? <p className="mb-1 font-medium">{user.phone}</p> : (
+                                !!user?.phone ? <p className="mb-1 font-medium">{user.phone}</p> : (
                                     <PhoneInput
                                         name={"phone"}
-                                      international
-                                    //   ref={ref}
-                                      countryCallingCodeEditable={false}
-                                      defaultCountry="AE"
-                                    //   className="[&>*]:p-2 [&>*]:bg-inherit [&>*]:border"
-
+                                        international
+                                        countryCallingCodeEditable={false}
+                                        defaultCountry="AE"
                                         id="phone"
-                                        // type="tel"
-                                        value={formData.phone }
+                                        value={formData.phone}
                                         onChange={(e) => handleInputChange("phone", e ?? "")}
                                         placeholder="Enter your phone number"
                                     />
                                 )
                             }
-                            
+                            {errors.phone && (
+                                <p className="text-sm mt-1 text-red-500">{errors.phone}</p>
+                            )}
                         </div>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                        <Checkbox
-                            id="newsletter"
-                            checked={newsletter}
-                            onCheckedChange={setNewsletter}
-                        />
-                        <Label htmlFor="newsletter" className="text-sm">
-                            Subscribe to our newsletter for updates and exclusive offers
-                        </Label>
                     </div>
                 </CardContent>
             </Card>

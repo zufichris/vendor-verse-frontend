@@ -98,9 +98,6 @@ export function ProductDetails({ product, selectedVariant:defaultVariant }: Prod
                                 </Badge>
                             )}
                         </div>
-                        <p className="text-sm text-muted-foreground">
-                            Price in {product.currency}
-                        </p>
                     </div>
 
                     {/* Variants */}

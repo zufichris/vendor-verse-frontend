@@ -1,18 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
-import { Check, Shield, Truck, Star } from "lucide-react";
+import { Shield, Truck, Star } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useCartStore } from "@/lib/stores/cart";
+import { useState } from "react";
 
 export function OrderSummary() {
-    const [promoCode, setPromoCode] = useState("");
-    const [promoApplied, setPromoApplied] = useState(false);
     const [promoDiscount, setPromoDiscount] = useState(0);
 
     const { finalTotal, tax, subtotal, items, shipping } = useCartStore();
@@ -52,36 +48,7 @@ export function OrderSummary() {
                         </div>
                     ))}
                 </div>
-
                 <Separator />
-
-                {/* Promo Code */}
-                <div className="space-y-2">
-                {/* <div className="flex gap-2">
-                        <Input
-                            placeholder="Promo code"
-                            value={promoCode}
-                            onChange={(e) => setPromoCode(e.target.value)}
-                            disabled={promoApplied}
-                        />
-                        <Button
-                            variant="outline"
-                            onClick={applyPromoCode}
-                            disabled={promoApplied || !promoCode}
-                        >
-                            Apply
-                        </Button>
-                    </div>*/}
-                    {promoApplied && (
-                        <p className="text-sm flex items-center gap-1 text-green-600">
-                            <Check className="h-4 w-4" />
-                            Promo code applied!
-                        </p>
-                    )}
-                </div>
-
-                <Separator />
-
                 <div className="space-y-2">
                     <div className="flex justify-between">
                         <span>Subtotal</span>
@@ -108,7 +75,6 @@ export function OrderSummary() {
                     </div>
                 </div>
 
-                {/* Security Features */}
                 <div className="space-y-2 pt-4 border-t">
                     <div className="flex items-center gap-2 text-sm text-gray-600">
                         <Shield className="h-4 w-4" />

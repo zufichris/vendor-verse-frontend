@@ -57,13 +57,13 @@ const computeTotals = (items: CartItem[], shippingCost: number = defaultShipping
 };
 
 export const useCartStore = create<CartStore>((set, get) => ({
-  items: [],
-  totalItems: 0,
-  subtotal: 0,
-  shipping: defaultShippingCost,
-  tax: 0,
-  finalTotal: 0,
-  isLoading: true,
+    items: [],
+    totalItems: 0,
+    subtotal: 0,
+    shipping: defaultShippingCost,
+    finalTotal: 0,
+    isLoading: true,
+    tax:0,
 
   initCart: async () => {
 
@@ -74,7 +74,6 @@ export const useCartStore = create<CartStore>((set, get) => ({
           const { data, success } = await Api.get<QueryResponse<CartResponse>>('/users/cart');
 
           if (success) {
-            console.log(data.data, 'sdsdsdsdsds')
             let items: CartItem[] = [];
 
             (data?.data ?? []).map(itm => {
@@ -115,7 +114,6 @@ export const useCartStore = create<CartStore>((set, get) => ({
   },
 
   addToCart: (item: CartItem) => {
-    console.log('add called')
     const items = get().items.slice();
     let existing = items.find((i) => i.selectedVariant.id === item.selectedVariant.id);
     if (existing) {
@@ -180,16 +178,16 @@ export const useCartStore = create<CartStore>((set, get) => ({
     }
   },
 
-  updateShipping(method: string) {
-    const shippingOption = shippingOptions.find((opt) => opt.id === method);
-    if (!shippingOption) return;
-    const shippingCost = shippingOption.price;
-    const getter = get();
-    const items = getter.items;
-    const totals = computeTotals(items, shippingCost, getter.tax);
-    set({ ...totals });
+    updateShipping(method: string) {
+        const shippingOption = shippingOptions.find((opt) => opt.id === method);
+        if (!shippingOption) return;
+        const shippingCost = shippingOption.price;
+        const getter = get();
+        const items = getter.items;
+        const totals = computeTotals(items, shippingCost,);
+        set({ ...totals });
 
-  },
+    },
 
   clearCart: () => {
     localStorage.removeItem(STORAGE_KEY);

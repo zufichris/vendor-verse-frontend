@@ -15,7 +15,6 @@ export function CartItems() {
         totalItems,
         subtotal,
         shipping,
-        tax,
         isLoading,
         finalTotal,
         update,
@@ -37,7 +36,7 @@ export function CartItems() {
         return <CartPageLoading />;
     }
 
-    if (totalItems===0) {
+    if (totalItems === 0) {
         return (
             <div className="min-h-screen bg-gray-50 pt-20">
                 <div className="mx-auto px-4 py-16">
@@ -61,7 +60,7 @@ export function CartItems() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 pt-20">
+        <div className="pt-20">
             <div className="mx-auto px-4 py-8">
                 <div className="flex items-center mb-8">
                     <Link href="/shop">
@@ -78,10 +77,10 @@ export function CartItems() {
                             <CardContent className="p-6">
                                 <div className="flex items-center justify-between mb-6">
                                     <h2 className="text-xl font-semibold">
-                                        Cart Items ({items.length})
+                                        Cart Items ({totalItems})
                                     </h2>
                                     <Button
-                                        variant="outline"
+                                        variant="destructive"
                                         size="sm"
                                         onClick={handleClearCart}
                                         disabled={isLoading}
@@ -110,6 +109,7 @@ export function CartItems() {
                                                     {item.selectedVariant.currency}{item.selectedVariant.price}
                                                 </p>
                                             </div>
+
                                             <div className="flex items-center space-x-2">
                                                 <Button
                                                     variant="outline"
@@ -199,7 +199,7 @@ export function CartItems() {
                                 <div className="mt-6 space-y-3">
                                     <Link href="/checkout">
                                         <Button
-                                            className="w-full bg-black hover:bg-gray-800"
+                                            className="w-full mb-4 bg-black hover:bg-gray-800"
                                             size="lg"
                                         >
                                             Proceed to Checkout
