@@ -27,10 +27,10 @@ export function CheckoutForm() {
         setOrderComplete,
         handleInputChange,
         saveInfo,
-        formData
-    newsletter,
-    paymentMethod,
-    shippingMethod
+        formData,
+        newsletter,
+        paymentMethod,
+        shippingMethod
     } = useCheckoutStore();
 
     const router = useRouter();
@@ -109,15 +109,17 @@ export function CheckoutForm() {
     if (res.success) {
       setOrderComplete(true);
       clearCart();
+
+      console.log(res.data)
       
       router.push(res.data.paymentLink || `/checkout/confirmation/${res.data.orderNumber}`);
     }
     setIsProcessing(false);
   };
 
-    if (!items.length) {
-        router.replace('/')
-    }
+    // if (!items.length) {
+    //     router.replace('/')
+    // }
 
   return (
     <div className="space-y-6">

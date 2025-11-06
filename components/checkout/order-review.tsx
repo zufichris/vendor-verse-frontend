@@ -7,7 +7,7 @@ import { useCartStore } from "@/lib/stores/cart";
 
 export function OrderReview() {
     const { formData } = useCheckoutStore();
-    const { items, shipping, finalTotal } = useCartStore();
+    const { items, shipping, finalTotal, tax } = useCartStore();
 
     const currency = items[0]?.selectedVariant?.currency
 

@@ -12,6 +12,7 @@ export async function createOrder(items: CreateOrderDTO) {
   const res = await Api.post<{ paymentLink: string, id: string, orderNumber: string }>("/orders", items);
   revalidatePath("/account/orders");
   revalidatePath("/account");
+  revalidatePath("/checkout")
   return res;
 }
 

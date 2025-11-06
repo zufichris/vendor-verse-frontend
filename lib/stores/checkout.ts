@@ -38,6 +38,7 @@ interface CheckoutStore {
     formData: FormData
     errors: Partial<Record<keyof FormData, string>>
     finalTotal: number
+    newsletter: boolean
 
     setCurrentStep: (step: number) => void
     setShippingMethod: (method: string) => void
@@ -82,6 +83,7 @@ export const useCheckoutStore = create<CheckoutStore>((set, get) => ({
         nameOnCard: "",
         orderNotes: "",
     },
+    newsletter: false,
     errors: {},
 
     setCurrentStep: (step) => set({ currentStep: step }),

@@ -20,6 +20,7 @@ export function CartItems() {
         update,
         removeFromCart,
         clearCart,
+        tax
     } = useCartStore();
 
     const currency = items[0]?.selectedVariant.currency || "AED";
