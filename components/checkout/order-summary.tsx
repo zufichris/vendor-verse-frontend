@@ -6,9 +6,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useCartStore } from "@/lib/stores/cart";
+import { useState } from "react";
 
 export function OrderSummary() {
-    const { finalTotal, subtotal, items, shipping } = useCartStore();
+    const [promoDiscount, setPromoDiscount] = useState(0);
+
+    const { finalTotal, tax, subtotal, items, shipping } = useCartStore();
+
+    const currency = items[0]?.selectedVariant.currency
+
     return (
         <Card className="sticky top-24">
             <CardHeader>
@@ -17,11 +23,11 @@ export function OrderSummary() {
             <CardContent className="space-y-4">
                 <div className="space-y-3 max-h-60 overflow-y-auto">
                     {items.map((item) => (
-                        <div key={item.product.id} className="flex items-center space-x-3">
+                        <div key={item.selectedVariant.id} className="flex items-center space-x-3">
                             <div className="relative">
                                 <Image
-                                    src={item.product.thumbnail.url || "/placeholder.svg"}
-                                    alt={item.product.name}
+                                    src={item.selectedVariant.thumbnail.url || "/placeholder.svg"}
+                                    alt={item.productName}
                                     width={50}
                                     height={50}
                                     className="rounded-md object-cover"
@@ -32,12 +38,12 @@ export function OrderSummary() {
                             </div>
                             <div className="flex-1 min-w-0">
                                 <h4 className="font-medium text-sm truncate">
-                                    {item.product.name}
+                                    {item.productName}
                                 </h4>
-                                <p className="text-sm text-gray-600">${item.product.price}</p>
+                                <p className="text-sm text-gray-600">${item.selectedVariant.price}</p>
                             </div>
                             <span className="font-medium text-sm">
-                                AED {(item.product.price * item.count).toFixed(2)}
+                                {item.selectedVariant.currency}{(item.selectedVariant.price * item.count).toFixed(2)}
                             </span>
                         </div>
                     ))}
@@ -46,16 +52,26 @@ export function OrderSummary() {
                 <div className="space-y-2">
                     <div className="flex justify-between">
                         <span>Subtotal</span>
-                        <span>AED {subtotal}</span>
+                        <span>{currency}{subtotal.toFixed(2)}</span>
                     </div>
+                    {promoDiscount > 0 && (
+                        <div className="flex justify-between text-green-600">
+                            <span>Discount</span>
+                            <span>-{currency}{promoDiscount.toFixed(2)}</span>
+                        </div>
+                    )}
                     <div className="flex justify-between">
                         <span>Shipping</span>
-                        <span>AED {shipping}</span>
+                        <span>{currency}{shipping.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>Tax</span>
+                        <span>{currency}{tax.toFixed(2)}</span>
                     </div>
                     <Separator />
                     <div className="flex justify-between text-lg font-bold">
                         <span>Total</span>
-                        <span>AED {finalTotal}</span>
+                        <span>{currency}{finalTotal.toFixed(2)}</span>
                     </div>
                 </div>
 

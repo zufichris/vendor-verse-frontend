@@ -35,14 +35,12 @@ export function MobileNav({ onSearchOpen }: MobileNavProps) {
                 >
                     Contact
                 </Link>
-                <Button
-                    variant="ghost"
-                    onClick={onSearchOpen}
-                    className="justify-start"
+                <Link
+                    href="/blogs"
+                    className="text-gray-700 hover:text-black transition-colors font-medium"
                 >
-                    <Search className="h-5 w-5 mr-2" />
-                    Search
-                </Button>
+                    Blogs
+                </Link>
             </nav>
         </div>
     );

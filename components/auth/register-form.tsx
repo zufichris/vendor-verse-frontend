@@ -20,11 +20,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { z } from "zod";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export const RegisterForm: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [formMessage, setFormMessage] = useState("");
     const [isPending, startTransition] = useTransition();
+    const searchParams = useSearchParams()
+    const router = useRouter()
 
     const form = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
@@ -43,8 +46,13 @@ export const RegisterForm: React.FC = () => {
         startTransition(async () => {
             const result = await registerAction(values);
             if (result.success) {
+                const s = searchParams.toString() + `&email=${values.email}`
                 setFormMessage(result.message);
                 form.reset();
+
+                const params = searchParams.toString()+ `&email=${values.email}`
+                router.replace(`/auth/verify-otp?${params.startsWith('&') ? params.replace('&', ''): params}`);
+
             } else {
                 setFormMessage(result.message);
             }

@@ -1,3 +1,5 @@
+'use client'
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,13 +11,24 @@ import {
     ProductQuantitySelector,
 } from "@/components/product/add-to-cart-button";
 import { Heart, Share2, Truck, Shield, RotateCcw } from "lucide-react";
-import type { Product } from "@/types/product";
+import type { Product, ProductVariant } from "@/types/product";
+import { useState } from "react";
+import Link from "next/link";
+import ShareButton from "./share-btn";
+import WishlistButton from "./wishlist-btn";
+import ProductDescription from "./product-description";
 
 interface ProductDetailsProps {
     product: Product;
+    selectedVariant: ProductVariant;
 }
 
-export function ProductDetails({ product }: ProductDetailsProps) {
+export function ProductDetails({ product, selectedVariant:defaultVariant }: ProductDetailsProps) {
+    const [selectedVariant, setSelectedVariant] = useState(defaultVariant);
+    const [isWishlisted, setIsWishlisted] = useState(false);
+    const [selectedSize, setSelectedSize] = useState(selectedVariant.sizes[0]);
+    const [quantity, setQuantity] = useState(1)
+
     const discountedPrice = product.discountPercentage
         ? product.price * (1 - product.discountPercentage / 100)
         : product.discountFixedAmount
@@ -24,23 +37,25 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 
     const hasDiscount = product.discountPercentage || product.discountFixedAmount;
 
+    const isInStock = product.isInStock && product.stockQuantity > 0
+
     return (
         <div className="px-4 py-8">
             <div className="grid lg:grid-cols-2 gap-8">
                 {/* Product Images */}
-                <ProductImageGallery images={[product.thumbnail, ...product.images]} />
+                <ProductImageGallery images={[selectedVariant.thumbnail, ...selectedVariant.images]} />
 
                 {/* Product Information */}
                 <div className="space-y-6">
                     {/* Breadcrumb & Category */}
                     <div className="text-sm text-muted-foreground">
                         <span>{product.category?.name}</span>
-                        {product.brand && (
+                        {/* {product.brand && (
                             <>
                                 <span className="mx-2">•</span>
                                 <span>{product.brand}</span>
                             </>
-                        )}
+                        )} */}
                     </div>
                     {/* Product Title */}
                     <div>
@@ -50,17 +65,18 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                         <div className="flex items-center gap-2 mt-2">
                             <Badge
                                 variant={product.condition === "new" ? "default" : "secondary"}
+                                className="capitalize"
                             >
                                 {product.condition}
                             </Badge>
                             {product.featured && <Badge variant="secondary">Featured</Badge>}
                             <Badge
-                                variant={product.isInStock ? "default" : "destructive"}
+                                variant={isInStock ? "default" : "destructive"}
                                 className={
-                                    product.isInStock ? "bg-success text-success-foreground" : ""
+                                    isInStock ? "bg-success text-success-foreground" : ""
                                 }
                             >
-                                {product.isInStock ? "In Stock" : "Out of Stock"}
+                                {isInStock ? "In Stock" : "Out of Stock"}
                             </Badge>
                         </div>
                     </div>
@@ -69,11 +85,11 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                     <div className="space-y-1">
                         <div className="flex items-center gap-3">
                             <span className="text-3xl font-bold">
-                                {product.currency} {discountedPrice.toFixed(2)}
+                                {product.currency}{discountedPrice.toFixed(2)}
                             </span>
                             {hasDiscount && (
                                 <span className="text-xl text-muted-foreground line-through">
-                                    {product.currency} {product.price.toFixed(2)}
+                                    {product.currency}{product.price.toFixed(2)}
                                 </span>
                             )}
                             {product.discountPercentage && (
@@ -85,28 +101,56 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                     </div>
 
                     {/* Variants */}
-                    {product.variants && product.variants.length > 0 && (
-                        <ProductVariantSelector variants={product.variants} />
-                    )}
+                    {/* {product.variants && product.variants.length > 0 && (
+                        <ProductVariantSelector variants={product.variants} onSelect={setSelectedVariant} />
+                    )} */}
 
                     {/* Quantity & Add to Cart */}
                     <div className="space-y-4">
-                        <ProductQuantitySelector maxQuantity={product.stockQuantity} />
+                        <ProductQuantitySelector defaultQuantity={quantity} onValueChange={setQuantity} maxQuantity={product.stockQuantity} />
+
+                        {/* Variant colors */}
+                        <div className="flex items-center gap-2">
+                            <span>Color:</span>
+                            {
+                                product.variants?.map(variant => (
+                                    <button
+                                        // href={`/products/${product.slug}:${variant.slug}`}
+                                        key={variant.id}
+                                        className={`w-5 h-5 rounded-full border transition-all ${variant.slug === selectedVariant.slug && 'border-2 border-gray-400'}`}
+                                        style={{backgroundColor: variant.colorCode}}
+                                        disabled={variant.slug === selectedVariant.slug}
+                                        onClick={()=> setSelectedVariant(variant)}
+                                    />
+                                ))
+                            }
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span>Size:</span>
+                            {
+                                selectedVariant.sizes?.map(size => (
+                                    <Button
+                                        variant={size === selectedSize ? 'default' : 'outline'}
+                                        key={size}
+                                        onClick={()=> setSelectedSize(size)}
+                                        className="cursor-pointer"
+                                    >
+                                        {size}
+                                    </Button>
+                                ))
+                            }
+                        </div>
 
                         <div className="flex gap-4">
                             <AddToCartButton
-                                product={product}
-                                disabled={!product.isInStock}
+                                quantity={quantity}
+                                disabled={!isInStock}
+                                selectedVariant={{...selectedVariant, productName: product.name}}
+                                selectedVariantSize={selectedSize}
                                 className="flex-1"
                             />
-                            <Button variant="outline" size="icon">
-                                <Heart className="h-4 w-4" />
-                                <span className="sr-only">Add to wishlist</span>
-                            </Button>
-                            <Button variant="outline" size="icon">
-                                <Share2 className="h-4 w-4" />
-                                <span className="sr-only">Share product</span>
-                            </Button>
+                            <WishlistButton isWishlisted={isWishlisted} onWishlist={setIsWishlisted} />
+                            <ShareButton text={product.description} title={`${product.name} | ${selectedVariant.name}`} urlPath={`/products/${product.slug}:${selectedVariant.slug}`} />
                         </div>
                     </div>
 
@@ -114,7 +158,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                     <div className="space-y-4">
                         <h3 className="text-lg font-semibold">Description</h3>
                         <p className="text-muted-foreground leading-relaxed">
-                            {product.description}
+                            <ProductDescription description={product.description} />
                         </p>
                     </div>
 
@@ -184,7 +228,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                                     <div>
                                         <p className="font-medium">Free Shipping</p>
                                         <p className="text-sm text-muted-foreground">
-                                            On orders over {product.currency} 100
+                                            On orders over AED350
                                         </p>
                                     </div>
                                 </div>

@@ -15,7 +15,12 @@ interface ProductPageProps {
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const res = await getProduct(slug);
+  const decoded = decodeURIComponent(slug)
+  const [pdtSlug, variantSlug] = decoded.split(':')
+
+  const res = await getProduct(pdtSlug);
+
+  const selectedVariant = (res.data?.variants || []).find(itm => itm.slug === variantSlug)
 
   if (!res.success) {
     notFound();
@@ -23,7 +28,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <div className="min-h-screen  pt-6 bg-background">
-      <ProductDetails product={res.data!} />
+      <ProductDetails product={res.data!} selectedVariant={selectedVariant!}  />
     </div>
   );
 }
@@ -32,7 +37,9 @@ export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const res = await getProduct(slug);
+  const decoded = decodeURIComponent(slug)
+  const [pdtSlug] = decoded.split(':')
+  const res = await getProduct(pdtSlug);
 
   if (!res.success) {
     return notFound();

@@ -5,9 +5,13 @@ import { Check, Mail, Truck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { useCheckoutStore } from "@/lib/stores/checkout"
+import { Order } from "@/types/order.types"
+import { useRouter } from "next/navigation"
 
-export function OrderConfirmation() {
+export function OrderConfirmation({order}:{order:Order}) {
     const { formData } = useCheckoutStore()
+
+
 
     return (
         <div className="min-h-screen pt-20 bg-gray-50">
@@ -19,7 +23,7 @@ export function OrderConfirmation() {
                     <h1 className="text-4xl font-bold mb-4 text-gray-900">Order Confirmed!</h1>
                     <p className="text-xl mb-2 text-gray-700">Thank you for your purchase, {formData.billingFirstName}!</p>
                     <p className="mb-8 text-gray-600">
-                        Your order #ORD-{Date.now().toString().slice(-6)} has been confirmed and will be processed shortly.
+                        Your order {order?.orderNumber} has been confirmed and will be processed shortly.
                     </p>
 
                     <div className="grid md:grid-cols-2 gap-6 mb-8">
@@ -44,10 +48,10 @@ export function OrderConfirmation() {
                     </div>
 
                     <div className="space-y-4">
-                        <Link href="/account/orders">
+                        <Link href={`/account/orders/${order?.orderNumber}`}>
                             <Button className="w-full md:w-auto px-8 bg-gray-900 hover:bg-gray-800">Track Your Order</Button>
                         </Link>
-                        <Link href="/products">
+                        <Link href="/shop">
                             <Button variant="outline" className="w-full md:w-auto px-8 ml-0 md:ml-4 bg-transparent">
                                 Continue Shopping
                             </Button>

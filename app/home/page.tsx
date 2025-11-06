@@ -1,4 +1,5 @@
 import { ProductCard } from "@/components/product/product-card";
+import { shuffleVariants } from "@/lib/utils";
 import type { Product } from "@/types/product";
 import { Api, QueryResponse } from "@/utils/api";
 import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
@@ -9,6 +10,31 @@ export default async function HomePage() {
   if (!res.success) {
     return <div>Error Getting Products</div>;
   }
+
+  const variants = res.data!.data.map(itm => {
+          const vars = (itm.variants || []).map(vr => ({
+              ...vr,
+              discountStartDate: itm.discountStartDate,
+              status: itm.status,
+              condition: itm.condition,
+              featured: itm.featured,
+              brand: itm.brand,
+              discountEndDate: itm.discountEndDate,
+              productName: itm.name,
+              productSlug: itm.slug,
+              description: itm.description,
+              category: itm.category,
+              colorsMap: (itm.variants || []).map(col =>({
+                  name: col.name || '',
+                  slug: col.slug || '',
+                  colorCode: col?.colorCode || '',
+              }))
+          }))
+  
+          return vars
+      }).flat()
+  
+      const shuffledGroups = shuffleVariants(variants)
 
   return (
     <section className="py-16">
@@ -32,7 +58,7 @@ export default async function HomePage() {
         </Tabs>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
-          {res.data.data.map((product, index) => (
+          {shuffledGroups.map((product, index) => (
             <div
               key={product.id}
               className="animate-fade-in"
