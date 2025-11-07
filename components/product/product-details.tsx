@@ -41,14 +41,14 @@ export function ProductDetails({ product, selectedVariant:defaultVariant }: Prod
 
     return (
         <div className="px-4 py-8">
-            <div className="grid lg:grid-cols-2 gap-8">
+            <div className="grid lg:grid-cols-2 2xl:grid-cols-3 gap-8">
                 {/* Product Images */}
                 <ProductImageGallery images={[selectedVariant.thumbnail, ...selectedVariant.images]} />
 
                 {/* Product Information */}
-                <div className="space-y-6">
+                <div className="space-y-6 2xl:col-span-2 max-w-4xl">
                     {/* Breadcrumb & Category */}
-                    <div className="text-sm text-muted-foreground">
+                    <div className="hidden lg:block text-sm text-muted-foreground">
                         <span>{product.category?.name}</span>
                         {/* {product.brand && (
                             <>
@@ -59,10 +59,10 @@ export function ProductDetails({ product, selectedVariant:defaultVariant }: Prod
                     </div>
                     {/* Product Title */}
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">
+                        <h1 className="text-xl md:text-3xl font-bold tracking-tight">
                             {product.name}
                         </h1>
-                        <div className="flex items-center gap-2 mt-2">
+                        {/* <div className="flex items-center gap-2 mt-2">
                             <Badge
                                 variant={product.condition === "new" ? "default" : "secondary"}
                                 className="capitalize"
@@ -78,17 +78,17 @@ export function ProductDetails({ product, selectedVariant:defaultVariant }: Prod
                             >
                                 {isInStock ? "In Stock" : "Out of Stock"}
                             </Badge>
-                        </div>
+                        </div> */}
                     </div>
 
                     {/* Price */}
                     <div className="space-y-1">
                         <div className="flex items-center gap-3">
-                            <span className="text-3xl font-bold">
+                            <span className="text-xl md:text-3xl font-bold">
                                 {product.currency}{discountedPrice.toFixed(2)}
                             </span>
                             {hasDiscount && (
-                                <span className="text-xl text-muted-foreground line-through">
+                                <span className="md:text-xl text-muted-foreground line-through">
                                     {product.currency}{product.price.toFixed(2)}
                                 </span>
                             )}
@@ -232,7 +232,7 @@ export function ProductDetails({ product, selectedVariant:defaultVariant }: Prod
                                         </p>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-3">
+                                {/* <div className="flex items-center gap-3">
                                     <Shield className="h-5 w-5 text-primary" />
                                     <div>
                                         <p className="font-medium">2 Year Warranty</p>
@@ -249,7 +249,7 @@ export function ProductDetails({ product, selectedVariant:defaultVariant }: Prod
                                             Easy returns and exchanges
                                         </p>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </CardContent>
                     </Card>

@@ -21,20 +21,23 @@ export function ProductImageGallery({ images }: ProductImageGalleryProps) {
     return (
         <div className="space-y-4">
             {/* Main Image */}
-            <div className="aspect-square overflow-hidden rounded-lg border bg-muted">
-                <Image
-                    src={images[selectedImage]?.url || "/placeholder.svg"}
-                    alt={images[selectedImage]?.altText || "Product image"}
-                    width={600}
-                    height={600}
-                    className="w-full object-top"
-                    priority
-                />
-            </div>
+        <div
+            className="hidden lg:block relative bg-muted rounded-lg overflow-hidden max-h-[78vh] mx-auto"
+            style={{ aspectRatio: "2/3", minHeight: "300px", width: "auto" }}
+        >
+            <Image
+              src={images[selectedImage]?.url || "/placeholder.svg"}
+              alt={images[selectedImage]?.altText || "Product image"}
+              fill
+              sizes="(max-width: 768px) 90vw, (max-width: 1200px) 50vw, 40vw"
+              className="object-contain"
+              priority
+            />
+        </div>
 
             {/* Thumbnail Images */}
             {displayImages.length > 1 && (
-                <div className="grid grid-cols-4 gap-2">
+                <div className="hidden lg:grid grid-cols-4 gap-2">
                     {displayImages.map((image, index) => (
                         <button
                             key={index}
@@ -84,6 +87,12 @@ export function ProductImageGallery({ images }: ProductImageGalleryProps) {
                     }
                 </div>
             )}
+
+
+            {/* Mobile */}
+            <div className="block lg:hidden">
+                <ImageCarousel images={images} />
+            </div>
         </div>
     );
 }
@@ -91,30 +100,25 @@ export function ProductImageGallery({ images }: ProductImageGalleryProps) {
 
 const ImageCarousel = ({images}:ProductImageGalleryProps)=>{
 
-    return <div className="w-full p-6 flex justify-center">
-      <Carousel className="w-full max-w-4xl mx-auto">
-        <CarouselContent>
-          {images.map((img, index) => (
-            <CarouselItem key={img.url+index}>
-              <div className="p-1">
-                <Card>
-                  <CardContent className="flex aspect-square items-center justify-center p-6">
-                    <Image
-                        src={img?.url || "/placeholder.svg"}
-                        alt={img?.altText || "Product image"}
-                        width={600}
-                        height={600}
-                        className="w-full object-top"
-                        priority
-                />
-                  </CardContent>
-                </Card>
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
-    </div>
+    return (
+        <Carousel className="w-full">
+          <CarouselContent>
+            {images.map((image, index) => (
+              <CarouselItem key={index}>
+                <div className="relative aspect-[2/3] bg-muted rounded-lg overflow-hidden">
+                  <Image
+                    src={image.url || "/placeholder.svg"}
+                    alt={image.altText || 'gallery img'}
+                    fill
+                    sizes="90vw"
+                    className="object-contain"
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="left-2" />
+          <CarouselNext className="right-2" />
+        </Carousel>
+    )
 }
