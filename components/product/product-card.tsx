@@ -240,7 +240,7 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                             )}
 
                             {/* Top Badges */}
-                            <div className="absolute top-3 left-3 flex flex-col gap-2 z-10">
+                            {/* <div className="absolute top-3 left-3 flex flex-col gap-2 z-10">
                                 {product.condition === "new" && (
                                     <Badge className="bg-emerald-500 text-primary-foreground font-medium px-2 py-1 text-xs shadow-lg">
                                         New
@@ -253,12 +253,12 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                                             : `-${product.currency}${product.discountFixedAmount}`}
                                     </Badge>
                                 )}
-                                {/* {availableStock <= 5 && availableStock > 0 && (
+                                {availableStock <= 5 && availableStock > 0 && (
                                     <Badge className="bg-orange-500 text-primary-foreground font-medium px-2 py-1 text-xs flex items-center gap-1 shadow-lg">
                                         <Clock className="h-3 w-3" />
                                         {availableStock} left
                                     </Badge>
-                                )} */}
+                                )}
                                 {product.featured && (
                                     <Badge className="bg-yellow-500 text-primary-foreground font-medium px-2 py-1 text-xs flex items-center gap-1 shadow-lg">
                                         <Star className="h-3 w-3 fill-current" />
@@ -270,7 +270,7 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                                         {product.status}
                                     </Badge>
                                 )}
-                            </div>
+                            </div> */}
 
                             {/* Action Buttons */}
                             <div
