@@ -109,10 +109,10 @@ export function CheckoutForm() {
     if (res.success) {
       setOrderComplete(true);
       clearCart();
-
-      console.log(res.data)
       
       router.push(res.data.paymentLink || `/checkout/confirmation/${res.data.orderNumber}`);
+    }else{
+      console.log(res)
     }
     setIsProcessing(false);
   };
