@@ -10,6 +10,7 @@ import { CreateOrderDTO } from "../validations/order";
 
 export async function createOrder(items: CreateOrderDTO) {
   const res = await Api.post<{ paymentLink: string, id: string, orderNumber: string }>("/orders", items);
+  console.log(res, 'created order response')
   revalidatePath("/account/orders");
   revalidatePath("/account");
   revalidatePath("/checkout")
