@@ -48,15 +48,15 @@ export function ProductDetails({ product, selectedVariant:defaultVariant }: Prod
                 {/* Product Information */}
                 <div className="space-y-6 2xl:col-span-2 max-w-4xl">
                     {/* Breadcrumb & Category */}
-                    <div className="hidden lg:block text-sm text-muted-foreground">
+                    {/* <div className="hidden lg:block text-sm text-muted-foreground">
                         <span>{product.category?.name}</span>
-                        {/* {product.brand && (
+                        {product.brand && (
                             <>
                                 <span className="mx-2">•</span>
                                 <span>{product.brand}</span>
                             </>
-                        )} */}
-                    </div>
+                        )}
+                    </div> */}
                     {/* Product Title */}
                     <div>
                         <h1 className="text-xl md:text-3xl font-bold tracking-tight">

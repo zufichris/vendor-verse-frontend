@@ -25,14 +25,14 @@ export function HeaderActions({
     }, [initCart]);
     return (
         <div className="flex items-center space-x-4">
-            <Button
+            {/* <Button
                 variant="ghost"
                 size="icon"
                 onClick={onSearchOpen}
                 className="hidden sm:flex"
             >
                 <Search className="h-5 w-5" />
-            </Button>
+            </Button> */}
 
             <Link href="/cart">
                 <Button variant="ghost" size="icon" className="relative">

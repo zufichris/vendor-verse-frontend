@@ -27,7 +27,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   return (
-    <div className="min-h-screen  pt-6 bg-background">
+    <div className="min-h-screen mt-10  pt-6 bg-background">
       <ProductDetails product={res.data!} selectedVariant={selectedVariant!}  />
     </div>
   );
