@@ -4,11 +4,10 @@ import React from "react";
 
 export function DesktopNav() {
     const productCategories = [
-        { href: "/shop?category=electronics", title: "Electronics" },
-        { href: "/shop?category=fashion", title: "Fashion & Clothing" },
-        { href: "/shop?category=home", title: "Home & Living" },
-        { href: "/shop?category=sports", title: "Sports & Fitness" },
-        { href: "/shop?category=accessories", title: "Accessories" },
+        { href: "/shop?category=leggins", title: "Leggings" },
+        { href: "/shop?category=jumpsuits", title: "Jumpsuits" },
+        { href: "/shop?category=jackets", title: "Jackets" },
+        { href: "/shop?category=bras", title: "Bras" }
     ];
 
     const companyLinks = [
@@ -22,12 +21,12 @@ export function DesktopNav() {
             <div className="relative group">
                 <Link
                     href="/shop"
-                    className="text-gray-700 hover:text-black transition-colors flex items-center"
+                    className="text-white hovertext-black transition-colors flex items-center"
                 >
                     Shop
                     <ChevronDown className="h-4 w-4 ml-1" />
                 </Link>
-                <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className="absolute top-full left-0 w-64 bg-white rounded-lg shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                     <div className="p-4 space-y-2">
                         {productCategories.map((item) => (
                             <Link
@@ -52,13 +51,13 @@ export function DesktopNav() {
 
             <Link
                 href="/categories"
-                className="text-gray-700 hover:text-black transition-colors"
+                className="textgray-700 hovertext-black transition-colors"
             >
                 Categories
             </Link>
 
             <div className="relative group">
-                <span className="text-gray-700 hover:text-black transition-colors cursor-pointer flex items-center">
+                <span className="textgray-700 hovertext-black transition-colors cursor-pointer flex items-center">
                     Company
                     <ChevronDown className="h-4 w-4 ml-1" />
                 </span>

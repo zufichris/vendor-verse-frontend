@@ -41,7 +41,7 @@ export default function AboutPage() {
       </section>
 
       {/* Founded Section */}
-      <section className="py-20 md:py-32 px-4 bg-secondary">
+      <section className="py-20 md:py-32 px-4 bg-gradient-to-br from-[#faf7f2] via-[#f5efe5] to-[#f0e9dd]">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
             <div className="order-2 md:order-1">
@@ -196,7 +196,7 @@ export default function AboutPage() {
       </section>
 
       {/* Community Section */}
-      <section className="py-20 md:py-32 px-4 bg-secondary">
+      <section className="py-20 md:py-32 px-4 bg-gradient-to-tr from-[#fff5f0] via-[#fef8f3] to-[#fdf2eb]">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-8">Welcome to Our Community</h2>
           <p className="text-xl text-foreground/80 leading-relaxed mb-4">
@@ -225,26 +225,19 @@ export default function AboutPage() {
           </p>
 
           <div className="flex flex-col md:flex-row gap-4 justify-center">
-            <Link href={'/shop'}>
+            <Link href={"/shop"}>
               <button className="cursor-pointer px-8 py-4 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors duration-300">
                 Shop Collection
               </button>
             </Link>
-            <Link href={'/contact'}>
+            <Link href={"/contact"}>
               <button className="cursor-pointer px-8 py-4 bg-background text-foreground border-2 border-primary font-semibold rounded-lg hover:bg-primary/5 transition-colors duration-300">
                 Learn More
               </button>
             </Link>
-            
           </div>
         </div>
       </section>
-
-      {/* Footer CTA */}
-      {/* <section className="py-16 md:py-20 px-4 bg-primary text-primary-foreground text-center">
-        <p className="text-lg md:text-xl mb-2">Welcome to Aetli — you already belong here</p>
-        <p className="text-sm text-primary-foreground/80">With love, from Dubai 🤍</p>
-      </section> */}
     </main>
   )
 }

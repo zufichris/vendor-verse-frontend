@@ -8,7 +8,6 @@ import { useAuthStore } from "@/lib/stores/auth";
 import { SearchModal } from "./search-modal";
 
 export function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
@@ -18,32 +17,22 @@ export function Header() {
     init();
   }, [init]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <>
       <header
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-          isScrolled
-            ? "bg-white/95 backdrop-blur-md shadow-sm"
-            : "bg-transparent"
-        }`}
+        className={`fixed top-0 w-full z-50 transition-all duration-300 bg-[#543D2A] text-white backdrop-blur-md shadow-sm`}
       >
         <div className="mx-auto px-4 mb-3">
           <div className="flex items-center justify-between h-16">
             <Logo />
-            <DesktopNav />
-            <HeaderActions
-              onSearchOpen={() => setIsSearchOpen(true)}
-              isMobileMenuOpen={isMobileMenuOpen}
-              onMobileMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            />
+            <div className="flex items-center gap-8">
+              <DesktopNav />
+              <HeaderActions
+                onSearchOpen={() => setIsSearchOpen(true)}
+                isMobileMenuOpen={isMobileMenuOpen}
+                onMobileMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              />
+            </div>
           </div>
 
           {isMobileMenuOpen && (
