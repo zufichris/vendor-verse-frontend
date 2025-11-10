@@ -23,8 +23,7 @@ interface ProductDetailsProps {
     selectedVariant: ProductVariant;
 }
 
-export function ProductDetails({ product, selectedVariant:defaultVariant }: ProductDetailsProps) {
-    const [selectedVariant, setSelectedVariant] = useState(defaultVariant);
+export function ProductDetails({ product, selectedVariant }: ProductDetailsProps) {
     const [isWishlisted, setIsWishlisted] = useState(false);
     const [selectedSize, setSelectedSize] = useState(selectedVariant.sizes[0]);
     const [quantity, setQuantity] = useState(1)
@@ -114,13 +113,12 @@ export function ProductDetails({ product, selectedVariant:defaultVariant }: Prod
                             <span>Color:</span>
                             {
                                 product.variants?.map(variant => (
-                                    <button
-                                        // href={`/products/${product.slug}:${variant.slug}`}
+                                    <Link
+                                        href={`/products/${product.slug}:${variant.slug}`}
                                         key={variant.id}
+                                        replace
                                         className={`w-5 h-5 rounded-full border transition-all ${variant.slug === selectedVariant.slug && 'border-2 border-gray-400'}`}
                                         style={{backgroundColor: variant.colorCode}}
-                                        disabled={variant.slug === selectedVariant.slug}
-                                        onClick={()=> setSelectedVariant(variant)}
                                     />
                                 ))
                             }
@@ -163,7 +161,7 @@ export function ProductDetails({ product, selectedVariant:defaultVariant }: Prod
                     </div>
 
                     {/* Product Details */}
-                    <Card>
+                    {/* <Card>
                         <CardHeader>
                             <CardTitle className="text-lg">Product Details</CardTitle>
                         </CardHeader>
@@ -217,7 +215,7 @@ export function ProductDetails({ product, selectedVariant:defaultVariant }: Prod
                                 </>
                             )}
                         </CardContent>
-                    </Card>
+                    </Card> */}
 
                     {/* Shipping & Returns */}
                     <Card>

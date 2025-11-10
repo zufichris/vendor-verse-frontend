@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";
+import { ContactInformation } from "../checkout/contact-information";
+import { ContactEmail, ContactInstagram } from "@/lib/constants";
 
 export default function Footer() {
   return (
@@ -27,7 +29,9 @@ export default function Footer() {
                 <Twitter className="h-5 w-5" />
               </Link>
               <Link
-                href="#"
+                href={ContactInstagram}
+                target="_blank"
+                referrerPolicy="no-referrer"
                 className="text-gray-400 hover:text-white transition-colors"
               >
                 <Instagram className="h-5 w-5" />
@@ -47,7 +51,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/products"
+                  href="/shop"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Products
@@ -86,20 +90,20 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/help"
+                  href={`mailto:${ContactEmail}`}
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Help Center
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href="/shipping"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Shipping Info
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   href="/returns"
@@ -108,14 +112,14 @@ export default function Footer() {
                   Returns
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href="/size-guide"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Size Guide
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 

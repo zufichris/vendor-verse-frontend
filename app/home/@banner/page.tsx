@@ -10,6 +10,7 @@ export interface Banner {
     cta: string;
     link: string;
     color?: string;
+    video?: string
 }
 
 export default async function() {
