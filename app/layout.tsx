@@ -10,9 +10,9 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "VendorVerse - Premium E-commerce Experience",
+  title: "AETLI - Premium E-commerce Experience",
   description:
-    "Discover premium products with exceptional quality and style at VendorVerse.",
+    "Discover premium products with exceptional quality and style at aetli.",
   openGraph: {
     images: [
       {

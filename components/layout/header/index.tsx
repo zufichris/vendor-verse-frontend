@@ -24,6 +24,7 @@ export function Header() {
       >
         <div className="mx-auto px-4 mb-3">
           <div className="flex items-center justify-between h-16">
+            <div className="hi"></div>
             <Logo />
             <div className="flex items-center gap-8">
               <DesktopNav />

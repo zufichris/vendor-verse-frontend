@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Banner } from "./page";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -9,11 +9,16 @@ import Link from "next/link";
 export function Banners({ banners }: { banners: Banner[] }) {
     const [currentSlide, setCurrentSlide] = useState(0);
 
+    const filteredBanners  = useMemo(()=> banners.filter(itm => itm.video || itm.image), [])
+
     useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentSlide((prev) => (prev + 1) % banners.length);
-        }, 5000);
-        return () => clearInterval(timer);
+        if (filteredBanners.length > 1) {
+            
+            const timer = setInterval(() => {
+                setCurrentSlide((prev) => (prev + 1) % banners.length);
+            }, 10000); // changes after every 10 secs
+            return () => clearInterval(timer);
+        }
     }, []);
 
     const nextSlide = () => {
@@ -30,19 +35,36 @@ export function Banners({ banners }: { banners: Banner[] }) {
 
     return (
         <section className="relative h-screen overflow-hidden">
-            {banners.map((banner, index) => (
+            {filteredBanners.map((banner, index) => (
                 <div
                     key={banner.title}
                     className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${index === currentSlide ? "opacity-100" : "opacity-0"
                         }`}
                 >
                     <div className="relative h-full">
-                        <img
-                            src={banner.image || "/placeholder.svg"}
-                            alt={banner.title}
-                            className="w-full h-full object-cover"
-                            loading={index === 0 ? "eager" : "lazy"}
-                        />
+                        {
+                            banner.image && <img
+                                src={banner.image || "/placeholder.svg"}
+                                alt={banner.title}
+                                className="w-full h-full object-cover object-top"
+                                loading={index === 0 ? "eager" : "lazy"}
+                            />
+                        }
+                        {
+                            banner?.video && <video
+                                
+                                controls
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+
+                                className="w-full h-full object-cover object-top"
+                            >
+                                <source src={banner.video} type="video/mp4" />
+                            </video>
+                        }
+                        
                         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/60" />
 
                         <div className="absolute inset-0 flex items-center justify-center px-4">
@@ -91,7 +113,7 @@ export function Banners({ banners }: { banners: Banner[] }) {
             </Button>
 
             <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex space-x-3 z-10">
-                {banners.map((_, index) => (
+                {filteredBanners.map((_, index) => (
                     <button
                         key={index}
                         className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-300 backdrop-blur-sm ${index === currentSlide
