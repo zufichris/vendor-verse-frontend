@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCheckoutStore } from "@/lib/stores/checkout";
-import { useCartStore } from "@/lib/stores/cart";
+import { CartItem, useCartStore } from "@/lib/stores/cart";
 
 export function OrderReview() {
     const { formData } = useCheckoutStore();
@@ -20,25 +20,28 @@ export function OrderReview() {
                 <div className="space-y-4">
                     <h4 className="font-medium">Items in your order</h4>
                     {items.map((item) => (
-                        <div
-                            key={item.productName}
-                            className="flex items-center space-x-4 p-4 border rounded-lg"
-                        >
-                            <Image
-                                src={item.selectedVariant.thumbnail.url || "/placeholder.svg"}
-                                alt={item.productName}
-                                width={80}
-                                height={80}
-                                className="rounded-md object-cover"
-                            />
-                            <div className="flex-1">
-                                <h5 className="font-medium">{item.productName}</h5>
-                                <p className="text-sm text-gray-600">Quantity: {item.count}</p>
+                        <>
+                            <div
+                                key={item.productName}
+                                className="hidden sm:flex items-center space-x-4 p-4 border rounded-lg"
+                            >
+                                <Image
+                                    src={item.selectedVariant.thumbnail.url || "/placeholder.svg"}
+                                    alt={item.productName}
+                                    width={80}
+                                    height={80}
+                                    className="rounded-md object-cover"
+                                />
+                                <div className="flex-1">
+                                    <h5 className="font-medium">{item.productName}</h5>
+                                    <p className="text-sm text-gray-600">Quantity: {item.count}</p>
+                                </div>
+                                <span className="font-medium">
+                                    {item.selectedVariant.currency}{(item.selectedVariant.price * item.count).toFixed(2)}
+                                </span>
                             </div>
-                            <span className="font-medium">
-                                {item.selectedVariant.currency}{(item.selectedVariant.price * item.count).toFixed(2)}
-                            </span>
-                        </div>
+                            <MobileItem item={item} />
+                        </>
                     ))}
                 </div>
 
@@ -81,3 +84,31 @@ export function OrderReview() {
         </Card>
     );
 }
+
+function MobileItem({item}:{item: CartItem}){
+    return (
+        <div
+                key={item.productName}
+                className="sm:hidden text-sm flex items-start space-x-4 p-4 border rounded-lg"
+            >
+                <Image
+                    src={item.selectedVariant.thumbnail.url || "/placeholder.svg"}
+                    alt={item.productName}
+                    width={80}
+                    height={80}
+                    className="rounded-md object-contain"
+                />
+                <div>
+                    <div className="flex-1">
+                        <h5 className="font-medium text-ellipsis line-clamp-2 mb-3">{item.productName}</h5>
+                        <p className="text-sm text-gray-600">Quantity: {item.count}</p>
+                    </div>
+                    <span className="font-medium">
+                        {item.selectedVariant.currency}{(item.selectedVariant.price * item.count).toFixed(2)}
+                    </span>
+                </div>
+            </div>
+    )
+}
+
+
