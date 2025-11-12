@@ -48,13 +48,13 @@ export function ShippingMethod() {
                     })}
                 </RadioGroup>
 
-                <div className="mt-6 p-4 rounded-lg bg-blue-50">
+                {/* <div className="mt-6 p-4 rounded-lg bg-blue-50">
                     <div className="flex items-center gap-2 mb-2">
                         <Shield className="h-4 w-4 text-blue-600" />
                         <span className="font-medium text-sm text-blue-600">Shipping Protection</span>
                     </div>
                     <p className="text-sm text-gray-700">All orders are insured and tracked. Free returns within 30 days.</p>
-                </div>
+                </div> */}
             </CardContent>
         </Card>
     )

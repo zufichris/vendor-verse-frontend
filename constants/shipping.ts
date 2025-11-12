@@ -4,8 +4,8 @@ export const shippingOptions = [
     {
         id: "standard",
         name: "Standard Shipping",
-        description: "5-7 business days",
-        price: 30,
+        description: "Next day delivery",
+        price: 25,
         icon: Package,
         isDefault: true,
         currency: 'AED'
@@ -13,8 +13,8 @@ export const shippingOptions = [
     {
         id: "express",
         name: "Express Shipping",
-        description: "2-3 business days",
-        price: 60,
+        description: "Same day delivery (within Dubai)",
+        price: 35,
         icon: PackageCheck,
         isDefault: true,
         currency: 'AED'

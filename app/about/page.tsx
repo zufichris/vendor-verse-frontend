@@ -18,7 +18,7 @@ export default function AboutPage() {
         <div className={`absolute inset-0 transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"}`}>
           <div className="absolute inset-0 bg-gradient-to-b from-accent via-background to-background" />
           <Image
-            src="/empowered-women-doing-yoga-and-workouts-in-modern-.jpg"
+            src="/banners/banner1.jpg"
             alt="Aetli women empowerment"
             fill
             className="object-cover opacity-20"
@@ -58,12 +58,12 @@ export default function AboutPage() {
             </div>
             <div className="order-1 md:order-2">
               <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
-                <Image
+                {/* <Image
                   src="/portrait-of-confident-woman-founder-tarryn-peterse.jpg"
                   alt="Tarryn Petersen, Aetli Founder"
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-500"
-                />
+                /> */}
               </div>
             </div>
           </div>
@@ -157,7 +157,7 @@ export default function AboutPage() {
               <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">The Pieces</h2>
               <p className="text-lg text-foreground/80 mb-6 leading-relaxed">
                 Our pieces are thoughtfully designed with care at every step. We focus on what matters most: quality,
-                fit, and how you feel in them.
+                fit, and how you feel in every piece.
               </p>
               <ul className="space-y-4">
                 {[
@@ -176,10 +176,10 @@ export default function AboutPage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               {[
-                "/womens-activewear-collection-detailed-product.jpg",
-                "/womens-lifestyle-apparel-modern-design.jpg",
-                "/womens-fitness-wear-product-photography.jpg",
+                "/banners/banner2.jpg",
+                "/banners/banner1.jpg",
                 "/womens-comfort-clothing-collection.jpg",
+                "/banners/banner3.jpg",
               ].map((src, index) => (
                 <div key={index} className="relative h-64 rounded-lg overflow-hidden group">
                   <Image

@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import React from "react";
 
 interface MobileNavProps {
@@ -18,28 +16,34 @@ export function MobileNav({ onSearchOpen }: MobileNavProps) {
                     Browse Products
                 </Link>
                 <Link
-                    href="/categories"
+                    href="/shop?category=leggins"
                     className="text-gray-700 hover:text-black transition-colors font-medium"
                 >
-                    Categories
+                    Leggings
+                </Link>
+                <Link
+                    href="/shop?category=bras"
+                    className="text-gray-700 hover:text-black transition-colors font-medium"
+                >
+                    Bras
+                </Link>
+                <Link
+                    href="/shop?category=jumpsuits"
+                    className="text-gray-700 hover:text-black transition-colors font-medium"
+                >
+                    Jumpsuits
+                </Link>
+                <Link
+                    href="/shop?category=jackets"
+                    className="text-gray-700 hover:text-black transition-colors font-medium"
+                >
+                    Jackets
                 </Link>
                 <Link
                     href="/about"
                     className="text-gray-700 hover:text-black transition-colors font-medium"
                 >
                     About Us
-                </Link>
-                <Link
-                    href="/contact"
-                    className="text-gray-700 hover:text-black transition-colors font-medium"
-                >
-                    Contact
-                </Link>
-                <Link
-                    href="/blogs"
-                    className="text-gray-700 hover:text-black transition-colors font-medium"
-                >
-                    Blogs
                 </Link>
             </nav>
         </div>

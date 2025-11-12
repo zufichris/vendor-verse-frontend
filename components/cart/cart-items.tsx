@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import CartPageLoading from "@/app/cart/loading";
 import { CartItem, useCartStore } from "@/lib/stores/cart";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function CartItems() {
     const {
@@ -24,6 +25,7 @@ export function CartItems() {
     } = useCartStore();
 
     const currency = items[0]?.selectedVariant.currency || "AED";
+    const isMobile = useIsMobile()
 
     const handleQuantityChange = (item: CartItem, newQuantity: number) => {
         if (newQuantity < 1) removeFromCart(item.selectedVariant.id);
@@ -91,69 +93,72 @@ export function CartItems() {
                                 </div>
                                 <div className="space-y-6">
                                     {items.map((item) => (
-                                        <div
-                                            key={item.selectedVariant.id}
-                                            className="flex items-center space-x-4 p-4 border rounded-lg"
-                                        >
-                                            <Image
-                                                src={item.selectedVariant.thumbnail.url || "/placeholder.svg"}
-                                                alt={item.selectedVariant.name || ''}
-                                                width={80}
-                                                height={80}
-                                                className="rounded-md object-cover"
-                                            />
-                                            <div className="flex-1">
-                                                <h3 className="font-medium text-gray-900">
-                                                    {item.productName}
-                                                </h3>
-                                                <p className="text-lg font-bold text-black">
-                                                    {item.selectedVariant.currency}{item.selectedVariant.price}
-                                                </p>
-                                            </div>
+                                        <>
+                                            <div
+                                                key={item.selectedVariant.id}
+                                                className="hidden md:flex items-center space-x-4 p-4 border rounded-lg"
+                                            >
+                                                <Image
+                                                    src={item.selectedVariant.thumbnail.url || "/placeholder.svg"}
+                                                    alt={item.selectedVariant.name || ''}
+                                                    width={80}
+                                                    height={80}
+                                                    className="rounded-md object-cover"
+                                                />
+                                                <div className="flex-1">
+                                                    <h3 className="font-medium text-gray-900">
+                                                        {item.productName}
+                                                    </h3>
+                                                    <p className="text-lg font-bold text-black">
+                                                        {item.selectedVariant.currency}{item.selectedVariant.price}
+                                                    </p>
+                                                </div>
 
-                                            <div className="flex items-center space-x-2">
-                                                <Button
-                                                    variant="outline"
-                                                    size="icon"
-                                                    onClick={() =>
-                                                        handleQuantityChange(
-                                                            item,
-                                                            item.count - 1,
-                                                        )
-                                                    }
-                                                >
-                                                    <Minus className="h-4 w-4" />
-                                                </Button>
-                                                <span className="w-12 text-center font-medium">
-                                                    {item.count}
-                                                </span>
-                                                <Button
-                                                    variant="outline"
-                                                    size="icon"
-                                                    onClick={() =>
-                                                        handleQuantityChange(
-                                                            item,
-                                                            item.count + 1,
-                                                        )
-                                                    }
-                                                >
-                                                    <Plus className="h-4 w-4" />
-                                                </Button>
+                                                <div className="flex items-center space-x-2">
+                                                    <Button
+                                                        variant="outline"
+                                                        size="icon"
+                                                        onClick={() =>
+                                                            handleQuantityChange(
+                                                                item,
+                                                                item.count - 1,
+                                                            )
+                                                        }
+                                                    >
+                                                        <Minus className="h-4 w-4" />
+                                                    </Button>
+                                                    <span className="w-12 text-center font-medium">
+                                                        {item.count}
+                                                    </span>
+                                                    <Button
+                                                        variant="outline"
+                                                        size="icon"
+                                                        onClick={() =>
+                                                            handleQuantityChange(
+                                                                item,
+                                                                item.count + 1,
+                                                            )
+                                                        }
+                                                    >
+                                                        <Plus className="h-4 w-4" />
+                                                    </Button>
+                                                </div>
+                                                <div className="text-right">
+                                                    <p className="font-bold text-lg">
+                                                        {item.selectedVariant.currency}{(item.selectedVariant.price * item.count).toFixed(2)}
+                                                    </p>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        onClick={() => removeFromCart(item.selectedVariant.id)}
+                                                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                                    >
+                                                        <Trash2 className="h-4 w-4 mr-1" /> Remove
+                                                    </Button>
+                                                </div>
                                             </div>
-                                            <div className="text-right">
-                                                <p className="font-bold text-lg">
-                                                    {item.selectedVariant.currency}{(item.selectedVariant.price * item.count).toFixed(2)}
-                                                </p>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    onClick={() => removeFromCart(item.selectedVariant.id)}
-                                                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                                                >
-                                                    <Trash2 className="h-4 w-4 mr-1" /> Remove
-                                                </Button>
-                                            </div>
-                                        </div>
+                                            <MobileCartItem item={item} handleqtyChange={handleQuantityChange} remove={removeFromCart} key={item.selectedVariant.id} />
+                                        </>
                                     ))}
                                 </div>
                             </CardContent>
@@ -223,4 +228,76 @@ export function CartItems() {
             </div>
         </div>
     );
+}
+
+function MobileCartItem({item, handleqtyChange, remove}:{item: CartItem, handleqtyChange: (item:  CartItem, qty:number)=>void, remove:(id: string)=>void}) {
+    return (
+        <div
+            key={item.selectedVariant.id}
+            className="flex md:hidden items-center space-x-4 p-4 border rounded-lg"
+        >
+            <Image
+                src={item.selectedVariant.thumbnail.url || "/placeholder.svg"}
+                alt={item.selectedVariant.name || ''}
+                width={80}
+                height={80}
+                className="rounded-md object-cover"
+            />
+            <div className="flex-1 flex flex-col text-sm gap-2 ">
+                <div >
+                    <h3 className="font-medium text-gray-900 text-ellipsis line-clamp-1">
+                        {item.productName}
+                    </h3>
+                    <p className="text-base font-bold text-black my-1">
+                        {item.selectedVariant.currency}{item.selectedVariant.price}
+                    </p>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                    <Button
+                        variant="outline"
+                        size="icon-sm"
+                        onClick={() =>
+                            handleqtyChange(
+                                item,
+                                item.count - 1,
+                            )
+                        }
+                        className="p-2"
+                    >
+                        <Minus className="h-4 w-4" />
+                    </Button>
+                    <span className="w-6 text-center font-medium">
+                        {item.count}
+                    </span>
+                    <Button
+                        variant="outline"
+                        size="icon-sm"
+                        onClick={() =>
+                            handleqtyChange(
+                                item,
+                                item.count + 1,
+                            )
+                        }
+                    >
+                        <Plus className="h-4 w-4" />
+                    </Button>
+                </div>
+                <div className="text-right">
+                    {/* <p className="font-bold text-lg">
+                        {item.selectedVariant.currency}{(item.selectedVariant.price * item.count).toFixed(2)}
+                    </p> */}
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => remove(item.selectedVariant.id)}
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                    >
+                        <Trash2 className="h-4 w-4 mr-1" /> Remove
+                    </Button>
+                </div>
+
+            </div>
+        </div>
+    )
 }
