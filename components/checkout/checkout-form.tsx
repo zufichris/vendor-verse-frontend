@@ -135,7 +135,7 @@ export function CheckoutForm() {
             Back
           </Button>
         )}
-        <div className="ml-auto">
+        <div className="ml-auto mb-4 lg:mb-0">
           {currentStep < 4 ? (
             <Button
               onClick={handleNextStep}

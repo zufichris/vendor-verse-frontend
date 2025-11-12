@@ -19,7 +19,7 @@ export function ShippingMethod() {
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <Truck className="h-5 w-5" />
-                    Shipping Method
+                    Delivery Option
                 </CardTitle>
             </CardHeader>
             <CardContent>
@@ -35,7 +35,7 @@ export function ShippingMethod() {
                                 className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-gray-50 transition-colors"
                             >
                                 <RadioGroupItem value={option.id} id={option.id} />
-                                <IconComponent className="h-5 w-5 text-gray-600" />
+                                <IconComponent className="h-5 w-5 text-gray-600 hidden sm:block" />
                                 <div className="flex-1">
                                     <Label htmlFor={option.id} className="font-medium cursor-pointer">
                                         {option.name}

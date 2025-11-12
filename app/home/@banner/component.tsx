@@ -5,6 +5,7 @@ import { Banner } from "./page";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export function Banners({ banners }: { banners: Banner[] }) {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -43,11 +44,13 @@ export function Banners({ banners }: { banners: Banner[] }) {
                 >
                     <div className="relative h-full">
                         {
-                            banner.image && <img
+                            banner.image && <Image
+                            priority
+                                fill
                                 src={banner.image || "/placeholder.svg"}
                                 alt={banner.title}
                                 className="w-full h-full object-cover object-top"
-                                loading={index === 0 ? "eager" : "lazy"}
+                                // loading={index === 0 ? "eager" : "lazy"}
                             />
                         }
                         {

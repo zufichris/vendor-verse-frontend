@@ -15,7 +15,7 @@ import {
 import { useCheckoutStore } from "@/lib/stores/checkout";
 import { User as UserT } from "@/types/user";
 import { PhoneInput } from "../ui/phone-input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const countries = ["United Arab Emirates"];
 
@@ -35,6 +35,14 @@ export function ContactInformation({ user }: Props) {
     } = useCheckoutStore();
 
     const [sameShipping, setSameShipping] = useState(true)
+
+    useEffect(()=>{
+        console.log(user)
+        if (user && user.phone) {
+            console.log('settiing phone')
+            handleInputChange('phone', user.phone)
+        }
+    },[user])
     
 
     return (
@@ -46,7 +54,7 @@ export function ContactInformation({ user }: Props) {
                         Contact Information
                     </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 mx-auto">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <Label htmlFor="email">Email Address *</Label>
@@ -69,18 +77,16 @@ export function ContactInformation({ user }: Props) {
                         <div>
                             <Label htmlFor="phone">Phone Number</Label>
                             {
-                                !!user?.phone ? <p className="mb-1 font-medium">{user.phone}</p> : (
-                                    <PhoneInput
-                                        name={"phone"}
-                                        international
-                                        countryCallingCodeEditable={false}
-                                        defaultCountry="AE"
-                                        id="phone"
-                                        value={formData.phone}
-                                        onChange={(e) => handleInputChange("phone", e ?? "")}
-                                        placeholder="Enter your phone number"
-                                    />
-                                )
+                                <PhoneInput
+                                    name={"phone"}
+                                    international
+                                    countryCallingCodeEditable={false}
+                                    defaultCountry="AE"
+                                    id="phone"
+                                    value={formData.phone}
+                                    onChange={(e) => handleInputChange("phone", e ?? "")}
+                                    placeholder="Enter your phone number"
+                                />
                             }
                             {errors.phone && (
                                 <p className="text-sm mt-1 text-red-500">{errors.phone}</p>
@@ -198,7 +204,7 @@ export function ContactInformation({ user }: Props) {
                                 >
                                     <SelectValue placeholder="Select state" />
                                 </SelectTrigger>
-                                <SelectContent>
+                                <SelectContent className="bg-primary-foreground">
                                     {states.map((state) => (
                                         <SelectItem key={state} value={state}>
                                             {state}
