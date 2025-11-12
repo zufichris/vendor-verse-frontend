@@ -7,9 +7,12 @@ import { Card, CardContent } from "@/components/ui/card"
 import { useCheckoutStore } from "@/lib/stores/checkout"
 import { Order } from "@/types/order.types"
 import { useRouter } from "next/navigation"
+import { shippingOptions } from "@/constants/shipping"
 
 export function OrderConfirmation({order}:{order:Order}) {
     const { formData } = useCheckoutStore()
+
+    const shippingInfo = shippingOptions.find(itm => itm.price === order.shipping)
 
 
 
@@ -42,7 +45,7 @@ export function OrderConfirmation({order}:{order:Order}) {
                                     <Truck className="h-5 w-5 text-green-600" />
                                     <h3 className="font-semibold">Estimated Delivery</h3>
                                 </div>
-                                <p className="text-sm text-gray-600">5-7 business days</p>
+                                <p className="text-sm text-gray-600">{shippingInfo?.description || '0-1 business days'}</p>
                             </CardContent>
                         </Card>
                     </div>

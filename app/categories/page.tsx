@@ -118,15 +118,15 @@ export default async function() {
                     <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
                         Shop by Category
                     </h1>
-                    <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    {/* <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                         Discover our carefully curated collections designed to help you find
                         exactly what you're looking for. Each category features premium
                         products from trusted brands.
-                    </p>
+                    </p> */}
                 </div>
 
                 {/* Stats Bar */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+                {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
                     <div className="text-center">
                         <div className="text-3xl font-bold text-gray-900 mb-2">
                             {totalCount}+
@@ -145,7 +145,7 @@ export default async function() {
                         <div className="text-3xl font-bold text-gray-900 mb-2">4.8★</div>
                         <div className="text-gray-600">Rating</div>
                     </div>
-                </div>
+                </div> */}
 
                 {/* Categories Grid */}
                 <div className="space-y-12">

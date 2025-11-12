@@ -24,29 +24,31 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { ContactEmail, ContactPhone } from "@/lib/constants";
+import { submitContactUs } from "@/lib/actions/contact";
 
 const contactMethods = [
     {
         icon: Mail,
         title: "Email Support",
         description: "Get help via email within 24 hours",
-        contact: "support@vendorverse.com",
+        contact: ContactEmail,
         available: "24/7",
     },
     {
         icon: Phone,
         title: "Phone Support",
         description: "Speak directly with our support team",
-        contact: "+1 (555) 123-4567",
+        contact: ContactPhone,
         available: "Mon-Fri, 9AM-6PM EST",
     },
-    {
-        icon: MessageCircle,
-        title: "Live Chat",
-        description: "Instant help through live chat",
-        contact: "Available on website",
-        available: "Mon-Fri, 9AM-9PM EST",
-    },
+    // {
+    //     icon: MessageCircle,
+    //     title: "Live Chat",
+    //     description: "Instant help through live chat",
+    //     contact: "Available on website",
+    //     available: "Mon-Fri, 9AM-9PM EST",
+    // },
 ];
 
 const faqs = [
@@ -93,9 +95,7 @@ export default function ContactPage() {
         e.preventDefault();
         setIsSubmitting(true);
         setError("");
-        const result = {
-            success: false
-        }
+        const result = await submitContactUs(formData)
 
         if (result.success) {
             setIsSubmitted(true);
@@ -301,7 +301,7 @@ export default function ContactPage() {
                         </Card>
 
                         {/* Office Information */}
-                        <Card>
+                        {/* <Card>
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
                                     <MapPin className="h-5 w-5" />
@@ -325,10 +325,10 @@ export default function ContactPage() {
                                     </div>
                                 </div>
                             </CardContent>
-                        </Card>
+                        </Card> */}
 
                         {/* Quick Links */}
-                        <Card>
+                        {/* <Card>
                             <CardHeader>
                                 <CardTitle>Quick Help</CardTitle>
                             </CardHeader>
@@ -366,12 +366,12 @@ export default function ContactPage() {
                                     </Button>
                                 </div>
                             </CardContent>
-                        </Card>
+                        </Card> */}
                     </div>
                 </div>
 
                 {/* FAQ Section */}
-                <div className="mt-16">
+                {/* <div className="mt-16">
                     <Card>
                         <CardHeader>
                             <CardTitle className="text-center">
@@ -400,7 +400,7 @@ export default function ContactPage() {
                             </div>
                         </CardContent>
                     </Card>
-                </div>
+                </div> */}
             </div>
         </div>
     );

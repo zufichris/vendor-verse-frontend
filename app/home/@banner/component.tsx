@@ -38,7 +38,7 @@ export function Banners({ banners }: { banners: Banner[] }) {
             {filteredBanners.map((banner, index) => (
                 <div
                     key={banner.title}
-                    className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${index === currentSlide ? "opacity-100" : "opacity-0"
+                    className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${index === currentSlide ? "opacity-100 z-50" : "opacity-0"
                         }`}
                 >
                     <div className="relative h-full">
@@ -98,7 +98,7 @@ export function Banners({ banners }: { banners: Banner[] }) {
             <Button
                 variant="ghost"
                 size="icon"
-                className="hidden md:flex absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 text-white hover:bg-white/20 z-10 bg-black/20 backdrop-blur-sm rounded-full"
+                className="hidden md:flex absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 text-white hover:bg-white/20 bg-black/20 backdrop-blur-sm rounded-full z-50"
                 onClick={prevSlide}
             >
                 <ChevronLeft className="h-6 w-6 lg:h-7 lg:w-7" />
@@ -106,7 +106,7 @@ export function Banners({ banners }: { banners: Banner[] }) {
             <Button
                 variant="ghost"
                 size="icon"
-                className="hidden md:flex absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 text-white hover:bg-white/20 z-10 bg-black/20 backdrop-blur-sm rounded-full"
+                className="hidden md:flex absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 text-white hover:bg-white/20 bg-black/20 backdrop-blur-sm rounded-full z-50"
                 onClick={nextSlide}
             >
                 <ChevronRight className="h-6 w-6 lg:h-7 lg:w-7" />

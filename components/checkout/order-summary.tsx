@@ -40,7 +40,7 @@ export function OrderSummary() {
                                 <h4 className="font-medium text-sm truncate">
                                     {item.productName}
                                 </h4>
-                                <p className="text-sm text-gray-600">${item.selectedVariant.price}</p>
+                                <p className="text-sm text-gray-600">{item.selectedVariant.currency}{item.selectedVariant.price}</p>
                             </div>
                             <span className="font-medium text-sm">
                                 {item.selectedVariant.currency}{(item.selectedVariant.price * item.count).toFixed(2)}
@@ -75,7 +75,7 @@ export function OrderSummary() {
                     </div>
                 </div>
 
-                <div className="space-y-2 pt-4 border-t">
+                {/* <div className="space-y-2 pt-4 border-t">
                     <div className="flex items-center gap-2 text-sm text-gray-600">
                         <Shield className="h-4 w-4" />
                         <span>Secure SSL encryption</span>
@@ -88,7 +88,7 @@ export function OrderSummary() {
                         <Star className="h-4 w-4" />
                         <span>24/7 customer support</span>
                     </div>
-                </div>
+                </div> */}
             </CardContent>
         </Card>
     );

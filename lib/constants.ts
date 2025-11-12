@@ -1,4 +1,4 @@
-export const ContactEmail = 'tarrynpetersen4@gmail.com' as const
+export const ContactEmail = 'info@aetli.ae' as const
 
 export const ContactPhone = '+971502203753' as const
 
