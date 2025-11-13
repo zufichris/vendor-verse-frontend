@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import MovementModal from "./movement-dialog"
 
 export default function AboutPage() {
   const [isVisible, setIsVisible] = useState(false)
@@ -207,10 +208,13 @@ export default function AboutPage() {
             Whether you're in the gym, on the mat, out for a walk, building businesses, raising families, or doing all
             of the above — you already belong here.
           </p>
-
-          <button className="inline-flex items-center justify-center px-8 py-4 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors duration-300 text-lg">
+          <MovementModal trigger={
+            <button className="inline-flex items-center justify-center px-8 py-4 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors duration-300 text-lg">
             Join the Movement
           </button>
+          } />
+
+          
         </div>
       </section>
 
