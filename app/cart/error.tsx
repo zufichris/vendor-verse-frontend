@@ -16,8 +16,6 @@ export default function CartError({
     console.error("Cart error:", error);
   }, [error]);
 
-  console.log(error)
-
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
       <div className="  mx-auto px-4 py-16">

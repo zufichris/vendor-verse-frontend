@@ -84,9 +84,6 @@ export default function AccountPage() {
         (async()=>{
             try {
                 const [ordersCountRes, ordersRes] = await Promise.all([getMyOrdersCount(), getMyOrders()])
-
-                console.log(ordersCountRes)
-                console.log(ordersRes)
                 ordersCountRes.success && setOrdersCount(ordersCountRes.data || 0)
                 ordersRes.success && setOrders(ordersRes.data!)
             } catch (err) {

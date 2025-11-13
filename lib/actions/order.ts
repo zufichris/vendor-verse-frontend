@@ -38,3 +38,6 @@ export async function cancelMyOrder(id: string, note?: string) {
 export async function getOrderByNumber(id: string) {
   return await Api.get<Order>(`/orders/${id}`)
 }
+export async function getOrderTrackingInfo(id: string) {
+  return await Api.get<Order>(`/orders/tracking/${id}`)
+}
