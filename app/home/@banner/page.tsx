@@ -29,14 +29,14 @@ export default async function() {
         return <div></div>
     }
 
-//     const b:(Omit<Banner, 'id'> & {id: string, slug: string})[] = [
+    const b:(Omit<Banner, 'id'> & {id: string, slug: string})[] = [
 //   {
-//     title: 'Performance Leggings',
-//     subtitle: 'move with confidence',
+//     title: 'Shop Soft Sculpt Collection',
+//     subtitle: '',
 //     slug: 'performance-leggings',
-//     description: 'High-waisted, squat-proof leggings engineered for maximum comfort and support during any workout.',
-//     cta: 'Shop Leggings',
-//     image: '/banners/banner11.png',
+//     description: '',
+//     cta: 'Explore',
+//     image: '/banners/bannerxx.webp',
 //     link: '/shop?category=leggins',
 //     createdAt: '2025-07-17T06:28:33.005Z',
 //     updatedAt: '2025-11-10T20:48:34.492Z',
@@ -69,22 +69,22 @@ export default async function() {
 //     color: '',
 //     id: '68789810a4fe364b86137f08'
 //   },
-//   {
-//     title: 'Training Jackets',
-//     subtitle: 'layer up in style',
-//     slug: 'training-jackets',
-//     description: 'Lightweight, resistant jackets perfect for warm-ups, cool-downs, and everything in between.',
-//     cta: 'Shop Jackets',
-//     image: '',
-//     color: '#fff',
-//     link: '/shop?category=jackets',
-//     video: 'https://pub-17efedec55164e89bd4ffc8eb8674e04.r2.dev/public/banner4.mp4',
-//     createdAt: '2025-11-10T22:33:47.701Z',
-//     updatedAt: '2025-11-10T22:33:47.701Z',
-//     id: '6912684b894fe6cfd87207a0'
-//   }
-// ]
+  {
+    title: 'Shop Soft Sculpt Collection',
+    subtitle: '',
+    slug: 'training-jackets',
+    description: '',
+    cta: 'Explore',
+    image: '',
+    color: '#fff',
+    link: '/shop?category=jackets',
+    video: '/banners/video-banner.mp4',
+    createdAt: '2025-11-10T22:33:47.701Z',
+    updatedAt: '2025-11-10T22:33:47.701Z',
+    id: '6912684b894fe6cfd87207a0'
+  }
+]
 
-    console.log(res.data.data)
-    return <Banners banners={res.data.data} />;
+    // console.log(res.data.data)
+    return <Banners banners={b as unknown as Banner[]} />;
 }

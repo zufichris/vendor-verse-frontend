@@ -57,14 +57,14 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="order-1 md:order-2">
-              <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
-                {/* <Image
+              {/* <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+                <Image
                   src="/portrait-of-confident-woman-founder-tarryn-peterse.jpg"
                   alt="Tarryn Petersen, Aetli Founder"
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-500"
-                /> */}
-              </div>
+                />
+              </div> */}
             </div>
           </div>
         </div>
@@ -82,17 +82,17 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                icon: "✨",
+                icon: "",
                 title: "Thoughtful Design",
                 description: "Buttery soft, supportive and flattering pieces crafted with care and intention",
               },
               {
-                icon: "💪",
+                icon: "",
                 title: "Build Confidence",
                 description: "Every piece empowers you to feel your most confident and beautiful",
               },
               {
-                icon: "🤝",
+                icon: "",
                 title: "Community First",
                 description: "A space where women show up for one another and lift each other up",
               },
@@ -178,7 +178,7 @@ export default function AboutPage() {
               {[
                 "/banners/banner2.jpg",
                 "/banners/banner1.jpg",
-                "/womens-comfort-clothing-collection.jpg",
+                // "/womens-comfort-clothing-collection.jpg",
                 "/banners/banner3.jpg",
               ].map((src, index) => (
                 <div key={index} className="relative h-64 rounded-lg overflow-hidden group">

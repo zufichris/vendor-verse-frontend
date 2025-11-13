@@ -17,7 +17,7 @@ export function Banners({ banners }: { banners: Banner[] }) {
             
             const timer = setInterval(() => {
                 setCurrentSlide((prev) => (prev + 1) % banners.length);
-            }, 10000); // changes after every 10 secs
+            }, 5000); // changes after every 10 secs
             return () => clearInterval(timer);
         }
     }, []);
@@ -35,21 +35,21 @@ export function Banners({ banners }: { banners: Banner[] }) {
     };
 
     return (
-        <section className="relative h-screen overflow-hidden">
+        <section className="relative hscreen mt-20 overflow-hidden">
             {filteredBanners.map((banner, index) => (
                 <div
-                    key={banner.title}
-                    className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${index === currentSlide ? "opacity-100 z-50" : "opacity-0"
+                    key={banner.title+banner.slug+banner.id}
+                    className={` inset0 transition-opacity duration-500 ease-in-out ${index === currentSlide ? "opacity-100 z-50" : "opacity-0"
                         }`}
                 >
-                    <div className="relative h-full">
+                    <div className="relative w-full h-full">
                         {
                             banner.image && <Image
-                            priority
+                                priority
                                 fill
                                 src={banner.image || "/placeholder.svg"}
                                 alt={banner.title}
-                                className="w-full h-full object-cover object-top"
+                                className="w-full h-full object-contain object-center"
                                 // loading={index === 0 ? "eager" : "lazy"}
                             />
                         }
@@ -62,7 +62,7 @@ export function Banners({ banners }: { banners: Banner[] }) {
                                 muted
                                 playsInline
 
-                                className="w-full h-full object-cover object-top"
+                                className="w-full h-full object-contain object-center"
                             >
                                 <source src={banner.video} type="video/mp4" />
                             </video>
