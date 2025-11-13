@@ -49,13 +49,13 @@ export default async function HomePage() {
           </p>
         </div>
 
-        <Tabs className="mb-8">
+        {/* <Tabs className="mb-8">
           <TabsList className="grid w-full max-w-md mx-auto grid-cols-3">
             <TabsTrigger value="all">All Products</TabsTrigger>
             <TabsTrigger value="new">New Arrivals</TabsTrigger>
             <TabsTrigger value="sale">On Sale</TabsTrigger>
           </TabsList>
-        </Tabs>
+        </Tabs> */}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
           {shuffledGroups.slice(0, 4).map((product, index) => (
