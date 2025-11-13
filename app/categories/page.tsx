@@ -50,12 +50,12 @@ function CategoryCard({ category }: { category: ProductCategory }) {
                                     </h3>
                                     <TrendingUp className="h-5 w-5 text-secondary" />
                                 </div>
-                                <p className="text-gray-600 text-lg leading-relaxed">
+                                {/* <p className="text-gray-600 text-lg leading-relaxed">
                                     {category.description}
-                                </p>
+                                </p> */}
                             </div>
 
-                            <div className="grid sm:grid-cols-2 gap-4">
+                            {/* <div className="grid sm:grid-cols-2 gap-4">
                                 {categoryBenefits.map((benefit, index) => {
                                     const IconComponent = benefit.icon;
                                     return (
@@ -69,7 +69,7 @@ function CategoryCard({ category }: { category: ProductCategory }) {
                                         </div>
                                     );
                                 })}
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className="pt-6">

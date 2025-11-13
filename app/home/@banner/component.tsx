@@ -55,8 +55,6 @@ export function Banners({ banners }: { banners: Banner[] }) {
                         }
                         {
                             banner?.video && <video
-                                
-                                controls
                                 autoPlay
                                 loop
                                 muted
