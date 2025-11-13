@@ -8,8 +8,10 @@ import { useCheckoutStore } from "@/lib/stores/checkout"
 import { Order } from "@/types/order.types"
 import { useRouter } from "next/navigation"
 import { shippingOptions } from "@/constants/shipping"
+import { useAuthStore } from "@/lib/stores/auth"
 
 export function OrderConfirmation({order}:{order:Order}) {
+    const {user} = useAuthStore()
     const { formData } = useCheckoutStore()
 
     const shippingInfo = shippingOptions.find(itm => itm.price === order.shipping)
@@ -51,9 +53,12 @@ export function OrderConfirmation({order}:{order:Order}) {
                     </div>
 
                     <div className="space-y-4">
-                        <Link href={`/account/orders/${order?.orderNumber}`}>
+                        {
+                            !user ? <Button className="w-full md:w-auto px-8 bg-gray-900 hover:bg-gray-800" disabled>Track Your Order</Button> : <Link href={`/account/orders/${order?.orderNumber}`}>
                             <Button className="w-full md:w-auto px-8 bg-gray-900 hover:bg-gray-800">Track Your Order</Button>
                         </Link>
+                        }
+                        
                         <Link href="/shop">
                             <Button variant="outline" className="w-full md:w-auto px-8 ml-0 md:ml-4 bg-transparent">
                                 Continue Shopping

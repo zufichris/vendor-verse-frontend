@@ -1,5 +1,5 @@
 import { OrderConfirmation } from '@/components/checkout/order-confirmation';
-import { getOrderByNumber } from '@/lib/actions/order'
+import { getOrderTrackingInfo } from '@/lib/actions/order'
 import { notFound } from 'next/navigation';
 import React from 'react'
 interface Props{
@@ -9,7 +9,7 @@ interface Props{
 export default async function OrderConfirmationPage({params}:Props) {
     const {number} = await params;
     
-    const order = await getOrderByNumber(number)
+    const order = await getOrderTrackingInfo(number)
 
     if (!order.success || !order.data) {
         return notFound()
