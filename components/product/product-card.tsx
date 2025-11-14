@@ -400,7 +400,7 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                         {/* Product Info */}
                         <div className="p-3 space-y-2">
                             {/* Rating and Brand */}
-                            <div className="flex items-center justify-between">
+                            {/* <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-1">
                                     <div className="flex items-center">
                                         {[...Array(5)].map((_, i) => (
@@ -413,12 +413,12 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                                     </div>
                                     <span className="text-xs text-gray-600 ml-1">4.3 (12)</span>
                                 </div>
-                                {/* {product.brand?.trim() && (
+                                {product.brand?.trim() && (
                                     <Badge variant="outline" className="text-xs font-medium">
                                         {product.brand}
                                     </Badge>
-                                )} */}
-                            </div>
+                                )}
+                            </div> */}
 
                             {/* Product Name */}
                             <Link href={`/products/${product.productSlug}:${product.slug}`}>
@@ -472,7 +472,7 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                             </div> */}
 
                             {/* Features */}
-                            {variant === "featured" && (
+                            {/* {variant === "featured" && (
                                 <div className="flex items-center gap-4 text-[10px] text-gray-600 pt-2 border-t border-gray-100">
                                     <div className="flex items-center gap-1">
                                         <Truck className="h-2.5 w-2.5" />
@@ -487,7 +487,7 @@ export function ProductCard({ product, showQuickView = true }: ProductCardProps)
                                         <span>Fast Delivery</span>
                                     </div>
                                 </div>
-                            )}
+                            )} */}
                         </div>
                     </CardContent>
                 </Card>
