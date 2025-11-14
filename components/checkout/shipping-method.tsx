@@ -7,12 +7,17 @@ import { Label } from "@/components/ui/label"
 import { useCheckoutStore } from "@/lib/stores/checkout"
 import { shippingOptions } from "@/constants/shipping"
 import { useCartStore } from "@/lib/stores/cart"
+import { useEffect } from "react"
 
 
 
 export function ShippingMethod() {
     const { shippingMethod, setShippingMethod } = useCheckoutStore()
-    const {updateShipping} = useCartStore()
+    const {updateShipping, shipping} = useCartStore()
+
+    useEffect(()=>{
+        setShippingMethod(shipping === 0 ? 'free' : 'standard')
+    },[shipping])
 
     return (
         <Card>
@@ -26,8 +31,8 @@ export function ShippingMethod() {
                 <RadioGroup value={shippingMethod} onValueChange={(val)=>{
                     setShippingMethod(val)
                     updateShipping(val)
-                }}>
-                    {shippingOptions.map((option) => {
+                }} disabled={shippingMethod==='free'}>
+                    {shippingOptions.filter(itm => shippingMethod === 'free' ? itm.id === 'free' : itm.id !== 'free').map((option) => {
                         const IconComponent = option.icon
                         return (
                             <div

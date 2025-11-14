@@ -3,6 +3,7 @@ import { Product, ProductVariant } from "@/types/product";
 import { shippingOptions } from "@/constants/shipping";
 import { Api, QueryResponse } from "@/utils";
 import { User } from "@/types/user";
+import { freeShipping } from "../constants";
 
 export interface CartItem {
   count: number;
@@ -49,7 +50,7 @@ const computeTotals = (items: CartItem[], shippingCost: number = defaultShipping
   const subtotal = Number(
     items.reduce((sum, i) => sum + i.selectedVariant.price * i.count, 0).toFixed(2),
   );
-  const shipping = shippingCost;
+  const shipping = subtotal >= freeShipping.amount ? 0 : shippingCost;
   const tax = taxCost;
   const finalTotal = subtotal + shipping + tax;
   const totalItems = items.reduce((sum, i) => sum + i.count, 0);
@@ -57,13 +58,13 @@ const computeTotals = (items: CartItem[], shippingCost: number = defaultShipping
 };
 
 export const useCartStore = create<CartStore>((set, get) => ({
-    items: [],
-    totalItems: 0,
-    subtotal: 0,
-    shipping: defaultShippingCost,
-    finalTotal: 0,
-    isLoading: true,
-    tax:0,
+  items: [],
+  totalItems: 0,
+  subtotal: 0,
+  shipping: defaultShippingCost,
+  finalTotal: 0,
+  isLoading: true,
+  tax: 0,
 
   initCart: async () => {
 
@@ -178,16 +179,16 @@ export const useCartStore = create<CartStore>((set, get) => ({
     }
   },
 
-    updateShipping(method: string) {
-        const shippingOption = shippingOptions.find((opt) => opt.id === method);
-        if (!shippingOption) return;
-        const shippingCost = shippingOption.price;
-        const getter = get();
-        const items = getter.items;
-        const totals = computeTotals(items, shippingCost,);
-        set({ ...totals });
+  updateShipping(method: string) {
+    const shippingOption = shippingOptions.find((opt) => opt.id === method);
+    if (!shippingOption) return;
+    const shippingCost = shippingOption.price;
+    const getter = get();
+    const items = getter.items;
+    const totals = computeTotals(items, shippingCost,);
+    set({ ...totals });
 
-    },
+  },
 
   clearCart: () => {
     localStorage.removeItem(STORAGE_KEY);

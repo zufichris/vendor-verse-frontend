@@ -1,3 +1,4 @@
+import MovementBanner from "@/components/home/movement-banner";
 import { ProductCard } from "@/components/product/product-card";
 import { shuffleVariants } from "@/lib/utils";
 import type { Product } from "@/types/product";
@@ -38,6 +39,7 @@ export default async function HomePage() {
 
   return (
     <section className="py-16">
+      <MovementBanner />
       <div className="mx-auto px-4">
         <div className="text-center mb-12 animate-slide-up">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">

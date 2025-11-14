@@ -17,6 +17,7 @@ import Link from "next/link";
 import ShareButton from "./share-btn";
 import WishlistButton from "./wishlist-btn";
 import ProductDescription from "./product-description";
+import { freeShipping } from "@/lib/constants";
 
 interface ProductDetailsProps {
     product: Product;
@@ -226,7 +227,7 @@ export function ProductDetails({ product, selectedVariant }: ProductDetailsProps
                                     <div>
                                         <p className="font-medium">Free Shipping</p>
                                         <p className="text-sm text-muted-foreground">
-                                            On orders over AED350
+                                            On orders over {freeShipping.currency}{freeShipping.amount}
                                         </p>
                                     </div>
                                 </div>
