@@ -1,3 +1,4 @@
+import { freeShipping } from "@/lib/constants";
 import { Package, PackageCheck } from "lucide-react";
 
 export const shippingOptions = [
@@ -15,6 +16,15 @@ export const shippingOptions = [
         name: "Express Delivery",
         description: "Same day delivery (within Dubai)",
         price: 35,
+        icon: PackageCheck,
+        isDefault: true,
+        currency: 'AED'
+    },
+    {
+        id: "free",
+        name: "Free Delivery",
+        description: `Free Deliver over ${freeShipping.currency}${freeShipping.amount} purchases`,
+        price: 0,
         icon: PackageCheck,
         isDefault: true,
         currency: 'AED'

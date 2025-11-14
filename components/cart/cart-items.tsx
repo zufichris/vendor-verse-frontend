@@ -9,6 +9,8 @@ import { Separator } from "@/components/ui/separator";
 import CartPageLoading from "@/app/cart/loading";
 import { CartItem, useCartStore } from "@/lib/stores/cart";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useEffect } from "react";
+import { freeShipping } from "@/lib/constants";
 
 export function CartItems() {
     const {
@@ -21,7 +23,8 @@ export function CartItems() {
         update,
         removeFromCart,
         clearCart,
-        tax
+        tax,
+        updateShipping
     } = useCartStore();
 
     const currency = items[0]?.selectedVariant.currency || "AED";

@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import type React from "react"
@@ -11,9 +11,11 @@ import { subscribeNewsLetter } from "@/lib/actions/newsletter"
 
 interface Props {
   trigger?: ReactNode
+  defaultOpen?: boolean
 }
 
-export default function MovementModal({ trigger }: Props) {
+export default function MovementModal({ trigger, defaultOpen = false }: Props) {
+  const [open, setOpen] = useState(defaultOpen||false)
   const [email, setEmail] = useState("")
   const [fname, setfName] = useState("")
   const [lname, setlName] = useState("")
@@ -46,7 +48,7 @@ export default function MovementModal({ trigger }: Props) {
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {trigger ?? (
           <Button size="lg" className="font-semibold">
@@ -54,29 +56,47 @@ export default function MovementModal({ trigger }: Props) {
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-[95vw] sm:max-w-2xl p-0 overflow-hidden border-0 bg-gradient-to-br from-accent via-background to-background">
+      <DialogContent className="max-w-[95vw] sm:max-w-2xl max-h-[90vh] p-0 overflow-y-auto border-0 bg-gradient-to-br from-accent via-background to-background">
+        <DialogClose className="absolute right-4 top-4 z-50 rounded-full bg-background/80 backdrop-blur-sm p-2 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-foreground"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+          <span className="sr-only">Close</span>
+        </DialogClose>
         {!isSubmitted ? (
           <div className="grid md:grid-cols-2 gap-0">
             {/* Left Side - Visual Content */}
-            <div className="relative bg-gradient-to-br from-primary to-foreground p-8 md:p-10 flex flex-col justify-between min-h-[300px] md:min-h-[500px]">
+            <div className="relative bg-gradient-to-br from-primary to-foreground p-6 md:p-10 flex flex-col justify-between md:min-h-[500px]">
               <div className="absolute inset-0 opacity-10">
                 <div className="absolute top-10 right-10 w-32 h-32 rounded-full bg-primary-foreground blur-3xl" />
                 <div className="absolute bottom-10 left-10 w-40 h-40 rounded-full bg-primary-foreground blur-3xl" />
               </div>
 
               <div className="relative z-10">
-                <div className="inline-block px-3 py-1 rounded-full bg-primary-foreground/20 text-primary-foreground text-xs font-semibold mb-6 backdrop-blur-sm">
+                <div className="inline-block px-3 py-1 rounded-full bg-primary-foreground/20 text-primary-foreground text-xs font-semibold mb-4 md:mb-6 backdrop-blur-sm">
                   EXCLUSIVE OFFER
                 </div>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 leading-tight text-balance">
+                <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-3 md:mb-4 leading-tight text-balance">
                   Join the Movement
                 </h2>
-                <p className="text-primary-foreground/90 text-base md:text-lg leading-relaxed">
+                <p className="text-primary-foreground/90 text-sm md:text-lg leading-relaxed">
                   Get 10% off your first order and be part of our community of women empowering women through fitness.
                 </p>
               </div>
 
-              <div className="relative z-10 space-y-4">
+              <div className="relative z-10 space-y-3 md:space-y-4 mt-6 md:mt-0">
                 <div className="flex items-start gap-3">
                   <div className="w-6 h-6 rounded-full bg-primary-foreground/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <svg
@@ -120,8 +140,8 @@ export default function MovementModal({ trigger }: Props) {
             </div>
 
             {/* Right Side - Form */}
-            <div className="p-8 md:p-10 flex flex-col justify-center bg-card">
-              <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="p-6 md:p-10 py-8 flex flex-col justify-center bg-card">
+              <form onSubmit={handleSubmit} className="space-y-5 md:space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-sm font-medium text-foreground">
                     First Name
@@ -171,7 +191,7 @@ export default function MovementModal({ trigger }: Props) {
                   <Checkbox
                     id="marketing"
                     checked={acceptsMarketing}
-                    // onCheckedChange={(checked) => setAcceptsMarketing(checked as boolean)}
+                    onCheckedChange={(checked) => setAcceptsMarketing(checked as boolean)}
                     className="mt-1"
                   />
                   <Label htmlFor="marketing" className="text-xs text-muted-foreground leading-relaxed cursor-pointer">
@@ -210,7 +230,7 @@ export default function MovementModal({ trigger }: Props) {
             </div>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center min-h-[400px] md:min-h-[500px] p-8 text-center">
+          <div className="flex flex-col items-center justify-center min-h-[350px] md:min-h-[500px] p-8 text-center">
             <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-6 animate-in zoom-in duration-500">
               <svg className="w-10 h-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />

@@ -6,7 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useCartStore } from "@/lib/stores/cart";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { freeShipping } from "@/lib/constants";
 
 export function OrderSummary() {
     const [promoDiscount, setPromoDiscount] = useState(0);
@@ -62,7 +63,7 @@ export function OrderSummary() {
                     )}
                     <div className="flex justify-between">
                         <span>Shipping</span>
-                        <span>{currency}{shipping.toFixed(2)}</span>
+                        <span>{shipping === 0 ? 'Free' : `${currency}${shipping.toFixed(2)}`}</span>
                     </div>
                     <div className="flex justify-between">
                         <span>Tax</span>

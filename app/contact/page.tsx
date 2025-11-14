@@ -35,13 +35,13 @@ const contactMethods = [
         contact: ContactEmail,
         available: "24/7",
     },
-    {
-        icon: Phone,
-        title: "Phone Support",
-        description: "Speak directly with our support team",
-        contact: ContactPhone,
-        available: "Mon-Fri, 9AM-6PM EST",
-    },
+    // {
+    //     icon: Phone,
+    //     title: "Phone Support",
+    //     description: "Speak directly with our support team",
+    //     contact: ContactPhone,
+    //     available: "Mon-Fri, 9AM-6PM EST",
+    // },
     // {
     //     icon: MessageCircle,
     //     title: "Live Chat",
