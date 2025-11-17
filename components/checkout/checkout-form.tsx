@@ -15,8 +15,13 @@ import { useAuthStore } from "@/lib/stores/auth";
 import { Order } from "@/types/order.types";
 import { Spinner } from "../ui/spinner";
 import { PaymentMethod } from "./payment-method";
+import { ValidCoupon } from "@/lib/actions/coupon";
 
-export function CheckoutForm() {
+interface Props{
+  welcomeCoupon: ValidCoupon | null
+}
+
+export function CheckoutForm({welcomeCoupon}: Props) {
     const {
         currentStep,
         setCurrentStep,
@@ -78,6 +83,7 @@ export function CheckoutForm() {
       })),
       tax,
       shipping,
+      couponCode: formData.discountCode,
       shippingAddress: {
         city: formData.shippingAddress || formData.billingAddress,
         country: formData.shippingCountry || formData.billingCountry,
@@ -126,7 +132,7 @@ export function CheckoutForm() {
       {currentStep === 1 && <ContactInformation user={user} />}
       {currentStep === 2 && <ShippingMethod />}
       {currentStep === 3 && <PaymentMethod />}
-      {currentStep === 4 && <OrderReview />}
+      {currentStep === 4 && <OrderReview welcomeCoupon={welcomeCoupon} />}
 
       <div className="flex justify-between">
         {currentStep > 1 && (

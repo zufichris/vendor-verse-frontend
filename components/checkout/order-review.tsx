@@ -4,10 +4,69 @@ import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCheckoutStore } from "@/lib/stores/checkout";
 import { CartItem, useCartStore } from "@/lib/stores/cart";
+import { validateCoupon, ValidCoupon } from "@/lib/actions/coupon";
+import { useEffect, useState } from "react";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { Spinner } from "../ui/spinner";
+import { toast } from "sonner";
+interface Props{
+  welcomeCoupon: ValidCoupon | null
+}
 
-export function OrderReview() {
-    const { formData } = useCheckoutStore();
-    const { items, shipping, finalTotal, tax } = useCartStore();
+export function OrderReview({welcomeCoupon}: Props) {
+    const { formData, handleInputChange } = useCheckoutStore();
+    const { items, shipping, finalTotal, tax, subtotal } = useCartStore();
+
+    const [couponCode, setCouponCode] = useState(welcomeCoupon?.valid ? (welcomeCoupon?.code || '') : '')
+    const [couponRate, setCouponRate] = useState(welcomeCoupon?.valid ? (welcomeCoupon?.discountRate || 0) : 0)
+    const [inputDisabled, setInputDisabled] = useState(welcomeCoupon?.valid||false)
+    const [isApplying, setIsApplying] = useState(false)
+
+    const discount = subtotal * couponRate / 100
+
+    const grandTotal = finalTotal -  discount;
+
+    async function handleApply(){
+        try {
+            if (!couponCode) {
+                return
+            }
+
+            if (couponCode.toLowerCase() === welcomeCoupon?.code?.toLowerCase()) {
+                return
+            }
+
+            setIsApplying(true)
+
+            const valid = await validateCoupon(couponCode)
+
+            if (valid && valid.valid) {
+                setCouponCode(valid.code)
+                setCouponRate(valid.discountRate)
+                handleInputChange('discountCode', valid.code)
+                handleInputChange('discountRate', valid.discountRate)
+                setInputDisabled(true)
+                toast.success("Coupon applied")
+            }else{
+                toast.error("Invalid coupon code")
+            }
+        } catch (err) {
+            console.log(err)
+        }finally{
+            setIsApplying(false)
+        }
+
+
+    }
+
+    useEffect(()=>{
+        if (welcomeCoupon && welcomeCoupon.valid) {
+            handleInputChange('discountCode', welcomeCoupon.code)
+            handleInputChange('discountRate', welcomeCoupon.discountRate)
+        }
+    },[])
+
 
     const currency = items[0]?.selectedVariant?.currency
 
@@ -17,6 +76,14 @@ export function OrderReview() {
                 <CardTitle>Review Your Order</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
+                <div className="space-y-4">
+                    <div className="flex items-center gap-2">
+                        <Input className="" placeholder="You have a coupon?" disabled={inputDisabled} value={couponCode} onChange={(e)=> setCouponCode(e.target.value)} />
+                        <Button type="button" size={'sm'} onClick={handleApply} disabled={inputDisabled || isApplying}>{
+                            isApplying ? <><Spinner />Checking</> : 'Apply'
+                            }</Button>
+                    </div>
+                </div>
                 <div className="space-y-4">
                     <h4 className="font-medium">Items in your order</h4>
                     {items.map((item) => (
@@ -45,8 +112,19 @@ export function OrderReview() {
                     ))}
                 </div>
 
+
                 {/*Shipping Summary */}
                 <div className="border-t pt-4">
+                    {/* Discount */}
+                    {
+                        discount > 0 && (
+                        <div className="flex justify-between my-2">
+                            <span>Discount:</span>
+                            <span>{currency}{discount.toFixed(2)}</span>
+                        </div>
+                        )
+                    }
+
                     <h4 className="font-medium mb-2">Shipping Summary</h4>
                     <div className="flex justify-between">
                         <span>Shipping:</span>
@@ -58,7 +136,7 @@ export function OrderReview() {
                     </div>
                     <div className="flex justify-between font-semibold">
                         <span>Total:</span>
-                        <span>{currency}{Number(finalTotal).toFixed(2)}</span>
+                        <span>{currency}{Number(grandTotal).toFixed(2)}</span>
                     </div>
                 </div>
 

@@ -5,8 +5,12 @@ import { CheckoutForm } from "@/components/checkout/checkout-form";
 import { OrderSummary } from "@/components/checkout/order-summary";
 import { StepIndicator } from "@/components/checkout/step-indicator";
 import CheckoutProvider from "@/components/checkout/checkout-provider";
+import { getWelcomeCoupon, ValidCoupon } from "@/lib/actions/coupon";
 
-export default function CheckoutPage() {
+export default async function CheckoutPage() {
+
+  // Try to fetch welcome coupon
+  let coupon: ValidCoupon | null = await getWelcomeCoupon()
 
   return (
     <div className="min-h-screen pt-20 bg-gray-50 flex items-center">
@@ -30,7 +34,7 @@ export default function CheckoutPage() {
             
             <div className="lg:grid lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
-                <CheckoutForm />
+                <CheckoutForm welcomeCoupon={coupon} />
               </div>
 
               <div className="lg:col-span-1">

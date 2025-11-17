@@ -8,13 +8,24 @@ import { Separator } from "@/components/ui/separator";
 import { useCartStore } from "@/lib/stores/cart";
 import { useEffect, useState } from "react";
 import { freeShipping } from "@/lib/constants";
+import { useCheckoutStore } from "@/lib/stores/checkout";
 
 export function OrderSummary() {
-    const [promoDiscount, setPromoDiscount] = useState(0);
-
     const { finalTotal, tax, subtotal, items, shipping } = useCartStore();
+    const {formData} = useCheckoutStore()
+
+    const [promoDiscount, setPromoDiscount] = useState(formData.discountRate || 0);
+
 
     const currency = items[0]?.selectedVariant.currency
+
+    const discount = subtotal * (formData.discountRate||0) / 100
+
+    const grandTotal = finalTotal - discount;
+
+    useEffect(()=>{
+        setPromoDiscount(formData.discountRate)
+    }, [formData.discountCode])
 
     return (
         <Card className="sticky top-24">
@@ -58,7 +69,7 @@ export function OrderSummary() {
                     {promoDiscount > 0 && (
                         <div className="flex justify-between text-green-600">
                             <span>Discount</span>
-                            <span>-{currency}{promoDiscount.toFixed(2)}</span>
+                            <span>-{currency}{discount.toFixed(2)}</span>
                         </div>
                     )}
                     <div className="flex justify-between">
@@ -72,7 +83,7 @@ export function OrderSummary() {
                     <Separator />
                     <div className="flex justify-between text-lg font-bold">
                         <span>Total</span>
-                        <span>{currency}{finalTotal.toFixed(2)}</span>
+                        <span>{currency}{grandTotal.toFixed(2)}</span>
                     </div>
                 </div>
 
