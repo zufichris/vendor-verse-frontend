@@ -26,6 +26,8 @@ interface FormData {
     cvv: string
     nameOnCard: string
     orderNotes: string
+    discountCode: string
+    discountRate: number
 }
 
 interface CheckoutStore {
@@ -40,13 +42,14 @@ interface CheckoutStore {
     finalTotal: number
     newsletter: boolean
 
+
     setCurrentStep: (step: number) => void
     setShippingMethod: (method: string) => void
-    setPaymentMethod:(method:string)=> void
+    setPaymentMethod: (method: string) => void
     setIsProcessing: (processing: boolean) => void
     setOrderComplete: (complete: boolean) => void
     setSaveInfo: (saveInfo: boolean) => void
-    handleInputChange: (field: keyof FormData, value: string) => void
+    handleInputChange: (field: keyof FormData, value: string | number) => void
     validateStep: (step: number) => boolean
 }
 
@@ -82,6 +85,8 @@ export const useCheckoutStore = create<CheckoutStore>((set, get) => ({
         cvv: "",
         nameOnCard: "",
         orderNotes: "",
+        discountCode: '',
+        discountRate: 0
     },
     newsletter: false,
     errors: {},
