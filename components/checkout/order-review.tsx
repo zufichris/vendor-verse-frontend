@@ -40,10 +40,8 @@ export function OrderReview({welcomeCoupon}: Props) {
             setIsApplying(true)
 
             const valid = await validateCoupon(couponCode)
-            console.log(valid)
 
             if (valid && valid.valid) {
-                console.log('Is valid')
                 setCouponCode(valid.code)
                 setCouponRate(valid.discountRate)
                 handleInputChange('discountCode', valid.code)
