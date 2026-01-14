@@ -30,10 +30,10 @@ interface FormData {
     discountRate: number
 }
 
-interface CheckoutStore {
+export interface CheckoutStore {
     currentStep: number
     paymentMethod: PaymentMethod
-    shippingMethod: string
+    shippingMethod: 'standard' | 'express' | 'free' | 'international'
     isProcessing: boolean
     orderComplete: boolean
     saveInfo: boolean
@@ -44,7 +44,7 @@ interface CheckoutStore {
 
 
     setCurrentStep: (step: number) => void
-    setShippingMethod: (method: string) => void
+    setShippingMethod: (method: CheckoutStore['shippingMethod']) => void
     setPaymentMethod: (method: string) => void
     setIsProcessing: (processing: boolean) => void
     setOrderComplete: (complete: boolean) => void

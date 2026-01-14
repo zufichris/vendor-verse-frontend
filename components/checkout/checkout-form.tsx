@@ -109,7 +109,8 @@ export function CheckoutForm({welcomeCoupon}: Props) {
         postalCode: formData.billingZipCode,
         state: formData.billingState,
         street: formData.billingApartment,
-      }
+      },
+      shippingMethod
       
     });
     if (res.success) {

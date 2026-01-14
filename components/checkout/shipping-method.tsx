@@ -4,20 +4,35 @@ import { Truck, Shield } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
-import { useCheckoutStore } from "@/lib/stores/checkout"
+import { CheckoutStore, useCheckoutStore } from "@/lib/stores/checkout"
 import { shippingOptions } from "@/constants/shipping"
 import { useCartStore } from "@/lib/stores/cart"
 import { useEffect } from "react"
 
+const mainCountry = 'united arab emirates'.replace(/\s+/g, ' ').trim().toLowerCase()
+
 
 
 export function ShippingMethod() {
-    const { shippingMethod, setShippingMethod } = useCheckoutStore()
+    const { shippingMethod, setShippingMethod, finalTotal, formData } = useCheckoutStore()
     const {updateShipping, shipping} = useCartStore()
 
+    const selectedCountry = (formData.shippingCountry || formData.billingCountry).replace(/\s+/g, ' ').trim().toLowerCase()
+
+    const withinSameCountry = selectedCountry === mainCountry
+
     useEffect(()=>{
-        setShippingMethod(shipping === 0 ? 'free' : 'standard')
-    },[shipping])
+        if (withinSameCountry) {
+            setShippingMethod(finalTotal >= 500 ? 'free' : 'standard')
+            updateShipping(finalTotal >= 500 ? 'free' : 'standard')
+        }else{
+            setShippingMethod('international')
+            updateShipping('international')
+
+        }
+    },[formData.shippingCountry, formData.billingCountry])
+
+    const ShippingOptions = !withinSameCountry ? shippingOptions.filter(opt => opt.id === 'international') : shippingOptions.filter(itm => shippingMethod === 'free' ? itm.id === 'free' : itm.id !== 'free' && itm.id !== 'international');
 
     return (
         <Card>
@@ -29,10 +44,10 @@ export function ShippingMethod() {
             </CardHeader>
             <CardContent>
                 <RadioGroup value={shippingMethod} onValueChange={(val)=>{
-                    setShippingMethod(val)
+                    setShippingMethod(val as CheckoutStore['shippingMethod'])
                     updateShipping(val)
-                }} disabled={shippingMethod==='free'}>
-                    {shippingOptions.filter(itm => shippingMethod === 'free' ? itm.id === 'free' : itm.id !== 'free').map((option) => {
+                }} disabled={!(ShippingOptions.length > 1)}>
+                    {ShippingOptions.map((option) => {
                         const IconComponent = option.icon
                         return (
                             <div

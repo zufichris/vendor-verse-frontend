@@ -29,4 +29,13 @@ export const shippingOptions = [
         isDefault: true,
         currency: 'AED'
     },
+    {
+        id: "international",
+        name: "International Shipping",
+        description: `International shipping are determined seperately after order. We'll contact you to confirm shipping cost.`,
+        price: 0,
+        icon: PackageCheck,
+        isDefault: true,
+        currency: 'AED'
+    },
 ]

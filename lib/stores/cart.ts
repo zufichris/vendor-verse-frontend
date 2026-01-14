@@ -61,7 +61,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
   items: [],
   totalItems: 0,
   subtotal: 0,
-  shipping: defaultShippingCost,
+  shipping: 0,
   finalTotal: 0,
   isLoading: true,
   tax: 0,
