@@ -475,7 +475,7 @@ export function ContactInformation({ user }: Props) {
                             onChange={(e) =>
                                 handleInputChange("shippingCountry", e.target.value)
                             }
-                            placeholder="State"
+                            placeholder="Country"
                             className={errors.shippingCountry ? "border-red-500" : ""}
                         />
                         {/* <Select
