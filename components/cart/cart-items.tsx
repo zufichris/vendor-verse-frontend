@@ -182,16 +182,16 @@ export function CartItems() {
                                         <span>Subtotal</span>
                                         <span>{currency}{subtotal.toFixed(2)}</span>
                                     </div>
-                                    <div className="flex justify-between">
+                                    {/* <div className="flex justify-between">
                                         <span>Shipping</span>
                                         <span>
-                                            {shipping === 0 ? "Free" : `${currency}${shipping.toFixed(2)}`}
+                                            {shipping === 0 ? "-" : `${currency}${shipping.toFixed(2)}`}
                                         </span>
-                                    </div>
-                                    <div className="flex justify-between">
+                                    </div> */}
+                                    {/* <div className="flex justify-between">
                                         <span>Tax</span>
-                                        <span>{currency}{tax}</span>
-                                    </div>
+                                        <span>{tax === 0 ? "-" : `${currency}${tax.toFixed(2)}`}</span>
+                                    </div> */}
                                     <Separator />
                                     <div className="flex justify-between text-lg font-bold">
                                         <span>Total</span>

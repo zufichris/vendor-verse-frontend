@@ -74,11 +74,11 @@ export function OrderSummary() {
                     )}
                     <div className="flex justify-between">
                         <span>Shipping</span>
-                        <span>{shipping === 0 ? 'Free' : `${currency}${shipping.toFixed(2)}`}</span>
+                        <span>{shipping === 0 ? '-' : `${currency}${shipping.toFixed(2)}`}</span>
                     </div>
                     <div className="flex justify-between">
                         <span>Tax</span>
-                        <span>{currency}{tax.toFixed(2)}</span>
+                        <span>{tax ? `${currency}${tax.toFixed(2)}` : '-'}</span>
                     </div>
                     <Separator />
                     <div className="flex justify-between text-lg font-bold">

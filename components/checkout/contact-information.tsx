@@ -37,7 +37,6 @@ export function ContactInformation({ user }: Props) {
     const [sameShipping, setSameShipping] = useState(true)
 
     useEffect(()=>{
-        console.log(user)
         if (user && user.phone) {
             console.log('settiing phone')
             handleInputChange('phone', user.phone)
@@ -110,8 +109,10 @@ export function ContactInformation({ user }: Props) {
                             <Input
                                 id="billingFirstName"
                                 value={formData.billingFirstName}
-                                onChange={(e) =>
+                                onChange={(e) =>{
                                     handleInputChange("billingFirstName", e.target.value)
+                                    sameShipping && handleInputChange("shippingFirstName", e.target.value)
+                                }
                                 }
                                 placeholder="First name"
                                 className={errors.billingFirstName ? "border-red-500" : ""}
@@ -127,8 +128,10 @@ export function ContactInformation({ user }: Props) {
                             <Input
                                 id="billingLastName"
                                 value={formData.billingLastName}
-                                onChange={(e) =>
+                                onChange={(e) =>{
                                     handleInputChange("billingLastName", e.target.value)
+                                    sameShipping && handleInputChange("shippingLastName", e.target.value)
+                                }
                                 }
                                 placeholder="Last name"
                                 className={errors.billingLastName ? "border-red-500" : ""}
@@ -146,10 +149,12 @@ export function ContactInformation({ user }: Props) {
                         <Input
                             id="billingAddress"
                             value={formData.billingAddress}
-                            onChange={(e) =>
+                            onChange={(e) =>{
                                 handleInputChange("billingAddress", e.target.value)
+                                sameShipping && handleInputChange("shippingAddress", e.target.value)
                             }
-                            placeholder="Street address"
+                            }
+                            placeholder="Building address"
                             className={errors.billingAddress ? "border-red-500" : ""}
                         />
                         {errors.billingAddress && (
@@ -166,8 +171,10 @@ export function ContactInformation({ user }: Props) {
                         <Input
                             id="billingApartment"
                             value={formData.billingApartment}
-                            onChange={(e) =>
+                            onChange={(e) =>{
                                 handleInputChange("billingApartment", e.target.value)
+                                sameShipping && handleInputChange("shippingApartment", e.target.value)
+                            }
                             }
                             placeholder="Apartment, suite, etc."
                         />
@@ -179,8 +186,10 @@ export function ContactInformation({ user }: Props) {
                             <Input
                                 id="billingCity"
                                 value={formData.billingCity}
-                                onChange={(e) =>
+                                onChange={(e) =>{
                                     handleInputChange("billingCity", e.target.value)
+                                    sameShipping && handleInputChange("shippingCity", e.target.value)
+                                }
                                 }
                                 placeholder="City"
                                 className={errors.billingCity ? "border-red-500" : ""}
@@ -193,25 +202,36 @@ export function ContactInformation({ user }: Props) {
                         </div>
                         <div>
                             <Label htmlFor="billingState">State *</Label>
-                            <Select
+                            <Input
+                                id="billingCity"
+                                value={formData.billingState}
+                                onChange={(e) =>{
+                                    handleInputChange("billingState", e.target.value)
+                                    sameShipping && handleInputChange("shippingState", e.target.value)
+                                }
+                                }
+                                placeholder="State"
+                                className={errors.billingState ? "border-red-500" : ""}
+                            />
+                            {/* <Select
                                 value={formData.billingState}
                                 onValueChange={(value) =>
-                                    handleInputChange("billingState", value)
+                                handleInputChange("billingState", value)
                                 }
-                            >
-                                <SelectTrigger
-                                    className={errors.billingState ? "border-red-500" : ""}
                                 >
-                                    <SelectValue placeholder="Select state" />
+                                <SelectTrigger
+                                className={errors.billingState ? "border-red-500" : ""}
+                                >
+                                <SelectValue placeholder="Select state" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-primary-foreground">
                                     {states.map((state) => (
                                         <SelectItem key={state} value={state}>
                                             {state}
                                         </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                                        ))}
+                                        </SelectContent>
+                                        </Select> */}
                             {errors.billingState && (
                                 <p className="text-sm mt-1 text-red-500">
                                     {errors.billingState}
@@ -223,8 +243,10 @@ export function ContactInformation({ user }: Props) {
                             <Input
                                 id="billingZipCode"
                                 value={formData.billingZipCode}
-                                onChange={(e) =>
+                                onChange={(e) =>{
                                     handleInputChange("billingZipCode", e.target.value)
+                                    sameShipping && handleInputChange("shippingZipCode", e.target.value)
+                                }
                                 }
                                 placeholder="ZIP"
                                 className={errors.billingZipCode ? "border-red-500" : ""}
@@ -239,7 +261,19 @@ export function ContactInformation({ user }: Props) {
 
                     <div>
                         <Label htmlFor="billingCountry">Country</Label>
-                        <Select
+                        <Input
+                            id="billingCountry"
+                            value={formData.billingCountry}
+                            onChange={(e) =>{
+
+                                handleInputChange("billingCountry", e.target.value)
+                                sameShipping && handleInputChange("shippingCountry", e.target.value)
+                            }
+                            }
+                            placeholder="Country"
+                            className={errors.billingCountry ? "border-red-500" : ""}
+                        />
+                        {/* <Select
                             value={formData.billingCountry}
                             onValueChange={(value) =>
                                 handleInputChange("billingCountry", value)
@@ -255,10 +289,10 @@ export function ContactInformation({ user }: Props) {
                                     </SelectItem>
                                 ))}
                             </SelectContent>
-                        </Select>
+                        </Select> */}
                     </div>
 
-                    <div className="flex items-center space-x-2">
+                    {/* <div className="flex items-center space-x-2">
                         <Checkbox
                             id="saveInfo"
                             checked={saveInfo}
@@ -267,7 +301,7 @@ export function ContactInformation({ user }: Props) {
                         <Label htmlFor="saveInfo" className="text-sm">
                             Save this information for next time
                         </Label>
-                    </div>
+                    </div> */}
                 </CardContent>
             </Card>
 
@@ -380,25 +414,34 @@ export function ContactInformation({ user }: Props) {
                         </div>
                         <div>
                             <Label htmlFor="shippingState">State *</Label>
-                            <Select
+                            <Input
+                                id="shippingState"
+                                value={formData.shippingState}
+                                onChange={(e) =>
+                                    handleInputChange("shippingState", e.target.value)
+                                }
+                                placeholder="State"
+                                className={errors.shippingState ? "border-red-500" : ""}
+                            />
+                            {/* <Select
                                 value={formData.shippingState}
                                 onValueChange={(value) =>
-                                    handleInputChange("shippingState", value)
+                                handleInputChange("shippingState", value)
                                 }
-                            >
-                                <SelectTrigger
-                                    className={errors.shippingState ? "border-red-500" : ""}
                                 >
-                                    <SelectValue placeholder="Select state" />
+                                <SelectTrigger
+                                className={errors.shippingState ? "border-red-500" : ""}
+                                >
+                                <SelectValue placeholder="Select state" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {states.map((state) => (
-                                        <SelectItem key={state} value={state}>
-                                            {state}
-                                        </SelectItem>
+                                {states.map((state) => (
+                                    <SelectItem key={state} value={state}>
+                                    {state}
+                                    </SelectItem>
                                     ))}
-                                </SelectContent>
-                            </Select>
+                                    </SelectContent>
+                                    </Select> */}
                             {errors.shippingState && (
                                 <p className="text-sm mt-1 text-red-500">
                                     {errors.shippingState}
@@ -426,7 +469,16 @@ export function ContactInformation({ user }: Props) {
 
                     <div>
                         <Label htmlFor="shippingCountry">Country</Label>
-                        <Select
+                        <Input
+                            id="shippingCountry"
+                            value={formData.shippingCountry}
+                            onChange={(e) =>
+                                handleInputChange("shippingCountry", e.target.value)
+                            }
+                            placeholder="Country"
+                            className={errors.shippingCountry ? "border-red-500" : ""}
+                        />
+                        {/* <Select
                             value={formData.shippingCountry}
                             onValueChange={(value) =>
                                 handleInputChange("shippingCountry", value)
@@ -442,7 +494,7 @@ export function ContactInformation({ user }: Props) {
                                     </SelectItem>
                                 ))}
                             </SelectContent>
-                        </Select>
+                        </Select> */}
                     </div>
                 </CardContent>
             </Card>

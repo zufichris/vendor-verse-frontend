@@ -23,7 +23,7 @@ export async function getWelcomeCoupon() {
 
 export async function validateCoupon(code: string) {
     try {
-        const { data } = await Api.get<ValidCoupon>(`/coupons/calidate?code=${code}`)
+        const { data } = await Api.get<ValidCoupon>(`/coupons/validate?code=${code}`)
         return data
     } catch (error) {
         return null

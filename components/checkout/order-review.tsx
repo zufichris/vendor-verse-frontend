@@ -53,6 +53,7 @@ export function OrderReview({welcomeCoupon}: Props) {
             }
         } catch (err) {
             console.log(err)
+            toast.error("Invalid coupon code")
         }finally{
             setIsApplying(false)
         }
